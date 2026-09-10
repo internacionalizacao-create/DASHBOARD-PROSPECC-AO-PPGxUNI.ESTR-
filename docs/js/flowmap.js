@@ -1,9 +1,9 @@
 /* ==========================================================================
-   GERBRAS Dashboard — Página 2: Flow Map Manaus → instituições na Alemanha
+   GERBRAS Dashboard — Página 2: Flow Map Manaus → instituições estrangeiras
    ========================================================================== */
 (async function () {
   const data = await loadData();
-  const { researchers, edges, manaus, researcherById } = data;
+  const { linha_matches, manaus, professores } = data;
   // instituições sem coordenada resolvida (país novo ainda sem fallback
   // geocodificado) quebrariam os arcos/projeção — melhor ficar de fora do
   // globo do que gerar NaN
@@ -11,8 +11,8 @@
   const world = await getWorld();
 
   d3.select("#topbar-stats").html(`
-    <div class="topbar__stat" data-help="Número de instituições estrangeiras (destinos) com coordenadas resolvidas e pelo menos uma conexão com a UEA."><b>${fmt(institutions.length)}</b><small>Destinos</small></div>
-    <div class="topbar__stat" data-help="Número total de pares (pesquisador da UEA, pesquisador estrangeiro) identificados como possível parceria."><b>${fmt(edges.length)}</b><small>Conexões</small></div>
+    <div class="topbar__stat" data-help="Número de instituições estrangeiras (destinos) com coordenadas resolvidas e pelo menos uma conexão com alguma linha de pesquisa de um PPG da UEA."><b>${fmt(institutions.length)}</b><small>Destinos</small></div>
+    <div class="topbar__stat" data-help="Número total de pares (linha de pesquisa do PPG, pesquisador estrangeiro) identificados como possível parceria."><b>${fmt(linha_matches.length)}</b><small>Conexões</small></div>
   `);
 
   const maxMatches = d3.max(institutions, (d) => d.n_matches) || 1;
@@ -111,7 +111,7 @@
     arcs
       .on("mousemove", (ev, d) => {
         if (!activeInstitution) highlight(d);
-        showTooltip(ev.clientX, ev.clientY, `<b>${d.instituicao}</b><br>${fmt(d.n_matches)} conexões · ${fmt(d.n_researchers)} professor(es)`);
+        showTooltip(ev.clientX, ev.clientY, `<b>${d.instituicao}</b><br>${fmt(d.n_matches)} conexões · ${fmt(d.n_researchers)} pesquisador(es) estrangeiro(s)`);
         ev.stopPropagation();
       })
       .on("mouseleave", () => { if (!activeInstitution) highlight(null); hideTooltip(); })
@@ -120,7 +120,7 @@
     dots
       .on("mousemove", (ev, d) => {
         if (!activeInstitution) highlight(d);
-        showTooltip(ev.clientX, ev.clientY, `<b>${d.instituicao}</b><br>${fmt(d.n_matches)} conexões · ${fmt(d.n_researchers)} professor(es)`);
+        showTooltip(ev.clientX, ev.clientY, `<b>${d.instituicao}</b><br>${fmt(d.n_matches)} conexões · ${fmt(d.n_researchers)} pesquisador(es) estrangeiro(s)`);
         ev.stopPropagation();
       })
       .on("mouseleave", () => { if (!activeInstitution) highlight(null); hideTooltip(); })
@@ -202,18 +202,18 @@
   }
 
   function showDetail(inst) {
-    const relatedEdges = edges.filter((e) => e.foreign_institution === inst.instituicao);
-    const kwCounts = topEntries(countBy(relatedEdges, (e) => e.keyword), 10);
-    const profIds = [...new Set(relatedEdges.map((e) => e.researcher_id))];
-    const profs = profIds.map((id) => researcherById.get(id)).filter(Boolean)
+    const relatedMatches = linha_matches.filter((m) => m.foreign_institution === inst.instituicao);
+    const linhaCounts = topEntries(countBy(relatedMatches, (m) => m.linha_titulo), 10);
+    const ppgCodigos = new Set(relatedMatches.map((m) => m.ppg_codigo));
+    const profs = professores.filter((p) => p.programas.some((c) => ppgCodigos.has(c)))
       .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
     d3.select("#fd-title").text(inst.instituicao);
-    d3.select("#fd-sub").text(`${inst.pais} · ${fmt(inst.n_matches)} conexões · ${fmt(profs.length)} professor(es) da UEA`);
-    d3.select("#fd-keywords").html(kwCounts.map(([k]) => `<span class="kw-tag">${k}</span>`).join(""));
+    d3.select("#fd-sub").text(`${inst.pais} · ${fmt(inst.n_matches)} conexões · ${fmt(profs.length)} professor(es) da UEA (${[...ppgCodigos].join(", ")})`);
+    d3.select("#fd-keywords").html(linhaCounts.map(([k]) => `<span class="kw-tag">${k}</span>`).join(""));
 
     const rows = d3.select("#fd-professors").selectAll(".pickrow").data(profs, (d) => d.id).join("div").attr("class", "pickrow");
-    rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label">${d.nome}</span><span class="count">${d.n_matches}</span>`);
+    rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label">${d.nome}</span><span class="count">${d.programas.join(', ')}</span>`);
     rows.style("cursor", "pointer").on("click", (ev, d) => {
       ev.stopPropagation();
       location.href = `index.html?professor=${d.id}`;

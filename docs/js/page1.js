@@ -1,38 +1,37 @@
 /* ==========================================================================
    GERBRAS Dashboard — Página 1: orquestração de filtros e gráficos
+
+   Cascata de filtro: PPG (agrupa todos os professores daquele PPG) -> Linha
+   de pesquisa oficial daquele(s) PPG(s). Os matches (linha_matches) já
+   pertencem a uma linha canônica — não a um professor isolado — então o
+   mesmo conjunto de parcerias vale para todos os professores do PPG/linha.
    ========================================================================== */
 (async function () {
-  const { researchers, edges, institutions, manaus, researcherById, capesByCode, capesOpcoes } = await loadData();
+  const { ppgs, professores, linha_matches, institutions, manaus, professorById, linhaById, capesByCode, capesOpcoes } = await loadData();
 
   let filters = readFiltersFromURL();
   let profSearchText = filters.q || "";
-  // colunas do Sankey desativadas pelo usuário (ver renderSankeyToggles) —
-  // ao desativar "keyword", linha de pesquisa conecta direto com instituição
-  const hiddenSankeyCols = new Set();
 
-  /* ---- se chegamos de um link do Flow Map (?professor=ID), deriva os
-     demais filtros a partir do perfil desse professor ---- */
-  if (filters.professorId && !filters.grandeArea && !filters.area && filters.ppgs.size === 0) {
-    const prof = researcherById.get(filters.professorId);
-    if (prof) {
-      filters.grandeArea = prof.grande_areas[0] || "";
-      filters.area = prof.areas.includes(filters.area) ? filters.area : (prof.areas[0] || "");
-      filters.ppgs = new Set(prof.programas);
-    }
+  /* ---- se chegamos de um link do Flow Map / perfil (?professor=ID), deriva
+     o filtro de PPG a partir do professor ---- */
+  if (filters.professorId && filters.ppgs.size === 0) {
+    const prof = professorById.get(filters.professorId);
+    if (prof) filters.ppgs = new Set(prof.programas);
   }
 
-  const ALL_GRANDE_AREAS = [...new Set(researchers.flatMap((r) => r.grande_areas))].sort();
-  const ALL_PPGS = [...new Set(researchers.flatMap((r) => r.programas))].sort();
-  const ALL_PAISES = [...new Set(edges.map((e) => e.foreign_country))].sort();
+  const ALL_PPGS = ppgs.map((p) => p.codigo).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  const ALL_PAISES = [...new Set(linha_matches.map((m) => m.foreign_country))].sort();
 
-  function areaOptionsFor(grandeArea) {
-    const pool = grandeArea ? researchers.filter((r) => r.grande_areas.includes(grandeArea)) : researchers;
-    return [...new Set(pool.flatMap((r) => r.areas))].sort();
+  function linhasDisponiveis() {
+    const codigos = filters.ppgs.size ? [...filters.ppgs] : ALL_PPGS;
+    return codigos.flatMap((c) => {
+      const ppg = ppgs.find((p) => p.codigo === c);
+      return ppg ? ppg.linhas.map((l) => ({ ...l, ppg_codigo: c })) : [];
+    });
   }
 
   function populateSelect(sel, options, current) {
     const el = d3.select(sel);
-    const placeholder = el.select("option").node();
     el.selectAll("option:not(:first-child)").remove();
     el.selectAll(null)
       .data(options)
@@ -42,8 +41,6 @@
     el.property("value", options.includes(current) ? current : "");
   }
 
-  populateSelect("#filter-grande-area", ALL_GRANDE_AREAS, filters.grandeArea);
-  populateSelect("#filter-area", areaOptionsFor(filters.grandeArea), filters.area);
   populateSelect("#filter-pais", ALL_PAISES, filters.pais);
   populateSelect("#filter-nivel", capesOpcoes.niveis, filters.nivel);
   populateSelect("#filter-modalidade", capesOpcoes.modalidades, filters.modalidade);
@@ -52,29 +49,18 @@
 
   /* ---- topbar stats ---- */
   d3.select("#topbar-stats").html(`
-    <div class="topbar__stat" data-help="Número de pesquisadores da UEA com pelo menos uma conexão internacional identificada."><b>${fmt(researchers.length)}</b><small>Pesquisadores</small></div>
-    <div class="topbar__stat" data-help="Número de instituições estrangeiras distintas com pelo menos um pesquisador em comum com a UEA."><b>${fmt(institutions.length)}</b><small>Instituições estrangeiras</small></div>
-    <div class="topbar__stat" data-help="Número total de pares (pesquisador da UEA, pesquisador estrangeiro) identificados como possível parceria, considerando os filtros ativos."><b>${fmt(edges.length)}</b><small>Conexões</small></div>
+    <div class="topbar__stat" data-help="Número de Programas de Pós-Graduação da UEA na base."><b>${fmt(ppgs.length)}</b><small>PPGs</small></div>
+    <div class="topbar__stat" data-help="Número de professores da UEA na base, agrupados por PPG."><b>${fmt(professores.length)}</b><small>Professores</small></div>
+    <div class="topbar__stat" data-help="Número de instituições estrangeiras distintas com pelo menos um pesquisador com linha de pesquisa semelhante a alguma linha oficial de um PPG da UEA."><b>${fmt(institutions.length)}</b><small>Instituições estrangeiras</small></div>
+    <div class="topbar__stat" data-help="Número total de pares (linha de pesquisa do PPG, pesquisador estrangeiro) identificados como possível parceria, considerando os filtros ativos."><b>${fmt(linha_matches.length)}</b><small>Conexões</small></div>
   `);
 
   /* ---- eventos ---- */
-  d3.select("#filter-grande-area").on("change", function () {
-    filters.grandeArea = this.value;
-    filters.area = "";
-    populateSelect("#filter-area", areaOptionsFor(filters.grandeArea), "");
-    syncURL(); render();
-  });
-  d3.select("#filter-area").on("change", function () {
-    filters.area = this.value;
-    syncURL(); render();
-  });
   d3.select("#filter-pais").on("change", function () {
     filters.pais = this.value;
-    // se a instituição selecionada não pertence mais ao país escolhido, limpa —
-    // evita ficar com um filtro de instituição "órfão" que não bate com nada
     if (filters.instituicao && filters.pais) {
-      const stillValid = edges.some(
-        (e) => e.foreign_institution === filters.instituicao && e.foreign_country === filters.pais
+      const stillValid = linha_matches.some(
+        (m) => m.foreign_institution === filters.instituicao && m.foreign_country === filters.pais
       );
       if (!stillValid) filters.instituicao = "";
     }
@@ -84,31 +70,18 @@
     profSearchText = ev.target.value;
     renderProfessorList();
   }, 120));
-  d3.select("#filter-nivel").on("change", function () {
-    filters.nivel = this.value;
-    syncURL(); render();
-  });
-  d3.select("#filter-modalidade").on("change", function () {
-    filters.modalidade = this.value;
-    syncURL(); render();
-  });
-  d3.select("#filter-situacao").on("change", function () {
-    filters.situacao = this.value;
-    syncURL(); render();
-  });
-  d3.select("#filter-conceito").on("change", function () {
-    filters.conceito = this.value;
-    syncURL(); render();
-  });
+  d3.select("#filter-nivel").on("change", function () { filters.nivel = this.value; syncURL(); render(); });
+  d3.select("#filter-modalidade").on("change", function () { filters.modalidade = this.value; syncURL(); render(); });
+  d3.select("#filter-situacao").on("change", function () { filters.situacao = this.value; syncURL(); render(); });
+  d3.select("#filter-conceito").on("change", function () { filters.conceito = this.value; syncURL(); render(); });
+
   d3.select("#btn-clear-filters").on("click", () => {
     filters = {
-      grandeArea: "", area: "", ppgs: new Set(), linhas: new Set(), pais: "", instituicao: "", professorId: null, q: "",
+      ppgs: new Set(), linhaIds: new Set(), pais: "", instituicao: "", professorId: null, q: "",
       nivel: "", modalidade: "", situacao: "", conceito: "",
     };
     profSearchText = "";
     d3.select("#prof-search").property("value", "");
-    populateSelect("#filter-grande-area", ALL_GRANDE_AREAS, "");
-    populateSelect("#filter-area", areaOptionsFor(""), "");
     populateSelect("#filter-pais", ALL_PAISES, "");
     populateSelect("#filter-nivel", capesOpcoes.niveis, "");
     populateSelect("#filter-modalidade", capesOpcoes.modalidades, "");
@@ -118,11 +91,10 @@
   });
   d3.select("#btn-report").on("click", () => {
     generateProspectingReport({
-      researchers: currentFilteredResearchers,
-      edges: currentEdgesForReport,
-      filters,
-      researcherById,
-      totals: { researchers: researchers.length, institutions: institutions.length },
+      professores: currentFilteredProfessores,
+      matches: currentMatchesForReport,
+      filters, professorById, linhaById,
+      totals: { professores: professores.length, institutions: institutions.length },
     });
   });
 
@@ -139,100 +111,67 @@
     filters.professorId = filters.professorId === id ? null : id;
     syncURL(); render();
   }
-  function togglePPG(ppg) {
-    filters.ppgs.has(ppg) ? filters.ppgs.delete(ppg) : filters.ppgs.add(ppg);
+  function togglePPG(codigo) {
+    filters.ppgs.has(codigo) ? filters.ppgs.delete(codigo) : filters.ppgs.add(codigo);
+    // uma linha selecionada que não pertence mais a nenhum PPG ativo some do filtro
+    if (filters.ppgs.size) {
+      const codigosAtivos = filters.ppgs;
+      for (const id of [...filters.linhaIds]) {
+        const linha = linhaById.get(id);
+        if (!linha || !codigosAtivos.has(linha.ppg_codigo)) filters.linhaIds.delete(id);
+      }
+    }
     syncURL(); render();
   }
-  function toggleLinha(kw) {
-    filters.linhas.has(kw) ? filters.linhas.delete(kw) : filters.linhas.add(kw);
+  function toggleLinha(linhaId) {
+    filters.linhaIds.has(linhaId) ? filters.linhaIds.delete(linhaId) : filters.linhaIds.add(linhaId);
     syncURL(); render();
+  }
+  function toggleLinhaByTitulo(titulo) {
+    const linha = linhasDisponiveis().find((l) => l.titulo === titulo);
+    if (linha) toggleLinha(linha.id);
   }
   function toggleInstituicao(inst) {
     filters.instituicao = filters.instituicao === inst ? "" : inst;
     syncURL(); render();
   }
-  function toggleSankeyCol(id) {
-    if (hiddenSankeyCols.has(id)) {
-      hiddenSankeyCols.delete(id);
-    } else {
-      // mantém sempre pelo menos 2 colunas ativas — com 1 só não há conexão pra desenhar
-      if (SANKEY_COLUMN_ORDER.length - hiddenSankeyCols.size <= 2) return;
-      hiddenSankeyCols.add(id);
-    }
-    renderSankeyToggles();
-    render();
-  }
-
-  function renderSankeyToggles() {
-    const data = SANKEY_COLUMN_ORDER.map((id) => ({ id, label: SANKEY_COLUMN_DEFS[id].label }));
-    const btns = d3.select("#sankey-col-toggles")
-      .selectAll(".col-toggle")
-      .data(data, (d) => d.id)
-      .join("button")
-      .attr("type", "button")
-      .attr("class", (d) => "col-toggle" + (hiddenSankeyCols.has(d.id) ? " is-off" : " is-active"));
-    btns.text((d) => d.label);
-    btns.on("click", (_, d) => toggleSankeyCol(d.id));
-  }
 
   /* ---- estado corrente derivado, preenchido a cada render() ---- */
-  let currentFilteredResearchers = [];
-  let currentEdgesForReport = [];
+  let currentFilteredProfessores = [];
+  let currentMatchesForReport = [];
 
   function render() {
-    currentFilteredResearchers = applyResearcherFilters(researchers, filters, capesByCode);
-    let filteredIds = new Set(currentFilteredResearchers.map((r) => r.id));
+    currentFilteredProfessores = applyProfessorFilters(professores, filters, capesByCode);
+    const linhasAtuais = linhasDisponiveis();
+    const linhaIdsAtuais = new Set(linhasAtuais.map((l) => l.id));
 
-    // país/instituição não são atributos diretos do pesquisador — filtrar a
-    // lista de professores por eles exige olhar as edges primeiro
-    if (filters.pais || filters.instituicao) {
-      const idsMatching = new Set(
-        edges
-          .filter((e) => filteredIds.has(e.researcher_id))
-          .filter((e) => !filters.pais || e.foreign_country === filters.pais)
-          .filter((e) => !filters.instituicao || e.foreign_institution === filters.instituicao)
-          .map((e) => e.researcher_id)
-      );
-      currentFilteredResearchers = currentFilteredResearchers.filter((r) => idsMatching.has(r.id));
-      filteredIds = idsMatching;
-    }
-
-    const edgesForList = edges.filter((e) => filteredIds.has(e.researcher_id));
-    const edgesForCharts = applyEdgeFilters(edges, filteredIds, filters);
-    currentEdgesForReport = edgesForCharts;
-
-    // "Linhas de Pesquisa" só deve exibir linhas REAIS do Lattes do
-    // pesquisador — keywords sem match real (fallback de tradução) não são
-    // linhas cadastradas e não devem aparecer nesse painel/gráfico.
-    const edgesForListLinhaReal = edgesForList.filter((e) => e.linha_real);
-    const edgesForChartsLinhaReal = edgesForCharts.filter((e) => e.linha_real);
+    // matches para os painéis/gráficos: respeita PPG + linha + país + instituição
+    const matchesForCharts = applyLinhaMatchFilters(linha_matches, filters)
+      .filter((m) => linhaIdsAtuais.has(m.linha_id));
+    currentMatchesForReport = matchesForCharts;
 
     renderPPGChecklist();
-    renderLinhasList(edgesForListLinhaReal);
+    renderLinhasList(linhasAtuais, matchesForCharts);
     renderProfessorList();
-    renderForeignRanking(edgesForCharts);
+    renderForeignRanking(matchesForCharts);
 
-    const colorBase = edgesForChartsLinhaReal.length ? edgesForChartsLinhaReal : edgesForListLinhaReal;
-    const colorInfo = buildLinhaColorScale(colorBase);
+    const colorInfo = buildLinhaColorScale(matchesForCharts.length ? matchesForCharts : linha_matches.filter((m) => linhaIdsAtuais.has(m.linha_id)));
 
-    renderSankey(document.getElementById("sankey-chart"), edgesForChartsLinhaReal, colorInfo, {
-      onLinhaClick: toggleLinha,
+    renderSankey(document.getElementById("sankey-chart"), matchesForCharts, colorInfo, {
+      onLinhaClick: toggleLinhaByTitulo,
       onInstituicaoClick: toggleInstituicao,
-      activeLinhas: filters.linhas,
+      activeLinhaTitulos: new Set([...filters.linhaIds].map((id) => linhaById.get(id)?.titulo).filter(Boolean)),
       activeInstituicao: filters.instituicao,
-      hiddenColumns: hiddenSankeyCols,
       onLinkHover: updateSbertCard,
     });
     updateSbertCard(null);
-    renderCountryMap(document.getElementById("map-chart"), edgesForCharts);
-    renderBarChart(document.getElementById("bar-chart"), edgesForChartsLinhaReal, colorInfo, { n: 10 });
+    renderCountryMap(document.getElementById("map-chart"), matchesForCharts);
+    renderBarChart(document.getElementById("bar-chart"), matchesForCharts, colorInfo, { n: 10 });
 
-    d3.select("#sankey-hint").text(`${fmt(edgesForChartsLinhaReal.length)} conexões`);
-    d3.select("#prof-count-hint").text(`${fmt(currentFilteredResearchers.length)} / ${fmt(researchers.length)}`);
+    d3.select("#sankey-hint").text(`${fmt(matchesForCharts.length)} conexões`);
+    d3.select("#prof-count-hint").text(`${fmt(currentFilteredProfessores.length)} / ${fmt(professores.length)}`);
   }
 
-  // número do conceito CAPES, à direita da linha — mesmo padrão de "small"
-  // à direita usado nas demais listas do painel (sem badge/círculo).
   function capesConceitoBadge(codigo) {
     const p = capesByCode.get(codigo.normalize("NFC"));
     if (!p || p.conceito == null) return "";
@@ -275,9 +214,7 @@
       scoreEl.style.color = "";
       fillEl.style.width = "0%";
       hintEl.textContent = "";
-      pairEl.innerHTML = hiddenSankeyCols.has("keyword")
-        ? "Ative a coluna <b>Key word matching</b> para ver a similaridade desta conexão."
-        : "Passe o mouse sobre uma conexão entre <b>Linha de pesquisa</b> e <b>Key word matching</b>.";
+      pairEl.innerHTML = "Passe o mouse sobre uma conexão entre <b>Linha de pesquisa</b> e <b>Instituição estrangeira</b>.";
       return;
     }
 
@@ -289,25 +226,27 @@
     pairEl.innerHTML = `<b>${link.tooltipLabel}</b> ↔ ${link.target.name}`;
   }
 
-  function renderLinhasList(edgeSubset) {
-    const counts = countBy(edgeSubset, (e) => e.keyword);
-    const top = topEntries(counts, 45);
-    const colorInfo = buildLinhaColorScale(edgeSubset);
+  function renderLinhasList(linhasAtuais, matchSubset) {
+    const counts = countBy(matchSubset, (m) => m.linha_id);
+    const colorInfo = buildLinhaColorScale(matchSubset);
+
+    const linhasOrdenadas = [...linhasAtuais].sort((a, b) => (counts.get(b.id) || 0) - (counts.get(a.id) || 0));
 
     const wrap = d3.select("#linhas-list");
-    if (!top.length) { wrap.html('<div class="empty-hint">Sem conexões para os filtros atuais.</div>'); return; }
+    if (!linhasOrdenadas.length) { wrap.html('<div class="empty-hint">Nenhuma linha de pesquisa para os filtros atuais.</div>'); return; }
 
-    const rows = wrap.selectAll(".pickrow").data(top, (d) => d[0]).join("div")
-      .attr("class", (d) => "pickrow" + (filters.linhas.has(d[0]) ? " is-active" : ""));
-    rows.html(([kw, v]) => `
-      <span class="dot" style="background:${colorForLinha(kw, colorInfo)}"></span>
-      <span class="label">${kw}</span><span class="count">${fmt(v)}</span>`);
-    rows.on("click", (_, d) => toggleLinha(d[0]));
+    const rows = wrap.selectAll(".pickrow").data(linhasOrdenadas, (d) => d.id).join("div")
+      .attr("class", (d) => "pickrow" + (filters.linhaIds.has(d.id) ? " is-active" : ""));
+    rows.attr("title", (d) => d.descricao || d.titulo);
+    rows.html((d) => `
+      <span class="dot" style="background:${colorForLinha(d.titulo, colorInfo)}"></span>
+      <span class="label">${d.titulo}</span><span class="count">${fmt(counts.get(d.id) || 0)}</span>`);
+    rows.on("click", (_, d) => toggleLinha(d.id));
   }
 
   function renderProfessorList() {
-    const filtered = currentFilteredResearchers.filter((r) =>
-      !profSearchText || r.nome.toLowerCase().includes(profSearchText.toLowerCase())
+    const filtered = currentFilteredProfessores.filter((p) =>
+      !profSearchText || p.nome.toLowerCase().includes(profSearchText.toLowerCase())
     ).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
     const wrap = d3.select("#prof-list");
@@ -316,20 +255,20 @@
     const rows = wrap.selectAll(".pickrow").data(filtered, (d) => d.id).join("div")
       .attr("class", (d) => "pickrow" + (filters.professorId === d.id ? " is-active" : ""));
     rows.html((d) => `
-      <span class="dot" style="background:${d.n_matches ? "var(--accent)" : "var(--border-strong)"}"></span>
-      <span class="label" title="${d.nome}">${d.nome}</span>
-      <span class="count">${d.n_matches || 0}</span>`);
+      <span class="dot" style="background:var(--accent)"></span>
+      <span class="label" title="${d.nome} · ${d.programas.join(', ')}">${d.nome}</span>
+      <span class="count">${d.n_publicacoes || 0}</span>`);
     rows.on("click", (_, d) => toggleProfessor(d.id));
   }
 
-  function renderForeignRanking(edgeSubset) {
+  function renderForeignRanking(matchSubset) {
     const byAuthor = new Map();
-    for (const e of edgeSubset) {
-      const key = e.foreign_author_orcid || e.foreign_author_name;
+    for (const m of matchSubset) {
+      const key = m.foreign_author_orcid || m.foreign_author_name;
       if (!byAuthor.has(key)) {
         byAuthor.set(key, {
-          nome: e.foreign_author_name, instituicao: e.foreign_institution,
-          oaId: (e.foreign_author_openalex_id || "").split("/").pop(), count: 0,
+          nome: m.foreign_author_name, instituicao: m.foreign_institution,
+          oaId: (m.foreign_author_openalex_id || "").split("/").pop(), count: 0,
         });
       }
       byAuthor.get(key).count += 1;
@@ -350,6 +289,5 @@
       <span class="rank__val">${d.count}</span>`);
   }
 
-  renderSankeyToggles();
   render();
 })();

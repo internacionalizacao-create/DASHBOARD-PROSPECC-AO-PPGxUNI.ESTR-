@@ -1,10 +1,14 @@
 /* ==========================================================================
    GERBRAS Dashboard — geração de Relatório de Prospecção (HTML imprimível)
 
-   Recebe o recorte JÁ FILTRADO pela página (mesmos filtros do painel:
-   grande área, PPG, país, instituição, professor…) e monta um documento
+   Recebe o recorte JÁ FILTRADO pela página (mesmos filtros do painel: PPG,
+   linha de pesquisa, país, instituição, professor…) e monta um documento
    HTML autônomo, aberto numa aba nova, pronto para "Salvar como PDF" via
    diálogo de impressão do navegador. Não depende de libs externas.
+
+   Toda linha de pesquisa em `matches` é oficial de um PPG (nome + descrição
+   da planilha da UEA) — não existe mais distinção "match real x match por
+   palavra-chave".
    ========================================================================== */
 
 function reportEsc(s) {
@@ -24,57 +28,57 @@ async function fetchLogoDataURI() {
   }
 }
 
+/* professores da UEA vinculados a algum PPG do conjunto informado */
+function profsForPpgs(professores, ppgCodigos) {
+  return professores.filter((p) => p.programas.some((c) => ppgCodigos.has(c)));
+}
+
 /* ---------- descrição legível dos filtros aplicados ---------- */
-function describeReportFilters(filters, researcherById) {
+function describeReportFilters(filters, professorById, linhaById) {
   const chips = [];
-  if (filters.grandeArea) chips.push(`Grande área: ${filters.grandeArea}`);
-  if (filters.area) chips.push(`Área: ${filters.area}`);
   if (filters.ppgs.size) chips.push(`PPG: ${[...filters.ppgs].join(", ")}`);
+  if (filters.linhaIds.size) {
+    const titulos = [...filters.linhaIds].map((id) => linhaById.get(id)?.titulo || id);
+    chips.push(`Linhas de pesquisa: ${titulos.join(", ")}`);
+  }
   if (filters.pais) chips.push(`País: ${filters.pais}`);
   if (filters.instituicao) chips.push(`Instituição: ${filters.instituicao}`);
   if (filters.professorId) {
-    const prof = researcherById.get(filters.professorId);
+    const prof = professorById.get(filters.professorId);
     chips.push(`Professor: ${prof ? prof.nome : "#" + filters.professorId}`);
-  }
-  if (filters.linhas.size) {
-    chips.push(`Linhas de pesquisa: ${[...filters.linhas].join(", ")}`);
   }
   return chips;
 }
 
 /* ---------- agregações ---------- */
-function aggregateForReport(researchers, edges, institutions) {
-  const researcherIds = new Set(researchers.map((r) => r.id));
-
-  const byCountry = new Map(); // pais -> { instituicoes:Set, pesquisadoresUEA:Set, conexoes:number }
-  const byInstitution = new Map(); // instituicao -> { pais, uea:Set, estrangeiros:Set, conexoes:number }
+function aggregateForReport(matches) {
+  const byCountry = new Map(); // pais -> { instituicoes:Set, ppgs:Set, conexoes }
+  const byInstitution = new Map(); // instituicao -> { pais, ppgs:Set, estrangeiros:Set, conexoes }
   const byForeignResearcher = new Map(); // orcid|nome -> { nome, instituicao, pais, conexoes }
 
-  for (const e of edges) {
-    if (!researcherIds.has(e.researcher_id)) continue;
-
-    if (!byCountry.has(e.foreign_country)) {
-      byCountry.set(e.foreign_country, { instituicoes: new Set(), pesquisadoresUEA: new Set(), conexoes: 0 });
+  for (const m of matches) {
+    if (!byCountry.has(m.foreign_country)) {
+      byCountry.set(m.foreign_country, { instituicoes: new Set(), ppgs: new Set(), conexoes: 0 });
     }
-    const c = byCountry.get(e.foreign_country);
-    c.instituicoes.add(e.foreign_institution);
-    c.pesquisadoresUEA.add(e.researcher_id);
+    const c = byCountry.get(m.foreign_country);
+    c.instituicoes.add(m.foreign_institution);
+    c.ppgs.add(m.ppg_codigo);
     c.conexoes += 1;
 
-    if (!byInstitution.has(e.foreign_institution)) {
-      byInstitution.set(e.foreign_institution, {
-        pais: e.foreign_country, uea: new Set(), estrangeiros: new Set(), conexoes: 0,
+    if (!byInstitution.has(m.foreign_institution)) {
+      byInstitution.set(m.foreign_institution, {
+        pais: m.foreign_country, ppgs: new Set(), estrangeiros: new Set(), conexoes: 0,
       });
     }
-    const inst = byInstitution.get(e.foreign_institution);
-    inst.uea.add(e.researcher_id);
-    inst.estrangeiros.add(e.foreign_author_orcid || e.foreign_author_name);
+    const inst = byInstitution.get(m.foreign_institution);
+    inst.ppgs.add(m.ppg_codigo);
+    inst.estrangeiros.add(m.foreign_author_orcid || m.foreign_author_name);
     inst.conexoes += 1;
 
-    const fKey = e.foreign_author_orcid || e.foreign_author_name;
+    const fKey = m.foreign_author_orcid || m.foreign_author_name;
     if (!byForeignResearcher.has(fKey)) {
       byForeignResearcher.set(fKey, {
-        nome: e.foreign_author_name, instituicao: e.foreign_institution, pais: e.foreign_country, conexoes: 0,
+        nome: m.foreign_author_name, instituicao: m.foreign_institution, pais: m.foreign_country, conexoes: 0,
       });
     }
     byForeignResearcher.get(fKey).conexoes += 1;
@@ -83,36 +87,25 @@ function aggregateForReport(researchers, edges, institutions) {
   return { byCountry, byInstitution, byForeignResearcher };
 }
 
-/* ---------- linhas de pesquisa, separadas por PPG ----------
-   Só conta edges com linha_real (linha de fato cadastrada no Lattes, não
-   fallback de tradução de keyword) — mesmo critério já usado nas demais
-   seções do relatório. Um professor vinculado a mais de um PPG contribui
-   para as linhas de todos eles. */
-function aggregateLinhasByPPG(researchers, edges) {
-  const programasById = new Map(researchers.map((r) => [r.id, r.programas || []]));
-  const byPPG = new Map(); // ppg -> Map(keyword -> conexoes)
-
-  for (const e of edges) {
-    if (!e.linha_real) continue;
-    const programas = programasById.get(e.researcher_id);
-    if (!programas) continue;
-    for (const ppg of programas) {
-      if (!byPPG.has(ppg)) byPPG.set(ppg, new Map());
-      const m = byPPG.get(ppg);
-      m.set(e.keyword, (m.get(e.keyword) || 0) + 1);
-    }
+/* ---------- linhas de pesquisa, separadas por PPG ---------- */
+function aggregateLinhasByPPG(matches) {
+  const byPPG = new Map(); // ppg_codigo -> Map(linha_titulo -> conexoes)
+  for (const m of matches) {
+    if (!byPPG.has(m.ppg_codigo)) byPPG.set(m.ppg_codigo, new Map());
+    const mm = byPPG.get(m.ppg_codigo);
+    mm.set(m.linha_titulo, (mm.get(m.linha_titulo) || 0) + 1);
   }
   return byPPG;
 }
 
-function buildLinhasByPPGSection(researchers, edges) {
-  const byPPG = aggregateLinhasByPPG(researchers, edges);
+function buildLinhasByPPGSection(matches) {
+  const byPPG = aggregateLinhasByPPG(matches);
   const ppgEntries = [...byPPG.entries()].sort((a, b) => a[0].localeCompare(b[0], "pt-BR"));
 
-  const blocks = ppgEntries.map(([ppg, keywordMap]) => {
-    const kwEntries = [...keywordMap.entries()].sort((a, b) => b[1] - a[1]);
-    const rows = kwEntries
-      .map(([kw, n]) => `<tr><td>${reportEsc(kw)}</td><td class="num">${reportFmt(n)}</td></tr>`).join("");
+  const blocks = ppgEntries.map(([ppg, linhaMap]) => {
+    const entries = [...linhaMap.entries()].sort((a, b) => b[1] - a[1]);
+    const rows = entries
+      .map(([titulo, n]) => `<tr><td>${reportEsc(titulo)}</td><td class="num">${reportFmt(n)}</td></tr>`).join("");
 
     return `
       <div class="ppg-block">
@@ -126,75 +119,62 @@ function buildLinhasByPPGSection(researchers, edges) {
 
   return `
     <section class="report-section">
-      <h2>Principais linhas de pesquisa por PPG</h2>
-      <p class="report-note">Para cada Programa de Pós-Graduação da UEA presente no recorte atual, as linhas de pesquisa confirmadas no Lattes com mais conexões internacionais. Um professor vinculado a mais de um PPG conta em cada um deles.</p>
+      <h2>Linhas de pesquisa com conexão internacional, por PPG</h2>
+      <p class="report-note">Para cada Programa de Pós-Graduação da UEA presente no recorte atual, as linhas de pesquisa oficiais com mais conexões internacionais identificadas.</p>
       <div class="ppg-grid">${blocks || ""}</div>
-      ${!blocks ? '<p class="report-note">Sem linhas de pesquisa confirmadas para os filtros atuais.</p>' : ""}
+      ${!blocks ? '<p class="report-note">Sem linhas de pesquisa com conexão para os filtros atuais.</p>' : ""}
     </section>`;
 }
 
-/* ---------- hierarquia Instituição estrangeira > Linha de pesquisa > Pesquisadores estrangeiros ----------
-   Nível 1: cada instituição estrangeira. Nível 2: as linhas de pesquisa da UEA que deram match
-   com aquela instituição (rotuladas pela keyword — quando nenhum match da linha é "real"
-   /confirmado no Lattes, ela carrega a tag "match por palavra-chave"). Nível 3: os pesquisadores
-   ESTRANGEIROS daquela instituição conectados àquela linha (o contato a prospectar) — cada chip
-   traz, no title, os professores da UEA que geraram aquele match. */
-function aggregateInstitutionHierarchy(researchers, edges) {
-  const researcherIds = new Set(researchers.map((r) => r.id));
-  const byInst = new Map(); // instituicao -> { pais, uea:Set, estrangeiros:Set, conexoes, linhas:Map }
+/* ---------- hierarquia Instituição estrangeira > Linha de pesquisa > Pesquisadores estrangeiros ---------- */
+function aggregateInstitutionHierarchy(matches) {
+  const byInst = new Map(); // instituicao -> { pais, ppgs:Set, estrangeiros:Set, conexoes, linhas:Map }
 
-  for (const e of edges) {
-    if (!researcherIds.has(e.researcher_id)) continue;
-
-    if (!byInst.has(e.foreign_institution)) {
-      byInst.set(e.foreign_institution, {
-        pais: e.foreign_country, uea: new Set(), estrangeiros: new Set(), conexoes: 0, linhas: new Map(),
+  for (const m of matches) {
+    if (!byInst.has(m.foreign_institution)) {
+      byInst.set(m.foreign_institution, {
+        pais: m.foreign_country, ppgs: new Set(), estrangeiros: new Set(), conexoes: 0, linhas: new Map(),
       });
     }
-    const inst = byInst.get(e.foreign_institution);
-    inst.uea.add(e.researcher_id);
-    inst.estrangeiros.add(e.foreign_author_orcid || e.foreign_author_name);
+    const inst = byInst.get(m.foreign_institution);
+    inst.ppgs.add(m.ppg_codigo);
+    inst.estrangeiros.add(m.foreign_author_orcid || m.foreign_author_name);
     inst.conexoes += 1;
 
-    if (!inst.linhas.has(e.keyword)) inst.linhas.set(e.keyword, { conexoes: 0, real: false, estrangeiros: new Map() });
-    const linha = inst.linhas.get(e.keyword);
-    linha.conexoes += 1;
-    if (e.linha_real) linha.real = true;
-
-    const fKey = e.foreign_author_orcid || e.foreign_author_name;
-    if (!linha.estrangeiros.has(fKey)) {
-      linha.estrangeiros.set(fKey, { nome: e.foreign_author_name, conexoes: 0, ueaProfs: new Set() });
+    if (!inst.linhas.has(m.linha_titulo)) {
+      inst.linhas.set(m.linha_titulo, { ppg_codigo: m.ppg_codigo, conexoes: 0, estrangeiros: new Map() });
     }
-    const fEntry = linha.estrangeiros.get(fKey);
-    fEntry.conexoes += 1;
-    fEntry.ueaProfs.add(e.researcher_id);
+    const linha = inst.linhas.get(m.linha_titulo);
+    linha.conexoes += 1;
+
+    const fKey = m.foreign_author_orcid || m.foreign_author_name;
+    if (!linha.estrangeiros.has(fKey)) {
+      linha.estrangeiros.set(fKey, { nome: m.foreign_author_name, conexoes: 0, score: m.score });
+    }
+    linha.estrangeiros.get(fKey).conexoes += 1;
   }
 
   return byInst;
 }
 
-function buildInstitutionHierarchySection(researchers, edges, researcherById) {
-  const byInst = aggregateInstitutionHierarchy(researchers, edges);
+function buildInstitutionHierarchySection(matches) {
+  const byInst = aggregateInstitutionHierarchy(matches);
   const instEntries = [...byInst.entries()].sort((a, b) => b[1].conexoes - a[1].conexoes);
 
   const blocks = instEntries.map(([instName, inst]) => {
-    // linhas confirmadas no Lattes (real) vêm antes das de match só por palavra-chave,
-    // e dentro de cada grupo, as com mais conexões primeiro
-    const linhaEntries = [...inst.linhas.entries()].sort((a, b) =>
-      (b[1].real - a[1].real) || (b[1].conexoes - a[1].conexoes)
-    );
+    const linhaEntries = [...inst.linhas.entries()].sort((a, b) => b[1].conexoes - a[1].conexoes);
 
-    const linhaBlocks = linhaEntries.map(([kw, linha]) => {
+    const linhaBlocks = linhaEntries.map(([titulo, linha]) => {
       const foreignEntries = [...linha.estrangeiros.values()]
         .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
       const foreignChips = foreignEntries.map((f) => {
-        const ueaNames = [...f.ueaProfs].map((rid) => researcherById.get(rid)?.nome).filter(Boolean).join(", ");
-        return `<span class="chip" title="Conecta com: ${reportEsc(ueaNames)}">${reportEsc(f.nome)}</span>`;
+        const scoreTxt = f.score != null ? `similaridade ${f.score.toFixed(2)}` : "";
+        return `<span class="chip" title="${reportEsc(scoreTxt)}">${reportEsc(f.nome)}</span>`;
       }).join("");
 
       return `
         <div class="linha-block">
-          <h4>${reportEsc(kw)}${linha.real ? "" : ' <span class="tag">match por palavra-chave</span>'}</h4>
+          <h4>${reportEsc(titulo)} <span class="tag">${reportEsc(linha.ppg_codigo)}</span></h4>
           <div class="prof-chips">${foreignChips || '<span class="report-note">Nenhum pesquisador identificado.</span>'}</div>
         </div>`;
     }).join("");
@@ -202,7 +182,7 @@ function buildInstitutionHierarchySection(researchers, edges, researcherById) {
     return `
       <div class="inst-block">
         <h3>${reportEsc(instName)}</h3>
-        <div class="inst-meta">${reportEsc(inst.pais)} · ${reportFmt(inst.uea.size)} pesquisador(es) UEA · ${reportFmt(inst.estrangeiros.size)} pesquisador(es) estrangeiro(s) · ${reportFmt(inst.conexoes)} conexões</div>
+        <div class="inst-meta">${reportEsc(inst.pais)} · ${reportFmt(inst.ppgs.size)} PPG(s) envolvido(s) · ${reportFmt(inst.estrangeiros.size)} pesquisador(es) estrangeiro(s) · ${reportFmt(inst.conexoes)} conexões</div>
         ${linhaBlocks}
       </div>`;
   }).join("");
@@ -210,16 +190,16 @@ function buildInstitutionHierarchySection(researchers, edges, researcherById) {
   return `
     <section class="report-section">
       <h2>Instituições estrangeiras</h2>
-      <p class="report-note">Organizado por instituição estrangeira; dentro de cada uma, todas as linhas de pesquisa da UEA que deram match, e os pesquisadores estrangeiros daquela instituição conectados a cada linha (passe o mouse sobre o nome para ver qual professor da UEA gerou o match).</p>
+      <p class="report-note">Organizado por instituição estrangeira; dentro de cada uma, todas as linhas de pesquisa oficiais da UEA que deram match, e os pesquisadores estrangeiros daquela instituição conectados a cada linha.</p>
       ${blocks || `<p class="report-note">Sem dados para os filtros atuais.</p>`}
     </section>`;
 }
 
 /* ---------- montagem do HTML ---------- */
-function buildReportHTML({ researchers, edges, filters, researcherById, totals, logoDataURI }) {
-  const agg = aggregateForReport(researchers, edges);
+function buildReportHTML({ professores, matches, filters, professorById, linhaById, totals, logoDataURI }) {
+  const agg = aggregateForReport(matches);
   const genDate = new Date().toLocaleString("pt-BR", { dateStyle: "long", timeStyle: "short" });
-  const filterChips = describeReportFilters(filters, researcherById);
+  const filterChips = describeReportFilters(filters, professorById, linhaById);
 
   const distinctForeign = agg.byForeignResearcher.size;
   const distinctCountries = agg.byCountry.size;
@@ -231,11 +211,11 @@ function buildReportHTML({ researchers, edges, filters, researcherById, totals, 
       <tr>
         <td>${reportEsc(pais)}</td>
         <td class="num">${reportFmt(v.instituicoes.size)}</td>
-        <td class="num">${reportFmt(v.pesquisadoresUEA.size)}</td>
+        <td class="num">${reportFmt(profsForPpgs(professores, v.ppgs).length)}</td>
         <td class="num">${reportFmt(v.conexoes)}</td>
       </tr>`).join("");
 
-  const linhasByPPGSection = buildLinhasByPPGSection(researchers, edges);
+  const linhasByPPGSection = buildLinhasByPPGSection(matches);
 
   const foreignRankedRows = [...agg.byForeignResearcher.values()]
     .sort((a, b) => b.conexoes - a.conexoes)
@@ -248,7 +228,7 @@ function buildReportHTML({ researchers, edges, filters, researcherById, totals, 
         <td class="num">${reportFmt(f.conexoes)}</td>
       </tr>`).join("");
 
-  const institutionHierarchySection = buildInstitutionHierarchySection(researchers, edges, researcherById);
+  const institutionHierarchySection = buildInstitutionHierarchySection(matches);
 
   return `<!doctype html>
 <html lang="pt-BR">
@@ -290,14 +270,12 @@ function buildReportHTML({ researchers, edges, filters, researcherById, totals, 
   table.report-table--compact td, table.report-table--compact th { padding: 4px 6px; font-size: 11.5px; }
   .tag { display: inline-block; font-size: 9.5px; color: var(--ink-muted); background: var(--wash); border: 1px solid var(--border);
     border-radius: 999px; padding: 1px 6px; margin-left: 4px; }
-  /* hierarquia nível 1/2/3: Instituição estrangeira > Linha de pesquisa > Professores UEA */
   .inst-block { break-inside: avoid; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   .inst-block:last-child { border-bottom: none; }
   .inst-block h3 { color: var(--ink-primary); font-size: 14px; margin: 0 0 3px; }
   .inst-block .inst-meta { font-size: 11px; color: var(--ink-muted); margin-bottom: 10px; }
   .linha-block { break-inside: avoid; margin: 0 0 10px 16px; }
   .linha-block h4 { font-size: 12px; color: var(--ink-secondary); margin: 0 0 5px; font-weight: 700; }
-  /* linhas de pesquisa separadas por PPG — grade de 2 colunas, um bloco por PPG */
   .ppg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
   .ppg-block { break-inside: avoid; margin-bottom: 14px; }
   .ppg-block h3 { color: var(--ink-primary); font-size: 12.5px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: .03em; }
@@ -327,7 +305,7 @@ function buildReportHTML({ researchers, edges, filters, researcherById, totals, 
   ${logoDataURI ? `<img src="${logoDataURI}" alt="PROPESP UEA" />` : ""}
   <div>
     <h1>Relatório de Prospecção de Parcerias Internacionais</h1>
-    <div class="meta">Pesquisadores UEA × Mundo · gerado em ${reportEsc(genDate)}</div>
+    <div class="meta">PPGs UEA × Mundo, por linha de pesquisa · gerado em ${reportEsc(genDate)}</div>
   </div>
 </div>
 
@@ -336,17 +314,17 @@ function buildReportHTML({ researchers, edges, filters, researcherById, totals, 
 </div>
 
 <div class="stat-grid">
-  <div class="stat-card"><b>${reportFmt(researchers.length)}</b><span>Pesquisadores UEA (de ${reportFmt(totals.researchers)})</span></div>
+  <div class="stat-card"><b>${reportFmt(professores.length)}</b><span>Professores UEA (de ${reportFmt(totals.professores)})</span></div>
   <div class="stat-card"><b>${reportFmt(distinctInstitutions)}</b><span>Instituições estrangeiras (de ${reportFmt(totals.institutions)})</span></div>
   <div class="stat-card"><b>${reportFmt(distinctCountries)}</b><span>Países</span></div>
-  <div class="stat-card"><b>${reportFmt(edges.length)}</b><span>Conexões</span></div>
+  <div class="stat-card"><b>${reportFmt(matches.length)}</b><span>Conexões</span></div>
   <div class="stat-card"><b>${reportFmt(distinctForeign)}</b><span>Pesquisadores estrangeiros</span></div>
 </div>
 
 <section class="report-section">
   <h2>Distribuição por país</h2>
   <table class="report-table">
-    <thead><tr><th>País</th><th class="num">Instituições</th><th class="num">Pesquisadores UEA</th><th class="num">Conexões</th></tr></thead>
+    <thead><tr><th>País</th><th class="num">Instituições</th><th class="num">Professores UEA (PPGs envolvidos)</th><th class="num">Conexões</th></tr></thead>
     <tbody>${countryRows || `<tr><td colspan="4">Sem dados para os filtros atuais.</td></tr>`}</tbody>
   </table>
 </section>
@@ -364,7 +342,7 @@ ${linhasByPPGSection}
 ${institutionHierarchySection}
 
 <div class="report-footer">
-  Gerado automaticamente pelo Painel de Parcerias Internacionais — PROPESP/UEA. Fonte dos matches: OpenAlex (publicações) + Currículo Lattes (linhas de pesquisa), ranqueados por similaridade semântica (Sentence-BERT).
+  Gerado automaticamente pelo Painel de Parcerias Internacionais — PROPESP/UEA. Fonte dos matches: linha de pesquisa oficial de cada PPG (nome + descrição) × publicações de pesquisadores estrangeiros indexadas no OpenAlex, ranqueados por similaridade semântica (Sentence-BERT).
 </div>
 
 </body>
@@ -378,7 +356,7 @@ ${institutionHierarchySection}
    e bloqueia a aba silenciosamente (sem erro no console, sem cair no
    `if (!win)`). Por isso abrimos a aba (em branco, com uma mensagem de
    carregando) ANTES de qualquer await, e só depois preenchemos o conteúdo. */
-function generateProspectingReport({ researchers, edges, filters, researcherById, totals }) {
+function generateProspectingReport({ professores, matches, filters, professorById, linhaById, totals }) {
   const win = window.open("", "_blank");
   if (!win) {
     alert("O navegador bloqueou a abertura da nova aba. Permita pop-ups para este site e tente novamente.");
@@ -394,7 +372,7 @@ function generateProspectingReport({ researchers, edges, filters, researcherById
 
   fetchLogoDataURI()
     .then((logoDataURI) => {
-      const html = buildReportHTML({ researchers, edges, filters, researcherById, totals, logoDataURI });
+      const html = buildReportHTML({ professores, matches, filters, professorById, linhaById, totals, logoDataURI });
       win.document.open();
       win.document.write(html);
       win.document.close();

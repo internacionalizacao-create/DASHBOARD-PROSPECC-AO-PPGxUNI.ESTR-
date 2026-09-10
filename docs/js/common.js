@@ -1,30 +1,27 @@
 /* ==========================================================================
    GERBRAS Dashboard — utilidades compartilhadas: dados, paleta, filtros
+
+   Estrutura de dados (ver etl/export_dashboard_data.py):
+     ppgs           - [{codigo, nome, linhas: [{id, titulo, descricao}]}]
+     professores    - [{id, nome, orcid, universidade, cidade, uf, programas: [codigo,...],
+                         linhas_canonicas: [linha_id,...], n_publicacoes}]
+     linha_matches  - [{linha_id, ppg_codigo, foreign_author_name, foreign_author_orcid,
+                         foreign_author_openalex_id, foreign_institution, foreign_country,
+                         score, sample_work_title, sample_work_doi}]
+     institutions   - [{instituicao, pais, lat, lon, n_matches, n_researchers}]
+     manaus         - {cidade, uf, pais, lat, lon}
+
+   Toda linha de pesquisa é oficial do PPG (nome + descrição vindos da
+   planilha da UEA) — não existe mais "match por palavra-chave" como
+   fallback: todo match em linha_matches já nasce ligado a uma linha
+   canônica de um PPG.
    ========================================================================== */
 
-// Valores iniciais (tema claro); refreshThemeColors() os substitui lendo as
-// CSS custom properties, então ficam corretos tanto no 1º load quanto após
-// alternar o tema. Ficam como `let` de propósito — outros arquivos leem o
-// mesmo binding global e enxergam a reatribuição automaticamente.
 let CAT_COLORS = [
-  "#2a78d6", // 1 azul
-  "#eb6834", // 2 laranja
-  "#1baf7a", // 3 água
-  "#eda100", // 4 amarelo
-  "#e87ba4", // 5 magenta
-  "#008300", // 6 verde
-  "#4a3aa7", // 7 violeta
-  "#e34948", // 8 vermelho — reservado p/ bucket "Outras"
+  "#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948",
 ];
 let OTHER_COLOR = CAT_COLORS[7];
-const MAX_CATEGORICAL_INDIVIDUAL = 7; // até 7 linhas visíveis: usa a paleta validada (CAT_COLORS) tal e qual
-// acima de 7 linhas visíveis simultaneamente (ex.: Sankey sem filtro, que mostra
-// até maxLinhas=22 nós nomeados — ver charts.js), cada uma ainda ganha cor
-// própria, só que gerada por rotação de matiz (ângulo áureo) em vez de vir de
-// uma paleta fixa — não existe mais "paleta categórica validada" pra tantas
-// cores simultâneas, então isso é uma extensão best-effort, não substitui os
-// 7 tons cuidadosamente escolhidos. Cobre generosamente o maxLinhas do Sankey;
-// o que ainda sobrar cai no bucket cinza "Outras linhas de pesquisa".
+const MAX_CATEGORICAL_INDIVIDUAL = 7;
 const MAX_CATEGORICAL_TOTAL = 24;
 const GOLDEN_ANGLE_DEG = 137.508;
 
@@ -33,7 +30,7 @@ function generateCategoricalColors(n) {
   const dark = getTheme() === "dark";
   const s = dark ? 62 : 68;
   const l = dark ? 64 : 47;
-  const startHue = 205; // próximo do azul do slot 1, pra dar continuidade visual
+  const startHue = 205;
   const out = [];
   for (let i = 0; i < n; i++) {
     const hue = (startHue + i * GOLDEN_ANGLE_DEG) % 360;
@@ -91,28 +88,40 @@ function initThemeToggle() {
 }
 
 async function loadData() {
-  const opts = { cache: "no-cache" }; // sempre revalida com o servidor — dados mudam a cada reexport do ETL
-  const [{ researchers, edges, institutions, manaus }, capesNotas] = await Promise.all([
+  const opts = { cache: "no-cache" };
+  const [{ ppgs, professores, linha_matches, institutions, manaus }, capesNotas] = await Promise.all([
     fetch("../data/dashboard.json", opts).then((r) => r.json()),
     fetch("../data/capes_notas.json", opts).then((r) => r.json()),
   ]);
+
   const institutionByName = new Map(institutions.map((i) => [i.instituicao, i]));
-  const researcherById = new Map(researchers.map((r) => [r.id, r]));
-  // normaliza para NFC: o Excel de origem grava acentos como caractere
-  // pré-composto, mas o Lattes (via dashboard.json) às vezes grava a forma
-  // decomposta (base + acento combinante) — mesma string visualmente, bytes
-  // diferentes. Sem isso, códigos como "PROFÁGUA" não batem no Map.get().
+  const professorById = new Map(professores.map((p) => [p.id, p]));
+  const ppgByCodigo = new Map(ppgs.map((p) => [p.codigo, p]));
+
+  const linhaById = new Map();
+  for (const ppg of ppgs) {
+    for (const linha of ppg.linhas) {
+      linhaById.set(linha.id, { ...linha, ppg_codigo: ppg.codigo, ppg_nome: ppg.nome });
+    }
+  }
+
+  // anexa o título/PPG da linha em cada match, pra não precisar resolver o
+  // linha_id toda hora nos gráficos (que exibem o título como rótulo)
+  for (const m of linha_matches) {
+    const linha = linhaById.get(m.linha_id);
+    m.linha_titulo = linha ? linha.titulo : m.linha_id;
+  }
+
   const capesByCode = new Map(capesNotas.programas.map((p) => [p.codigo.normalize("NFC"), p]));
+
   return {
-    researchers, edges, institutions, manaus, institutionByName, researcherById,
+    ppgs, professores, linha_matches, institutions, manaus,
+    institutionByName, professorById, ppgByCodigo, linhaById,
     capesByCode, capesOpcoes: capesNotas.opcoes,
   };
 }
 
 /* ---------- Avaliação CAPES por PPG ---------- */
-// um PPG "atende" um filtro de nível/modalidade/situação se QUALQUER um dos
-// seus cursos (ex.: Mestrado e Doutorado são cursos distintos do mesmo PPG)
-// tiver aquele valor — o conceito, por sua vez, é único por PPG.
 function ppgMatchesCapesFilters(codigo, capesByCode, filters) {
   const p = capesByCode.get(codigo.normalize("NFC"));
   if (!p) return !(filters.nivel || filters.modalidade || filters.situacao || filters.conceito);
@@ -132,10 +141,8 @@ function ppgMatchesCapesFilters(codigo, capesByCode, filters) {
 function readFiltersFromURL() {
   const p = new URLSearchParams(location.search);
   return {
-    grandeArea: p.get("grandeArea") || "",
-    area: p.get("area") || "",
     ppgs: new Set((p.get("ppgs") || "").split(",").filter(Boolean)),
-    linhas: new Set((p.get("linhas") || "").split("||").filter(Boolean)),
+    linhaIds: new Set((p.get("linhas") || "").split(",").filter(Boolean)),
     pais: p.get("pais") || "",
     instituicao: p.get("instituicao") || "",
     professorId: p.get("professor") ? Number(p.get("professor")) : null,
@@ -149,10 +156,8 @@ function readFiltersFromURL() {
 
 function filtersToURL(filters) {
   const p = new URLSearchParams();
-  if (filters.grandeArea) p.set("grandeArea", filters.grandeArea);
-  if (filters.area) p.set("area", filters.area);
   if (filters.ppgs.size) p.set("ppgs", [...filters.ppgs].join(","));
-  if (filters.linhas.size) p.set("linhas", [...filters.linhas].join("||"));
+  if (filters.linhaIds.size) p.set("linhas", [...filters.linhaIds].join(","));
   if (filters.pais) p.set("pais", filters.pais);
   if (filters.instituicao) p.set("instituicao", filters.instituicao);
   if (filters.professorId) p.set("professor", filters.professorId);
@@ -164,24 +169,22 @@ function filtersToURL(filters) {
   return p.toString();
 }
 
-function applyResearcherFilters(researchers, filters, capesByCode) {
+function applyProfessorFilters(professores, filters, capesByCode) {
   const capesActive = capesByCode && (filters.nivel || filters.modalidade || filters.situacao || filters.conceito);
-  return researchers.filter((r) => {
-    if (filters.grandeArea && !r.grande_areas.includes(filters.grandeArea)) return false;
-    if (filters.area && !r.areas.includes(filters.area)) return false;
-    if (filters.ppgs.size && !r.programas.some((p) => filters.ppgs.has(p))) return false;
-    if (filters.professorId && r.id !== filters.professorId) return false;
-    if (capesActive && !r.programas.some((p) => ppgMatchesCapesFilters(p, capesByCode, filters))) return false;
+  return professores.filter((p) => {
+    if (filters.ppgs.size && !p.programas.some((c) => filters.ppgs.has(c))) return false;
+    if (filters.professorId && p.id !== filters.professorId) return false;
+    if (capesActive && !p.programas.some((c) => ppgMatchesCapesFilters(c, capesByCode, filters))) return false;
     return true;
   });
 }
 
-function applyEdgeFilters(edges, filteredResearcherIds, filters) {
-  return edges.filter((e) => {
-    if (!filteredResearcherIds.has(e.researcher_id)) return false;
-    if (filters.linhas.size && !filters.linhas.has(e.keyword)) return false;
-    if (filters.pais && e.foreign_country !== filters.pais) return false;
-    if (filters.instituicao && e.foreign_institution !== filters.instituicao) return false;
+function applyLinhaMatchFilters(linhaMatches, filters) {
+  return linhaMatches.filter((m) => {
+    if (filters.ppgs.size && !filters.ppgs.has(m.ppg_codigo)) return false;
+    if (filters.linhaIds.size && !filters.linhaIds.has(m.linha_id)) return false;
+    if (filters.pais && m.foreign_country !== filters.pais) return false;
+    if (filters.instituicao && m.foreign_institution !== filters.instituicao) return false;
     return true;
   });
 }
@@ -200,19 +203,18 @@ function topEntries(map, n) {
   return [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, n);
 }
 
-/* dá uma cor própria a cada uma das top-N linhas de pesquisa presentes num
-   conjunto de edges (N = MAX_CATEGORICAL_TOTAL, cobre o maxLinhas do Sankey),
-   dobrando só o que sobrar disso em "Outras linhas de pesquisa" */
-function buildLinhaColorScale(edgeSubset) {
-  const counts = countBy(edgeSubset, (e) => e.keyword);
+/* cor própria pras top-N linhas de pesquisa (por título) presentes num
+   conjunto de matches; o resto cai em "Outras linhas de pesquisa" */
+function buildLinhaColorScale(matchSubset) {
+  const counts = countBy(matchSubset, (m) => m.linha_titulo);
   const top = topEntries(counts, MAX_CATEGORICAL_TOTAL).map(([k]) => k);
   const palette = generateCategoricalColors(top.length);
   const scale = new Map();
   top.forEach((k, i) => scale.set(k, palette[i]));
   return { scale, top, otherLabel: "Outras linhas de pesquisa", otherColor: OTHER_COLOR };
 }
-function colorForLinha(keyword, colorInfo) {
-  return colorInfo.scale.get(keyword) || colorInfo.otherColor;
+function colorForLinha(titulo, colorInfo) {
+  return colorInfo.scale.get(titulo) || colorInfo.otherColor;
 }
 
 /* ---------- tooltip global ---------- */
@@ -239,13 +241,7 @@ function hideTooltip() {
   if (tooltipEl) tooltipEl.classList.remove("is-visible");
 }
 
-/* ---------- tooltip de ajuda: hover parado por 3s sobre [data-help] ----------
-   Independente do tooltip de dados (showTooltip/hideTooltip acima, usado
-   pelos gráficos D3 em cima de pontos/links específicos) — este mostra uma
-   legenda explicando o card/gráfico como um todo, então usa seu próprio
-   elemento e um delay bem maior. Delegação em document (mouseover/mouseout,
-   que borbulham) em vez de mouseenter/mouseleave direto nos elementos, para
-   funcionar em cards renderizados dinamicamente sem precisar re-inicializar. */
+/* ---------- tooltip de ajuda: hover parado por 3s sobre [data-help] ---------- */
 const HELP_HOLD_MS = 3000;
 let helpTooltipEl = null;
 let helpTimer = null;
@@ -303,7 +299,6 @@ function initHelpTooltips() {
 
   document.addEventListener("mouseout", (ev) => {
     const target = ev.target.closest("[data-help]");
-    // relatedTarget é null ao sair da janela; contains() cobre mover entre filhos do mesmo card
     if (!target || (ev.relatedTarget && target.contains(ev.relatedTarget))) return;
     hideHelpTooltip();
   });
@@ -317,7 +312,7 @@ function fmt(n) { return n.toLocaleString("pt-BR"); }
 function debounce(fn, ms) {
   let t;
   return function (...args) {
-    const ctx = this; // preserva o `this` de quem chamou (ex: elemento do input em handlers do D3)
+    const ctx = this;
     clearTimeout(t);
     t = setTimeout(() => fn.apply(ctx, args), ms);
   };

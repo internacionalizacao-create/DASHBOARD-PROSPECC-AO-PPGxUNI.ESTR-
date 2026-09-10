@@ -1,9 +1,16 @@
-"""Gera os JSON consumidos pelo dashboard estático (GERBRAS Programming/docs/data/).
+"""Gera data/dashboard.json a partir de: output/gerbras.db (professores UEA),
+DATA BASE UEA/PPGS_LINHAS/output/ppgs_linhas.json (linhas de pesquisa oficiais por PPG)
+e output/linha_matches.json (matches linha x pesquisador estrangeiro, ver etl/linha_match.py).
 
-Produz:
-  researchers.json    - pesquisadores UEA (áreas, PPG, localização, contagens)
-  edges.json          - linha de pesquisa (keyword) x instituição estrangeira, por pesquisador
-  institutions.json   - instituições estrangeiras distintas, geocodificadas
+Schema novo (substitui o antigo researchers/edges por keyword de professor):
+  ppgs           - [{codigo, nome, linhas: [{id, titulo, descricao}]}]
+  professores    - [{id, nome, orcid, universidade, cidade, uf, programas: [codigo,...],
+                      linhas_canonicas: [linha_id,...], n_publicacoes}]
+  linha_matches  - [{linha_id, ppg_codigo, foreign_author_name, foreign_author_orcid,
+                      foreign_author_openalex_id, foreign_institution, foreign_country,
+                      score, sample_work_title, sample_work_doi}]
+  institutions   - instituições estrangeiras distintas (agregado de linha_matches), geocodificadas
+  manaus         - ponto fixo de origem (Manaus/AM)
 
 Uso:
     python3 etl/export_dashboard_data.py
@@ -23,12 +30,15 @@ import db
 from geocode import Geocoder
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
 
 MANAUS = {"cidade": "Manaus", "uf": "AM", "pais": "Brasil", "lat": -3.1316333, "lon": -59.9825041}
 
-# Coordenadas conhecidas p/ institutos de pesquisa alemães que o Nominatim
-# não resolve pelo nome em inglês (associações "guarda-chuva", institutos
-# sem tag OSM correspondente). Aproximação ao nível da cidade-sede.
+LINHA_CANONICA_LIMIAR = 0.45
+
+# Coordenadas conhecidas p/ instituições que o Nominatim não resolve pelo nome
+# (associações "guarda-chuva", institutos sem tag OSM correspondente).
+# Aproximação ao nível da cidade-sede.
 MANUAL_INSTITUTION_COORDS: dict[str, tuple[float, float]] = {
     "Berlin Brandenburg Institute of Advanced Biodiversity Research": (52.5170, 13.3889),
     "Berlin Institute of Health at Charité - Universitätsmedizin Berlin": (52.5170, 13.3889),
@@ -83,65 +93,56 @@ MANUAL_INSTITUTION_COORDS: dict[str, tuple[float, float]] = {
     "University of Lübeck": (53.8655, 10.6866),
     "University of Siegen": (50.9106, 8.0169),
     "University of Wuppertal": (51.2465, 7.1500),
-    # Adicionadas em 2026-08-25: instituições que ficaram presas no
-    # fallback de centro do país (Nominatim não resolveu pelo nome, ou só
-    # deu falso-positivo em outro país — ex.: "Centre for Higher Education"
-    # batia em Kyiv, "Total (Germany)" batia na África do Sul). Coordenada
-    # aproximada ao nível da cidade-sede.
-    "Airbus (Germany)": (53.5350, 9.8350),  # Hamburg-Finkenwerder
-    "Amazon (Germany)": (48.1351, 11.5820),  # Munique (sede legal Amazon Alemanha)
-    "Amgen (Germany)": (48.1351, 11.5820),  # Munique
-    "Baden-Wuerttemberg Cooperative State University": (48.7758, 9.1829),  # Stuttgart (presidência central)
-    "Catholic University of Eichstätt-Ingolstadt": (48.8909, 11.1866),  # Eichstätt
-    "Centre for European Economic Research": (49.4875, 8.4660),  # Mannheim (ZEW)
-    "Centre for Higher Education": (51.9068, 8.3799),  # Gütersloh (CHE)
-    "Deutsche Montan Technologie (Germany)": (51.4556, 7.0116),  # Essen (DMT GmbH)
-    "European Forest Institute": (50.7374, 7.0982),  # Bonn (escritório regional na Alemanha)
-    "European University Viadrina": (52.3474, 14.5501),  # Frankfurt (Oder)
-    "Evonik (Germany)": (51.4556, 7.0116),  # Essen
-    "Federal Institute For Materials Research and Testing": (52.5170, 13.3889),  # Berlim (BAM)
-    "Federal Institute for Occupational Safety and Health": (51.5136, 7.4653),  # Dortmund (BAuA)
-    "Federal Institute for Risk Assessment": (52.5170, 13.3889),  # Berlim (BfR)
-    "GEOMAR Helmholtz Centre for Ocean Research Kiel": (54.3233, 10.1228),  # Kiel
-    "GESIS - Leibniz Institute for the Social Sciences": (50.9375, 6.9603),  # Colônia
-    "German Climate Computing Centre": (53.5511, 9.9937),  # Hamburgo (DKRZ)
-    "German Insurance Association": (52.5170, 13.3889),  # Berlim (GDV)
-    "Hologic (Germany)": (50.0782, 8.2398),  # Wiesbaden
-    "IZA - Institute of Labor Economics": (50.7374, 7.0982),  # Bonn
-    "Ifo Institute for Economic Research": (48.1351, 11.5820),  # Munique
-    "Johner Institut (Germany)": (47.6779, 9.1732),  # Konstanz
-    "LOEWE Centre for Translational Biodiversity Genomics": (50.1109, 8.6821),  # Frankfurt am Main
-    "Leibniz Institute for Agricultural Engineering and Bioeconomy": (52.3906, 13.0645),  # Potsdam (ATB)
-    "Leibniz Institute of Photonic Technology": (50.9279, 11.5892),  # Jena (IPHT)
-    "Martin Luther University Halle-Wittenberg": (51.4970, 11.9683),  # Halle
-    "Max Planck Institute for Biophysical Chemistry": (51.5413, 9.9158),  # Göttingen
-    "Max Planck Institute for Comparative Public Law and International Law": (49.4093, 8.6725),  # Heidelberg
-    "Max Planck Institute for Evolutionary Biology": (54.1614, 10.4221),  # Plön
-    "Max Planck Institute for Social Anthropology": (51.4970, 11.9683),  # Halle
-    "Max Planck Institute for the Science of Light": (49.5897, 11.0040),  # Erlangen
-    "Max Planck Institute for the Study of Crime, Security and Law": (47.9990, 7.8421),  # Freiburg
-    "Munich Leukemia Laboratory (Germany)": (48.1351, 11.5820),  # Munique
-    "Munich School of Philosophy": (48.1351, 11.5820),  # Munique
-    "National Center for Tumor Diseases": (49.4093, 8.6725),  # Heidelberg
-    "Research Institute for Farm Animal Biology (FBN)": (53.9350, 12.2900),  # Dummerstorf
-    "Robert Bosch (Germany)": (48.8143, 9.1862),  # Gerlingen (sede Bosch)
-    "Total (Germany)": (52.5170, 13.3889),  # Berlim (escritório TotalEnergies Alemanha)
-    "Trier University of Applied Sciences": (49.6081, 7.1693),  # Trier
-    "University Hospital Schleswig-Holstein": (54.3233, 10.1228),  # Kiel (campus Kiel)
-    "University Hospitals of the Ruhr-University of Bochum": (51.4818, 7.2162),  # Bochum
-    "University of Algiers Benyoucef Benkhedda": (36.7538, 3.0588),  # Argel (capital) — sede principal
-    "University of Koblenz and Landau": (50.3569, 7.5890),  # Koblenz
-    "University of Würzburg": (49.7913, 9.9534),  # Würzburg
-    "Zeppelin Universität gemeinnützige GmbH": (47.6558, 9.4794),  # Friedrichshafen
-    "Zoological Research Museum Alexander Koenig": (50.7374, 7.0982),  # Bonn
+    "Airbus (Germany)": (53.5350, 9.8350),
+    "Amazon (Germany)": (48.1351, 11.5820),
+    "Amgen (Germany)": (48.1351, 11.5820),
+    "Baden-Wuerttemberg Cooperative State University": (48.7758, 9.1829),
+    "Catholic University of Eichstätt-Ingolstadt": (48.8909, 11.1866),
+    "Centre for European Economic Research": (49.4875, 8.4660),
+    "Centre for Higher Education": (51.9068, 8.3799),
+    "Deutsche Montan Technologie (Germany)": (51.4556, 7.0116),
+    "European Forest Institute": (50.7374, 7.0982),
+    "European University Viadrina": (52.3474, 14.5501),
+    "Evonik (Germany)": (51.4556, 7.0116),
+    "Federal Institute For Materials Research and Testing": (52.5170, 13.3889),
+    "Federal Institute for Occupational Safety and Health": (51.5136, 7.4653),
+    "Federal Institute for Risk Assessment": (52.5170, 13.3889),
+    "GEOMAR Helmholtz Centre for Ocean Research Kiel": (54.3233, 10.1228),
+    "GESIS - Leibniz Institute for the Social Sciences": (50.9375, 6.9603),
+    "German Climate Computing Centre": (53.5511, 9.9937),
+    "German Insurance Association": (52.5170, 13.3889),
+    "Hologic (Germany)": (50.0782, 8.2398),
+    "IZA - Institute of Labor Economics": (50.7374, 7.0982),
+    "Ifo Institute for Economic Research": (48.1351, 11.5820),
+    "Johner Institut (Germany)": (47.6779, 9.1732),
+    "LOEWE Centre for Translational Biodiversity Genomics": (50.1109, 8.6821),
+    "Leibniz Institute for Agricultural Engineering and Bioeconomy": (52.3906, 13.0645),
+    "Leibniz Institute of Photonic Technology": (50.9279, 11.5892),
+    "Martin Luther University Halle-Wittenberg": (51.4970, 11.9683),
+    "Max Planck Institute for Biophysical Chemistry": (51.5413, 9.9158),
+    "Max Planck Institute for Comparative Public Law and International Law": (49.4093, 8.6725),
+    "Max Planck Institute for Evolutionary Biology": (54.1614, 10.4221),
+    "Max Planck Institute for Social Anthropology": (51.4970, 11.9683),
+    "Max Planck Institute for the Science of Light": (49.5897, 11.0040),
+    "Max Planck Institute for the Study of Crime, Security and Law": (47.9990, 7.8421),
+    "Munich Leukemia Laboratory (Germany)": (48.1351, 11.5820),
+    "Munich School of Philosophy": (48.1351, 11.5820),
+    "National Center for Tumor Diseases": (49.4093, 8.6725),
+    "Research Institute for Farm Animal Biology (FBN)": (53.9350, 12.2900),
+    "Robert Bosch (Germany)": (48.8143, 9.1862),
+    "Total (Germany)": (52.5170, 13.3889),
+    "Trier University of Applied Sciences": (49.6081, 7.1693),
+    "University Hospital Schleswig-Holstein": (54.3233, 10.1228),
+    "University Hospitals of the Ruhr-University of Bochum": (51.4818, 7.2162),
+    "University of Algiers Benyoucef Benkhedda": (36.7538, 3.0588),
+    "University of Koblenz and Landau": (50.3569, 7.5890),
+    "University of Würzburg": (49.7913, 9.9534),
+    "Zeppelin Universität gemeinnützige GmbH": (47.6558, 9.4794),
+    "Zoological Research Museum Alexander Koenig": (50.7374, 7.0982),
 }
 
 GERMANY_CENTER = (51.1657, 10.4515)
 
-# Fallback de último recurso por país, só usado quando o Nominatim não
-# resolve o nome da instituição nem bate com nenhuma dica manual abaixo.
-# Adicionar uma entrada aqui para cada país novo que entrar no cruzamento
-# (Angola, Argélia, Moçambique, ...), senão a instituição cai sem coordenada.
 COUNTRY_CENTER_FALLBACK: dict[str, tuple[float, float]] = {
     "Alemanha": GERMANY_CENTER,
     "Gana": (7.9465, -1.0232),
@@ -149,11 +150,9 @@ COUNTRY_CENTER_FALLBACK: dict[str, tuple[float, float]] = {
     "África do Sul": (-28.8166, 24.9916),
     "Argélia": (28.0339, 1.6596),
     "Moçambique": (-18.6657, 35.5296),
-    "Reino Unido": (52.4862, -1.8904),  # Birmingham, UK
+    "Reino Unido": (52.4862, -1.8904),
 }
 
-# Cidades citadas em nomes de instituição — fallback quando o Nominatim
-# e o mapa manual acima não resolvem.
 GERMAN_CITY_HINTS: dict[str, tuple[float, float]] = {
     "jena": (50.9279, 11.5892), "erlangen": (49.5897, 11.0040),
     "göttingen": (51.5413, 9.9158), "goettingen": (51.5413, 9.9158),
@@ -175,11 +174,6 @@ def resolve_institution_coords(inst: str, country: str, geocoder: Geocoder) -> t
     lat, lon = geocoder.geocode(inst, None, country)
     if lat is not None:
         return lat, lon
-    # MANUAL_INSTITUTION_COORDS vale para qualquer país (curado manualmente
-    # p/ instituições "guarda-chuva" sem tag OSM própria que o Nominatim não
-    # resolve pelo nome). GERMAN_CITY_HINTS continua restrito à Alemanha —
-    # são substrings de nomes de cidade alemã, não fazem sentido p/ outros
-    # países.
     if inst in MANUAL_INSTITUTION_COORDS:
         return MANUAL_INSTITUTION_COORDS[inst]
     if country == "Alemanha":
@@ -190,53 +184,6 @@ def resolve_institution_coords(inst: str, country: str, geocoder: Geocoder) -> t
     return COUNTRY_CENTER_FALLBACK.get(country, (None, None))
 
 
-def export_researchers(conn) -> dict[int, dict]:
-    rows = conn.execute(
-        """SELECT id, nome, orcid, universidade, cidade, uf, pais, latitude, longitude, programa
-           FROM researchers"""
-    ).fetchall()
-
-    areas_by_researcher: dict[int, list[dict]] = defaultdict(list)
-    for rid, grande_area, area, subarea, especialidade in conn.execute(
-        "SELECT researcher_id, grande_area, area, subarea, especialidade FROM research_areas"
-    ):
-        areas_by_researcher[rid].append({
-            "grande_area": grande_area, "area": area,
-            "subarea": subarea, "especialidade": especialidade,
-        })
-
-    n_pubs = dict(conn.execute(
-        "SELECT researcher_id, COUNT(*) FROM publications GROUP BY researcher_id"
-    ).fetchall())
-    n_matches = dict(conn.execute(
-        "SELECT researcher_id, COUNT(*) FROM international_matches GROUP BY researcher_id"
-    ).fetchall())
-
-    researchers = {}
-    out = []
-    for rid, nome, orcid, universidade, cidade, uf, pais, lat, lon, programa in rows:
-        areas = areas_by_researcher.get(rid, [])
-        rec = {
-            "id": rid,
-            "nome": nome,
-            "orcid": orcid,
-            "universidade": universidade,
-            "cidade": cidade,
-            "uf": uf,
-            "pais": pais,
-            "lat": lat,
-            "lon": lon,
-            "programas": [p.strip() for p in (programa or "").split(",") if p.strip()],
-            "grande_areas": sorted({a["grande_area"] for a in areas if a["grande_area"]}),
-            "areas": sorted({a["area"] for a in areas if a["area"]}),
-            "n_publicacoes": n_pubs.get(rid, 0),
-            "n_matches": n_matches.get(rid, 0),
-        }
-        out.append(rec)
-        researchers[rid] = rec
-    return out, researchers
-
-
 def _raiz_projetos_dashboards(inicio: Path) -> Path:
     for p in [inicio, *inicio.parents]:
         if (p / "MATCHING").is_dir() and (p / "PADRONIZAÇAO").is_dir():
@@ -244,38 +191,27 @@ def _raiz_projetos_dashboards(inicio: Path) -> Path:
     raise RuntimeError("Raiz PROJETOS DASHBOARDS (com MATCHING/ e PADRONIZAÇAO/) não encontrada")
 
 
-def _traduzir_keywords_en_pt(keywords: list[str]) -> dict[str, str]:
-    """Traduz as keywords (em inglês, vindas do OpenAlex) para português
-    legível, para exibição no lado UEA dos gráficos — via subprocess no
-    venv de PADRONIZAÇAO/ (só ele tem deep-translator/spaCy instalados).
-    Fallback para quando não há uma linha de pesquisa real do Lattes que
-    bata semanticamente com a keyword (ver _mapear_keywords_para_lattes)."""
-    if not keywords:
-        return {}
+def carregar_ppgs_linhas() -> dict:
     raiz = _raiz_projetos_dashboards(Path(__file__).resolve())
-    padronizacao_python = raiz / "PADRONIZAÇAO" / ".venv" / "bin" / "python"
-    padronizar_script = raiz / "PADRONIZAÇAO" / "padronizar.py"
-
-    with tempfile.TemporaryDirectory() as tmp:
-        entrada_path = Path(tmp) / "keywords.json"
-        entrada_path.write_text(json.dumps(keywords, ensure_ascii=False), encoding="utf-8")
-        proc = subprocess.run(
-            [str(padronizacao_python), str(padronizar_script), "--traduzir", "en", "pt", str(entrada_path)],
-            capture_output=True, text=True, check=True,
-        )
-    return {k: v.strip() for k, v in json.loads(proc.stdout).items()}
+    path = raiz / "DATA BASE UEA" / "PPGS_LINHAS" / "output" / "ppgs_linhas.json"
+    if not path.exists():
+        return {"ppgs": []}
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _termos_lattes_por_researcher(conn) -> dict[int, list[dict]]:
-    """researcher_id (deste banco) -> lista de candidatos {"texto", "linha"}
-    do MESMO pesquisador no Lattes (DATA BASE UEA/LATTES/data/gerbras.db),
-    casando pelo lattes_id (ORCID/ID Lattes bate 1:1 entre os dois bancos).
+def carregar_linha_matches() -> list[dict]:
+    path = OUTPUT_DIR / "linha_matches.json"
+    if not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8"))
 
-    "texto" é o que entra na comparação semântica (título da linha OU uma
-    palavra-chave dela — mais granular, ajuda a achar o match certo).
-    "linha" é sempre o título da linha de pesquisa-mãe — é o que acaba
-    aparecendo no gráfico, nunca a palavra-chave solta (o gráfico é
-    "Linhas de Pesquisa da UEA", não "Palavras-chave da UEA")."""
+
+def _linhas_lattes_por_researcher(conn) -> dict[int, list[str]]:
+    """researcher_id (deste banco) -> títulos de linha de pesquisa LIVRES do
+    Lattes desse mesmo pesquisador (DATA BASE UEA/LATTES/data/gerbras.db,
+    casando pelo lattes_id). Usado só pra tentar amarrar o professor a UMA
+    linha CANÔNICA do próprio PPG (ver export_professores) — não confundir
+    com a extração livre em si, que não é a lista oficial do PPG."""
     import sqlite3
 
     raiz = _raiz_projetos_dashboards(Path(__file__).resolve())
@@ -290,153 +226,138 @@ def _termos_lattes_por_researcher(conn) -> dict[int, list[dict]]:
         return {}
 
     lattes_con = sqlite3.connect(lattes_db_path)
-    candidatos_por_id_lattes: dict[str, list[dict]] = {}
-
+    titulos_por_id_lattes: dict[str, list[str]] = defaultdict(list)
     for id_lattes, titulo in lattes_con.execute(
         """SELECT p.id_lattes, l.titulo FROM pesquisadores p
            JOIN pesquisador_linha pl ON pl.pesquisador_id = p.id
            JOIN linhas_pesquisa l ON l.id = pl.linha_id"""
     ).fetchall():
-        candidatos_por_id_lattes.setdefault(id_lattes, []).append({"texto": titulo, "linha": titulo})
-
-    for id_lattes, termo, titulo_linha in lattes_con.execute(
-        """SELECT p.id_lattes, pc.termo, l.titulo FROM pesquisadores p
-           JOIN pesquisador_linha pl ON pl.pesquisador_id = p.id
-           JOIN linhas_pesquisa l ON l.id = pl.linha_id
-           JOIN linha_palavra lpw ON lpw.linha_id = l.id
-           JOIN palavras_chave pc ON pc.id = lpw.palavra_id"""
-    ).fetchall():
-        candidatos_por_id_lattes.setdefault(id_lattes, []).append({"texto": termo, "linha": titulo_linha})
+        if titulo not in titulos_por_id_lattes[id_lattes]:
+            titulos_por_id_lattes[id_lattes].append(titulo)
     lattes_con.close()
 
-    resultado = {}
-    for researcher_id, id_lattes in lattes_id_por_researcher.items():
-        candidatos = candidatos_por_id_lattes.get(id_lattes)
-        if candidatos:
-            # dedupe por (texto, linha), preservando ordem
-            vistos = set()
-            unicos = []
-            for c in candidatos:
-                chave = (c["texto"], c["linha"])
-                if chave not in vistos:
-                    vistos.add(chave)
-                    unicos.append(c)
-            resultado[researcher_id] = unicos
-    return resultado
-
-
-def _mapear_keywords_para_lattes(pares: list[tuple[int, str, list[dict]]]) -> dict[tuple[int, str], dict]:
-    """Para cada (researcher_id, keyword_en, candidatos_pt do Lattes desse
-    pesquisador), acha a linha de pesquisa/palavra-chave real mais parecida
-    semanticamente (Sentence-BERT), via subprocess no venv de MATCHING/.
-    Só entra no resultado quando a similaridade é boa o bastante (ver
-    MATCHING/mapear_linha_lattes.py); o resto fica de fora e usa o fallback
-    de tradução simples.
-
-    Retorna {(researcher_id, keyword_en): {"melhor_termo_pt", "score"}} — o
-    "score" é a similaridade de cosseno (0 a 1) entre os embeddings SBERT da
-    keyword e da linha escolhida; fica salvo no edge (ver export_edges) pra
-    alimentar o card de similaridade abaixo do Sankey no dashboard."""
-    if not pares:
-        return {}
-    raiz = _raiz_projetos_dashboards(Path(__file__).resolve())
-    matching_python = raiz / "MATCHING" / ".venv" / "bin" / "python"
-    mapear_script = raiz / "MATCHING" / "mapear_linha_lattes.py"
-
-    entrada = [
-        {"researcher_id": rid, "keyword_en": kw, "candidatos_pt": candidatos}
-        for rid, kw, candidatos in pares
-    ]
-    with tempfile.TemporaryDirectory() as tmp:
-        entrada_path = Path(tmp) / "entrada.json"
-        entrada_path.write_text(json.dumps(entrada, ensure_ascii=False), encoding="utf-8")
-        proc = subprocess.run(
-            [str(matching_python), str(mapear_script), str(entrada_path)],
-            capture_output=True, text=True, check=True,
-        )
-    resultado = json.loads(proc.stdout)
     return {
-        (r["researcher_id"], r["keyword_en"]): {"melhor_termo_pt": r["melhor_termo_pt"], "score": r["score"]}
-        for r in resultado if r["melhor_termo_pt"]
+        rid: titulos_por_id_lattes[id_lattes]
+        for rid, id_lattes in lattes_id_por_researcher.items()
+        if id_lattes in titulos_por_id_lattes
     }
 
 
-def export_edges(conn) -> list[dict]:
+def _melhores_matches_pt(itens_a: list[dict], itens_b: list[dict], top_k: int, limiar: float) -> list[dict]:
+    """Roda MATCHING/matcher.py::melhores_matches (Sentence-BERT, PT-PT — ambos
+    os lados passam por padronizar_termo, que traduz PT->EN antes de comparar,
+    então funciona igual comparando dois textos em português) via subprocess
+    no venv de MATCHING/."""
+    if not itens_a or not itens_b:
+        return []
+    raiz = _raiz_projetos_dashboards(Path(__file__).resolve())
+    matching_python = raiz / "MATCHING" / ".venv" / "bin" / "python"
+
+    codigo = (
+        "import json, sys\n"
+        "sys.path.insert(0, %r)\n"
+        "sys.path.insert(0, %r)\n"
+        "from matcher import melhores_matches\n"
+        "from padronizar import padronizar_termo\n"
+        "itens_a, itens_b, top_k, limiar = json.load(sys.stdin)\n"
+        "for it in itens_a + itens_b:\n"
+        "    it['termo_padronizado'] = padronizar_termo(it['termo'], it.get('idioma', 'pt'))\n"
+        "res = melhores_matches(itens_a, itens_b, top_k=top_k, limiar=limiar)\n"
+        "json.dump(res, sys.stdout, ensure_ascii=False)\n"
+    ) % (str(raiz / "MATCHING"), str(raiz / "PADRONIZAÇAO"))
+
+    proc = subprocess.run(
+        [str(matching_python), "-c", codigo],
+        input=json.dumps([itens_a, itens_b, top_k, limiar], ensure_ascii=False),
+        capture_output=True, text=True,
+    )
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        print(proc.stderr, file=sys.stderr)
+        return []
+
+
+def export_professores(conn, ppgs_por_codigo: dict[str, list[dict]]) -> list[dict]:
     rows = conn.execute(
-        """SELECT researcher_id, foreign_author_name, foreign_author_orcid, foreign_author_openalex_id,
-                  foreign_institution, foreign_country, matched_keywords, score,
-                  sample_work_title, sample_work_doi
-           FROM international_matches"""
+        """SELECT id, nome, orcid, universidade, cidade, uf, pais, latitude, longitude, programa
+           FROM researchers"""
     ).fetchall()
 
-    parsed = []
-    pares_researcher_keyword: set[tuple[int, str]] = set()
-    for rid, f_name, f_orcid, f_oaid, f_inst, f_country, matched_kw, score, sample_title, sample_doi in rows:
-        keywords = [k.strip() for k in (matched_kw or "").split(",") if k.strip()]
-        pares_researcher_keyword.update((rid, kw) for kw in keywords)
-        parsed.append((rid, f_name, f_orcid, f_oaid, f_inst, f_country, keywords, sample_title, sample_doi))
+    n_pubs = dict(conn.execute(
+        "SELECT researcher_id, COUNT(*) FROM publications GROUP BY researcher_id"
+    ).fetchall())
 
-    # 1) tenta casar cada keyword com uma linha de pesquisa/palavra-chave
-    #    REAL do Lattes do próprio pesquisador (ver MATCHING/mapear_linha_lattes.py)
-    termos_lattes = _termos_lattes_por_researcher(conn)
-    pares_com_lattes = [
-        (rid, kw, termos_lattes[rid]) for rid, kw in sorted(pares_researcher_keyword) if rid in termos_lattes
-    ]
-    mapeamento_lattes = _mapear_keywords_para_lattes(pares_com_lattes)
+    professores = []
+    for rid, nome, orcid, universidade, cidade, uf, pais, lat, lon, programa in rows:
+        programas = [p.strip() for p in (programa or "").split(",") if p.strip()]
+        professores.append({
+            "id": rid, "nome": nome, "orcid": orcid, "universidade": universidade,
+            "cidade": cidade, "uf": uf, "pais": pais, "lat": lat, "lon": lon,
+            "programas": programas,
+            "linhas_canonicas": [],
+            "n_publicacoes": n_pubs.get(rid, 0),
+        })
 
-    # 2) fallback: tradução simples EN->PT pras keywords sem bom match no Lattes
-    #    (pesquisador sem linhas de pesquisa extraídas, ou nenhuma bateu bem)
-    keywords_sem_match = sorted({
-        kw for rid, kw in pares_researcher_keyword if (rid, kw) not in mapeamento_lattes
-    })
-    traducoes_fallback = _traduzir_keywords_en_pt(keywords_sem_match)
+    # tenta amarrar cada professor a uma linha canônica do(s) seu(s) PPG(s),
+    # a partir das linhas livres extraídas do Lattes (ver _linhas_lattes_por_researcher)
+    linhas_livres = _linhas_lattes_por_researcher(conn)
+    itens_a = []
+    a_por_rid: dict[str, tuple[int, str]] = {}
+    for prof in professores:
+        titulos = linhas_livres.get(prof["id"])
+        if not titulos:
+            continue
+        candidatas_ids = {l["id"] for codigo in prof["programas"] for l in ppgs_por_codigo.get(codigo, [])}
+        if not candidatas_ids:
+            continue
+        for i, titulo in enumerate(titulos):
+            item_id = f"{prof['id']}|{i}"
+            itens_a.append({"id": item_id, "termo": titulo, "idioma": "pt"})
+            a_por_rid[item_id] = (prof["id"], titulo)
 
-    edges = []
-    for rid, f_name, f_orcid, f_oaid, f_inst, f_country, keywords, sample_title, sample_doi in parsed:
-        for kw in keywords:
-            match = mapeamento_lattes.get((rid, kw))
-            linha_lattes = match["melhor_termo_pt"] if match else None
-            label_pt = linha_lattes or traducoes_fallback.get(kw, kw)
-            edges.append({
-                "researcher_id": rid,
-                "keyword": label_pt,
-                # True só quando label_pt é o título de uma linha de pesquisa
-                # REAL do Lattes desse pesquisador (ver _mapear_keywords_para_lattes).
-                # False = "keyword" é só uma tradução literal da keyword OpenAlex
-                # (fallback), não uma linha cadastrada — não deve ser exibida
-                # como "Linha de Pesquisa" no dashboard.
-                "linha_real": bool(linha_lattes),
-                # similaridade de cosseno SBERT entre a keyword e a linha
-                # escolhida (0-1); só existe quando linha_real é True.
-                "cosine_similarity": round(match["score"], 4) if match else None,
-                "keyword_en": kw,
-                "foreign_author_name": f_name,
-                "foreign_author_orcid": f_orcid,
-                "foreign_author_openalex_id": f_oaid,
-                "foreign_institution": f_inst,
-                "foreign_country": f_country,
-                "sample_work_title": sample_title,
-                "sample_work_doi": sample_doi,
-            })
-    return edges
+    if itens_a:
+        todas_linhas = [
+            {"id": l["id"], "termo": l["titulo"], "idioma": "pt"}
+            for linhas in ppgs_por_codigo.values() for l in linhas
+        ]
+        resultados = _melhores_matches_pt(itens_a, todas_linhas, top_k=5, limiar=0.30)
+        prof_por_id = {p["id"]: p for p in professores}
+        linha_ppg_por_id = {
+            l["id"]: codigo for codigo, linhas in ppgs_por_codigo.items() for l in linhas
+        }
+        for r in resultados:
+            rid, _titulo = a_por_rid[r["id"]]
+            prof = prof_por_id[rid]
+            for cand in r.get("matches", []):
+                if cand["score"] < LINHA_CANONICA_LIMIAR:
+                    continue
+                if linha_ppg_por_id.get(cand["id"]) not in prof["programas"]:
+                    continue
+                if cand["id"] not in prof["linhas_canonicas"]:
+                    prof["linhas_canonicas"].append(cand["id"])
+
+    return professores
 
 
-def export_institutions(conn, geocoder: Geocoder) -> list[dict]:
-    rows = conn.execute(
-        """SELECT foreign_institution, foreign_country, COUNT(*) n_matches,
-                  COUNT(DISTINCT researcher_id) n_researchers
-           FROM international_matches
-           WHERE foreign_institution IS NOT NULL
-           GROUP BY foreign_institution, foreign_country"""
-    ).fetchall()
+def export_institutions(linha_matches: list[dict], geocoder: Geocoder) -> list[dict]:
+    agg: dict[tuple[str, str], dict] = {}
+    for m in linha_matches:
+        inst, country = m.get("foreign_institution"), m.get("foreign_country")
+        if not inst:
+            continue
+        key = (inst, country)
+        bucket = agg.setdefault(key, {"n_matches": 0, "autores": set()})
+        bucket["n_matches"] += 1
+        if m.get("foreign_author_openalex_id"):
+            bucket["autores"].add(m["foreign_author_openalex_id"])
 
     out = []
-    for inst, country, n_matches, n_researchers in rows:
+    for (inst, country), bucket in agg.items():
         lat, lon = resolve_institution_coords(inst, country, geocoder)
         out.append({
-            "instituicao": inst, "pais": country,
-            "lat": lat, "lon": lon,
-            "n_matches": n_matches, "n_researchers": n_researchers,
+            "instituicao": inst, "pais": country, "lat": lat, "lon": lon,
+            "n_matches": bucket["n_matches"], "n_researchers": len(bucket["autores"]),
         })
     return out
 
@@ -446,13 +367,20 @@ def main() -> None:
     conn = db.connect()
     geocoder = Geocoder()
 
-    researchers, _ = export_researchers(conn)
-    edges = export_edges(conn)
-    institutions = export_institutions(conn, geocoder)
+    ppgs_linhas = carregar_ppgs_linhas()
+    ppgs_por_codigo = {p["codigo"]: p["linhas"] for p in ppgs_linhas["ppgs"]}
+
+    professores = export_professores(conn, ppgs_por_codigo)
+    linha_matches = carregar_linha_matches()
+    institutions = export_institutions(linha_matches, geocoder)
 
     dashboard = {
-        "researchers": researchers,
-        "edges": edges,
+        "ppgs": [
+            {"codigo": p["codigo"], "nome": p["nome"], "linhas": p["linhas"]}
+            for p in ppgs_linhas["ppgs"]
+        ],
+        "professores": professores,
+        "linha_matches": linha_matches,
         "institutions": institutions,
         "manaus": MANAUS,
     }
@@ -460,7 +388,9 @@ def main() -> None:
         json.dumps(dashboard, ensure_ascii=False, indent=None), encoding="utf-8"
     )
 
-    print(f"dashboard.json -> {len(researchers)} pesquisadores, {len(edges)} arestas, "
+    n_com_linha = sum(1 for p in professores if p["linhas_canonicas"])
+    print(f"dashboard.json -> {len(dashboard['ppgs'])} PPGs, {len(professores)} professores "
+          f"({n_com_linha} com linha canônica identificada), {len(linha_matches)} matches, "
           f"{len(institutions)} instituições estrangeiras")
     print(f"pasta de saída: {DATA_DIR}")
 

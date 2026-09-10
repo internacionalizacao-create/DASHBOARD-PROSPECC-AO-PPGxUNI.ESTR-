@@ -2,16 +2,16 @@
    GERBRAS Dashboard — Página 3: Perfil do pesquisador estrangeiro
    ========================================================================== */
 (async function () {
-  const { edges, institutions, researcherById } = await loadData();
+  const { linha_matches, institutions, professores, linhaById } = await loadData();
   initThemeToggle();
 
   const params = new URLSearchParams(location.search);
   const oaId = params.get("oa");
   const nameParam = params.get("name");
 
-  const matched = edges.filter((e) => {
-    const shortId = (e.foreign_author_openalex_id || "").split("/").pop();
-    return oaId ? shortId === oaId : e.foreign_author_name === nameParam;
+  const matched = linha_matches.filter((m) => {
+    const shortId = (m.foreign_author_openalex_id || "").split("/").pop();
+    return oaId ? shortId === oaId : m.foreign_author_name === nameParam;
   });
 
   if (!matched.length) {
@@ -28,21 +28,20 @@
   const country = first.foreign_country;
   const inst = institutions.find((i) => i.instituicao === instName);
 
-  // só linhas REAIS do Lattes entram aqui — keywords sem match (fallback de
-  // tradução) não são linhas de pesquisa cadastradas do professor
-  const linhaCounts = countBy(matched.filter((e) => e.linha_real), (e) => e.keyword);
+  const linhaCounts = countBy(matched, (m) => m.linha_titulo);
   const linhas = topEntries(linhaCounts, 30);
 
-  const ueaIds = [...new Set(matched.map((e) => e.researcher_id))];
-  const ueaProfs = ueaIds.map((id) => researcherById.get(id)).filter(Boolean)
+  // professores da UEA vinculados aos PPGs donos das linhas que geraram o match
+  const ppgCodigos = new Set(matched.map((m) => m.ppg_codigo));
+  const ueaProfs = professores.filter((p) => p.programas.some((c) => ppgCodigos.has(c)))
     .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
   const samplePubs = [];
   const seenTitles = new Set();
-  for (const e of matched) {
-    if (e.sample_work_title && !seenTitles.has(e.sample_work_title)) {
-      seenTitles.add(e.sample_work_title);
-      samplePubs.push({ title: e.sample_work_title, doi: e.sample_work_doi });
+  for (const m of matched) {
+    if (m.sample_work_title && !seenTitles.has(m.sample_work_title)) {
+      seenTitles.add(m.sample_work_title);
+      samplePubs.push({ title: m.sample_work_title, doi: m.sample_work_doi });
     }
   }
 
@@ -59,8 +58,8 @@
   /* ---------------- coluna 1: pessoal ---------------- */
   function renderPersonal() {
     d3.select("#topbar-stats").html(`
-      <div class="topbar__stat" data-help="Número de linhas de pesquisa do Lattes desses professores da UEA que casaram com as keywords do OpenAlex deste pesquisador estrangeiro."><b>${fmt(linhas.length)}</b><small>Linhas em comum</small></div>
-      <div class="topbar__stat" data-help="Número de professores da UEA conectados a este pesquisador estrangeiro."><b>${fmt(ueaProfs.length)}</b><small>Prof. UEA</small></div>
+      <div class="topbar__stat" data-help="Número de linhas de pesquisa oficiais de PPGs da UEA que casaram semanticamente com o trabalho deste pesquisador estrangeiro."><b>${fmt(linhas.length)}</b><small>Linhas em comum</small></div>
+      <div class="topbar__stat" data-help="Número de professores da UEA vinculados aos PPGs donos dessas linhas de pesquisa."><b>${fmt(ueaProfs.length)}</b><small>Prof. UEA</small></div>
     `);
 
     d3.select("#p-avatar").style("background", colorFor(foreignName)).text(initials(foreignName));
@@ -89,7 +88,7 @@
       wrap.html('<div class="empty-hint">Nenhum professor encontrado.</div>');
     } else {
       const rows = wrap.selectAll(".pickrow").data(ueaProfs, (d) => d.id).join("div").attr("class", "pickrow");
-      rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label">${d.nome}</span><span class="count">${d.n_matches}</span>`);
+      rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label">${d.nome}</span><span class="count">${d.programas.join(', ')}</span>`);
       rows.style("cursor", "pointer").on("click", (_, d) => { location.href = `index.html?professor=${d.id}`; });
     }
   }

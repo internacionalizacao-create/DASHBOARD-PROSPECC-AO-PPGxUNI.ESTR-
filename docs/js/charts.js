@@ -2,55 +2,42 @@
    GERBRAS Dashboard — funções de gráfico (D3): Sankey, mapa, barras
    ========================================================================== */
 
-/* ---------------- Sankey: linha de pesquisa (Lattes) -> keyword (OpenAlex) -> instituição estrangeira ---------------- */
+/* ---------------- Sankey: linha de pesquisa (oficial do PPG) -> instituição estrangeira ---------------- */
 const OTHER_INSTITUTIONS_LABEL = "Outras instituições";
-const OTHER_KEYWORDS_LABEL = "outras keywords";
 
-// as 3 colunas do Sankey — cada uma pode ser ativada/desativada individualmente
-// (ver #sankey-col-toggles em page1.js); quando uma coluna do meio é
-// desativada, as colunas vizinhas se conectam direto uma na outra.
-const SANKEY_COLUMN_ORDER = ["linha", "keyword", "instituicao"];
+const SANKEY_COLUMN_ORDER = ["linha", "instituicao"];
 const SANKEY_COLUMN_DEFS = {
-  linha: { label: "Linha de pesquisa", key: (e) => e.keyword },
-  keyword: { label: "Key word matching", key: (e) => e.keyword_en },
-  instituicao: { label: "Instituição estrangeira", key: (e) => e.foreign_institution },
+  linha: { label: "Linha de pesquisa", key: (m) => m.linha_titulo },
+  instituicao: { label: "Instituição estrangeira", key: (m) => m.foreign_institution },
 };
 
-function buildSankeyGraph(edgeSubset, colorInfo, opts, activeIds) {
-  const maxByCol = { linha: opts.maxLinhas, keyword: opts.maxKeywords, instituicao: opts.maxInstitutions };
-  // colorInfo.scale só cobre as poucas linhas com cor própria (paleta
-  // categórica validada, não dá pra inventar mais cores). Além dessas, uma
-  // lista maior de linhas (maxLinhas) ainda aparece nomeada individualmente
-  // no gráfico, só que na cor neutra "Outras" — só o que sobra dessa lista
-  // maior é que vira de fato o balde agregado "Outras linhas de pesquisa".
-  const otherLabelByCol = { linha: colorInfo.otherLabel, keyword: OTHER_KEYWORDS_LABEL, instituicao: OTHER_INSTITUTIONS_LABEL };
-
-  const cols = activeIds.map((id) => {
+function buildSankeyGraph(matchSubset, colorInfo, opts) {
+  const cols = SANKEY_COLUMN_ORDER.map((id) => {
     const def = SANKEY_COLUMN_DEFS[id];
-    const counts = countBy(edgeSubset, def.key);
-    const topList = topEntries(counts, maxByCol[id]).map(([k]) => k);
-    return { id, key: def.key, label: def.label, otherLabel: otherLabelByCol[id], topSet: new Set(topList), topList };
+    const maxN = id === "linha" ? opts.maxLinhas : opts.maxInstitutions;
+    const otherLabel = id === "linha" ? colorInfo.otherLabel : OTHER_INSTITUTIONS_LABEL;
+    const counts = countBy(matchSubset, def.key);
+    const topList = topEntries(counts, maxN).map(([k]) => k);
+    return { id, key: def.key, label: def.label, otherLabel, topSet: new Set(topList), topList };
   });
 
   const nodeRealTotal = new Map();
-  const linkMaps = cols.slice(0, -1).map(() => new Map());
-  // soma/contagem da similaridade de cosseno (SBERT) por link — só faz
-  // sentido no par linha->keyword, que é onde esse matching acontece
-  const linkScoreAgg = cols.slice(0, -1).map(() => new Map());
+  const linkMap = new Map();
+  // similaridade SBERT (linha oficial x publicação do candidato) — score já
+  // vem calculado por linha_match.py, um valor por match
+  const linkScoreAgg = new Map();
   const bump = (map, key) => map.set(key, (map.get(key) || 0) + 1);
 
-  for (const e of edgeSubset) {
-    const vals = cols.map((c) => (c.topSet.has(c.key(e)) ? c.key(e) : c.otherLabel));
+  for (const m of matchSubset) {
+    const vals = cols.map((c) => (c.topSet.has(c.key(m)) ? c.key(m) : c.otherLabel));
     vals.forEach((v, i) => bump(nodeRealTotal, i + "::" + v));
-    for (let i = 0; i < vals.length - 1; i++) {
-      const linkKey = vals[i] + "|||" + vals[i + 1];
-      bump(linkMaps[i], linkKey);
-      if (cols[i].id === "linha" && e.cosine_similarity != null) {
-        const agg = linkScoreAgg[i].get(linkKey) || { sum: 0, n: 0 };
-        agg.sum += e.cosine_similarity;
-        agg.n += 1;
-        linkScoreAgg[i].set(linkKey, agg);
-      }
+    const linkKey = vals[0] + "|||" + vals[1];
+    bump(linkMap, linkKey);
+    if (m.score != null) {
+      const agg = linkScoreAgg.get(linkKey) || { sum: 0, n: 0 };
+      agg.sum += m.score;
+      agg.n += 1;
+      linkScoreAgg.set(linkKey, agg);
     }
   }
 
@@ -68,60 +55,42 @@ function buildSankeyGraph(edgeSubset, colorInfo, opts, activeIds) {
     });
   });
 
-  // links que tocam um bucket "Outras..." recebem espessura fixa e fina no
-  // layout, independente de quantos resultados foram agregados ali — isso
-  // dá prioridade visual às linhas/keywords/instituições nomeadas
-  // individualmente, que continuam proporcionais ao valor real
   const OTHER_LINK_WEIGHT = 1;
   const links = [];
-  linkMaps.forEach((map, i) => {
-    const colA = cols[i], colB = cols[i + 1];
-    for (const [key, value] of map.entries()) {
-      const [a, b] = key.split("|||");
-      const isOther = a === colA.otherLabel || b === colB.otherLabel;
-      const scoreAgg = linkScoreAgg[i].get(key);
-      links.push({
-        source: nodeIndex.get(i + "::" + a),
-        target: nodeIndex.get((i + 1) + "::" + b),
-        value: isOther ? OTHER_LINK_WEIGHT : value,
-        realValue: value,
-        // só colore o link pela linha de origem quando a 1ª coluna do par É a
-        // linha de pesquisa; nos demais casos (ex: keyword -> instituição) uma
-        // keyword pode vir de mais de uma linha, então fica neutro
-        keyword: colA.id === "linha" ? a : null,
-        tooltipLabel: colA.id === "linha" ? a : b,
-        // similaridade de cosseno média (SBERT) das conexões agregadas nesse
-        // link — só existe no par linha->keyword; alimenta o card abaixo do
-        // gráfico (ver #sbert-card em page1.js)
-        avgSimilarity: scoreAgg ? scoreAgg.sum / scoreAgg.n : null,
-        isOther,
-      });
-    }
-  });
+  const colA = cols[0], colB = cols[1];
+  for (const [key, value] of linkMap.entries()) {
+    const [a, b] = key.split("|||");
+    const isOther = a === colA.otherLabel || b === colB.otherLabel;
+    const scoreAgg = linkScoreAgg.get(key);
+    links.push({
+      source: nodeIndex.get("0::" + a),
+      target: nodeIndex.get("1::" + b),
+      value: isOther ? OTHER_LINK_WEIGHT : value,
+      realValue: value,
+      linha: a,
+      tooltipLabel: a,
+      avgSimilarity: scoreAgg ? scoreAgg.sum / scoreAgg.n : null,
+      isOther,
+    });
+  }
   links.sort((a, b) => (a.isOther === b.isOther ? 0 : a.isOther ? -1 : 1));
 
   return { nodes, links, cols };
 }
 
-function renderSankey(el, edgeSubset, colorInfo, opts = {}) {
+function renderSankey(el, matchSubset, colorInfo, opts = {}) {
   const container = d3.select(el);
   container.selectAll("*").remove();
   const width = el.clientWidth, height = el.clientHeight;
 
-  const activeIds = SANKEY_COLUMN_ORDER.filter((id) => !opts.hiddenColumns || !opts.hiddenColumns.has(id));
-  if (activeIds.length < 2) {
-    container.append("div").attr("class", "empty-hint").text("Ative pelo menos duas colunas para ver as conexões.");
-    return;
-  }
-  if (!edgeSubset.length || width < 10 || height < 10) {
+  if (!matchSubset.length || width < 10 || height < 10) {
     container.append("div").attr("class", "empty-hint").text("Nenhuma parceria potencial para os filtros selecionados.");
     return;
   }
 
   const maxInst = opts.maxInstitutions || 24;
   const maxLinhas = opts.maxLinhas || 22;
-  const maxKeywords = opts.maxKeywords || 24;
-  const graph = buildSankeyGraph(edgeSubset, colorInfo, { maxInstitutions: maxInst, maxLinhas, maxKeywords }, activeIds);
+  const graph = buildSankeyGraph(matchSubset, colorInfo, { maxInstitutions: maxInst, maxLinhas });
 
   const HEADER_H = 30;
   const sankeyLayout = d3.sankey()
@@ -139,10 +108,8 @@ function renderSankey(el, edgeSubset, colorInfo, opts = {}) {
 
   const colorForName = (name) => (name === colorInfo.otherLabel ? colorInfo.otherColor : (colorInfo.scale.get(name) || colorInfo.otherColor));
   const colorForNode = (d) => (d.colId === "linha" ? colorForName(d.name) : CHART_NODE_NEUTRAL);
-  const colorForLink = (keyword) => (keyword == null ? CHART_NODE_NEUTRAL : colorForName(keyword));
+  const colorForLink = (linha) => (linha == null ? CHART_NODE_NEUTRAL : colorForName(linha));
 
-  // legenda "Linha de pesquisa" / "Key word matching" / "Instituição
-  // estrangeira" acima de cada coluna atualmente visível
   const headerG = svg.append("g").attr("class", "sankey-col-headers");
   graph.cols.forEach((c, i) => {
     const colNodes = nodes.filter((n) => n.colIndex === i);
@@ -160,7 +127,7 @@ function renderSankey(el, edgeSubset, colorInfo, opts = {}) {
     .join("path")
     .attr("class", "sankey-link")
     .attr("d", d3.sankeyLinkHorizontal())
-    .attr("stroke", (d) => colorForLink(d.keyword))
+    .attr("stroke", (d) => colorForLink(d.linha))
     .attr("stroke-opacity", (d) => (d.isOther ? 0.22 : 0.42))
     .attr("stroke-width", (d) => Math.max(d.isOther ? 0.6 : 1.2, d.width));
 
@@ -178,15 +145,12 @@ function renderSankey(el, edgeSubset, colorInfo, opts = {}) {
     .attr("rx", 3)
     .attr("fill", colorForNode);
 
-  // colunas que não são a primeira nem a última não levam rótulo fixo —
-  // muitos nós lado a lado não deixariam espaço pro texto sem sobrepor a
-  // coluna seguinte; o nome ainda aparece via hover (title + tooltip)
   nodeSel.filter((d) => d.isFirst || d.isLast).append("text")
     .attr("x", (d) => (d.isFirst ? d.x0 - 8 : d.x1 + 8))
     .attr("y", (d) => (d.y0 + d.y1) / 2)
     .attr("dy", "0.35em")
     .attr("text-anchor", (d) => (d.isFirst ? "end" : "start"))
-    .text((d) => truncateLabel(d.name, d.isFirst ? 24 : 30));
+    .text((d) => truncateLabel(d.name, d.isFirst ? 26 : 30));
 
   nodeSel.append("title").text((d) => `${d.name}\n${fmt(d.realValue)} conexão(ões)`);
 
@@ -198,7 +162,7 @@ function renderSankey(el, edgeSubset, colorInfo, opts = {}) {
   const isClickable = (d) =>
     (d.colId === "linha" && d.name !== colorInfo.otherLabel) ||
     (d.colId === "instituicao" && d.name !== OTHER_INSTITUTIONS_LABEL);
-  const activeLinhas = opts.activeLinhas || new Set();
+  const activeLinhas = opts.activeLinhaTitulos || new Set();
   nodeSel.classed("is-selected", (d) =>
     (d.colId === "linha" && activeLinhas.has(d.name)) ||
     (d.colId === "instituicao" && !!opts.activeInstituicao && d.name === opts.activeInstituicao)
@@ -248,7 +212,7 @@ async function renderInstitutionMap(el, lat, lon, label) {
   if (width < 10 || height < 10) return;
 
   const world = await getWorld();
-  const pad = 5; // graus ao redor do ponto
+  const pad = 5;
   const bbox = {
     type: "Polygon",
     coordinates: [[[lon - pad, lat - pad], [lon + pad, lat - pad], [lon + pad, lat + pad], [lon - pad, lat + pad], [lon - pad, lat - pad]]],
@@ -279,14 +243,14 @@ async function renderInstitutionMap(el, lat, lon, label) {
   }
 }
 
-async function renderCountryMap(el, edgeSubset) {
+async function renderCountryMap(el, matchSubset) {
   const container = d3.select(el);
   container.selectAll("*").remove();
   const width = el.clientWidth, height = el.clientHeight;
   if (width < 10 || height < 10) return;
 
   const world = await getWorld();
-  const counts = countBy(edgeSubset, (e) => e.foreign_country);
+  const counts = countBy(matchSubset, (m) => m.foreign_country);
   const maxV = d3.max([...counts.values()]) || 1;
   const colorScale = d3.scaleQuantize().domain([0, maxV]).range(GREEN_SEQUENTIAL);
 
@@ -295,8 +259,6 @@ async function renderCountryMap(el, edgeSubset) {
 
   const svg = container.append("svg").attr("width", width).attr("height", height);
 
-  // Enquadra dinamicamente o(s) país(es) com parceria — funciona para
-  // qualquer país que passe a ter matches no futuro, não só Alemanha.
   const matchedFeatures = world.features.filter((f) => countryNameToCount.has(normalizeCountry(f.properties.name)));
   const frame = matchedFeatures.length
     ? { type: "FeatureCollection", features: matchedFeatures }
@@ -327,7 +289,6 @@ async function renderCountryMap(el, edgeSubset) {
 }
 
 function normalizeCountry(name) {
-  // nomes em inglês do TopoJSON -> nomes em português usados em foreign_country
   const map = {
     Germany: "Alemanha", Ghana: "Gana", Angola: "Angola", Algeria: "Argélia",
     Mozambique: "Moçambique", "South Africa": "África do Sul", "United Kingdom": "Reino Unido",
@@ -336,17 +297,17 @@ function normalizeCountry(name) {
 }
 
 /* ---------------- Barras: linhas de pesquisa ---------------- */
-function renderBarChart(el, edgeSubset, colorInfo, opts = {}) {
+function renderBarChart(el, matchSubset, colorInfo, opts = {}) {
   const container = d3.select(el);
   container.selectAll("*").remove();
   const width = el.clientWidth, height = el.clientHeight;
-  if (!edgeSubset.length || width < 10 || height < 10) {
+  if (!matchSubset.length || width < 10 || height < 10) {
     container.append("div").attr("class", "empty-hint").text("Sem dados.");
     return;
   }
 
   const n = opts.n || 8;
-  const counts = countBy(edgeSubset, (e) => e.keyword);
+  const counts = countBy(matchSubset, (m) => m.linha_titulo);
   const data = topEntries(counts, n);
   const maxV = data[0][1];
 
