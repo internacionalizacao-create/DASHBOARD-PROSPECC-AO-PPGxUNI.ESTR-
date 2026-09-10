@@ -2,8 +2,9 @@
    GERBRAS Dashboard — Página 3: Perfil do pesquisador estrangeiro
    ========================================================================== */
 (async function () {
-  const { linha_matches, institutions, professores, linhaById } = await loadData();
+  const { ppgs, linha_matches, institutions, professores, linhaById } = await loadData();
   initThemeToggle();
+  const ppgColorInfo = buildPPGColorScale(ppgs);
 
   const params = new URLSearchParams(location.search);
   const oaId = params.get("oa");
@@ -30,6 +31,7 @@
 
   const linhaCounts = countBy(matched, (m) => m.linha_titulo);
   const linhas = topEntries(linhaCounts, 30);
+  const ppgByTitulo = new Map(matched.map((m) => [m.linha_titulo, m.ppg_codigo]));
 
   // professores da UEA vinculados aos PPGs donos das linhas que geraram o match
   const ppgCodigos = new Set(matched.map((m) => m.ppg_codigo));
@@ -78,7 +80,7 @@
 
     d3.select("#p-linhas-hint").text(fmt(linhas.length));
     d3.select("#p-linhas").html(
-      linhas.map(([k, v]) => `<span class="kw-tag" title="${v} conexão(ões)">${k}</span>`).join("") ||
+      linhas.map(([k, v]) => `<span class="kw-tag" style="border-left:3px solid ${colorForPPG(ppgByTitulo.get(k), ppgColorInfo)}" title="${v} conexão(ões)">${k}</span>`).join("") ||
       '<div class="empty-hint">Sem linhas registradas.</div>'
     );
 

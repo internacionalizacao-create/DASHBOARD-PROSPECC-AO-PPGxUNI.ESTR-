@@ -5,8 +5,9 @@
    via qualquer linha do PPG no lugar de "professores UEA conectados").
    ========================================================================== */
 (async function () {
-  const { professores, linha_matches, ppgByCodigo, capesByCode, manaus } = await loadData();
+  const { ppgs, professores, linha_matches, ppgByCodigo, capesByCode, manaus } = await loadData();
   initThemeToggle();
+  const ppgColorInfo = buildPPGColorScale(ppgs);
 
   const params = new URLSearchParams(location.search);
   const id = Number(params.get("id"));
@@ -74,7 +75,7 @@
 
     d3.select("#p-linhas-hint").text(fmt(linhasDoPPG.length));
     d3.select("#p-linhas").html(
-      linhasDoPPG.map((l) => `<span class="kw-tag" title="${(l.descricao || "").replace(/"/g, "&quot;")}">${l.titulo}</span>`).join("") ||
+      linhasDoPPG.map((l) => `<span class="kw-tag" style="border-left:3px solid ${colorForPPG(l.ppg_codigo, ppgColorInfo)}" title="${(l.descricao || "").replace(/"/g, "&quot;")}">${l.titulo}</span>`).join("") ||
       '<div class="empty-hint">Sem linhas de pesquisa cadastradas.</div>'
     );
 
@@ -105,7 +106,8 @@
     const rows = docente.programas.map((codigo) => {
       const ppg = ppgByCodigo.get(codigo);
       const nome = ppg ? ppg.nome : codigo;
-      return `<div class="info-row"><span>${codigo} ${capesConceitoBadge(codigo)}</span><span>${nome}</span></div>`;
+      const dot = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${colorForPPG(codigo, ppgColorInfo)}; margin-right:6px;"></span>`;
+      return `<div class="info-row"><span>${dot}${codigo} ${capesConceitoBadge(codigo)}</span><span>${nome}</span></div>`;
     });
     d3.select("#i-ppgs").html(rows.join("") || '<div class="empty-hint">Sem PPG cadastrado.</div>');
 

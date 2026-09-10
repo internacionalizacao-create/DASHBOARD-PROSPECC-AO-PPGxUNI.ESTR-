@@ -4,6 +4,7 @@
 
 /* ---------------- Sankey: linha de pesquisa (oficial do PPG) -> instituição estrangeira ---------------- */
 const OTHER_INSTITUTIONS_LABEL = "Outras instituições";
+const OTHER_LINHAS_LABEL = "Outras linhas de pesquisa";
 
 const SANKEY_COLUMN_ORDER = ["linha", "instituicao"];
 const SANKEY_COLUMN_DEFS = {
@@ -11,11 +12,15 @@ const SANKEY_COLUMN_DEFS = {
   instituicao: { label: "Instituição estrangeira", key: (m) => m.foreign_institution },
 };
 
-function buildSankeyGraph(matchSubset, colorInfo, opts) {
+function buildSankeyGraph(matchSubset, opts) {
+  // cada linha pertence a exatamente um PPG — usado pra colorir os nós de
+  // "linha" pela cor do PPG dono (ver colorForPPG/buildPPGColorScale em common.js)
+  const ppgByTitulo = new Map(matchSubset.map((m) => [m.linha_titulo, m.ppg_codigo]));
+
   const cols = SANKEY_COLUMN_ORDER.map((id) => {
     const def = SANKEY_COLUMN_DEFS[id];
     const maxN = id === "linha" ? opts.maxLinhas : opts.maxInstitutions;
-    const otherLabel = id === "linha" ? colorInfo.otherLabel : OTHER_INSTITUTIONS_LABEL;
+    const otherLabel = id === "linha" ? OTHER_LINHAS_LABEL : OTHER_INSTITUTIONS_LABEL;
     const counts = countBy(matchSubset, def.key);
     const topList = topEntries(counts, maxN).map(([k]) => k);
     return { id, key: def.key, label: def.label, otherLabel, topSet: new Set(topList), topList };
@@ -75,10 +80,10 @@ function buildSankeyGraph(matchSubset, colorInfo, opts) {
   }
   links.sort((a, b) => (a.isOther === b.isOther ? 0 : a.isOther ? -1 : 1));
 
-  return { nodes, links, cols };
+  return { nodes, links, cols, ppgByTitulo };
 }
 
-function renderSankey(el, matchSubset, colorInfo, opts = {}) {
+function renderSankey(el, matchSubset, ppgColorInfo, opts = {}) {
   const container = d3.select(el);
   container.selectAll("*").remove();
   const width = el.clientWidth, height = el.clientHeight;
@@ -90,7 +95,7 @@ function renderSankey(el, matchSubset, colorInfo, opts = {}) {
 
   const maxInst = opts.maxInstitutions || 24;
   const maxLinhas = opts.maxLinhas || 22;
-  const graph = buildSankeyGraph(matchSubset, colorInfo, { maxInstitutions: maxInst, maxLinhas });
+  const graph = buildSankeyGraph(matchSubset, { maxInstitutions: maxInst, maxLinhas });
 
   const HEADER_H = 30;
   const sankeyLayout = d3.sankey()
@@ -106,7 +111,14 @@ function renderSankey(el, matchSubset, colorInfo, opts = {}) {
 
   const svg = container.append("svg").attr("width", width).attr("height", height);
 
-  const colorForName = (name) => (name === colorInfo.otherLabel ? colorInfo.otherColor : (colorInfo.scale.get(name) || colorInfo.otherColor));
+  // cor de um nó/link de "linha" = cor do PPG dono dela (mesma cor usada na
+  // checklist de PPGs e na lista de linhas — ver buildPPGColorScale/colorForPPG
+  // em common.js); o balde "Outras linhas de pesquisa" fica neutro (mistura PPGs)
+  const colorForName = (name) => {
+    if (name === OTHER_LINHAS_LABEL) return OTHER_COLOR;
+    const ppg = graph.ppgByTitulo.get(name);
+    return ppg ? colorForPPG(ppg, ppgColorInfo) : OTHER_COLOR;
+  };
   const colorForNode = (d) => (d.colId === "linha" ? colorForName(d.name) : CHART_NODE_NEUTRAL);
   const colorForLink = (linha) => (linha == null ? CHART_NODE_NEUTRAL : colorForName(linha));
 
@@ -160,7 +172,7 @@ function renderSankey(el, matchSubset, colorInfo, opts = {}) {
   }
 
   const isClickable = (d) =>
-    (d.colId === "linha" && d.name !== colorInfo.otherLabel) ||
+    (d.colId === "linha" && d.name !== OTHER_LINHAS_LABEL) ||
     (d.colId === "instituicao" && d.name !== OTHER_INSTITUTIONS_LABEL);
   const activeLinhas = opts.activeLinhaTitulos || new Set();
   nodeSel.classed("is-selected", (d) =>

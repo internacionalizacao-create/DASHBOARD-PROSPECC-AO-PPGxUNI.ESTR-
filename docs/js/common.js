@@ -203,18 +203,20 @@ function topEntries(map, n) {
   return [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, n);
 }
 
-/* cor própria pras top-N linhas de pesquisa (por título) presentes num
-   conjunto de matches; o resto cai em "Outras linhas de pesquisa" */
-function buildLinhaColorScale(matchSubset) {
-  const counts = countBy(matchSubset, (m) => m.linha_titulo);
-  const top = topEntries(counts, MAX_CATEGORICAL_TOTAL).map(([k]) => k);
-  const palette = generateCategoricalColors(top.length);
+/* cor própria pra cada PPG — fixa (não recalculada a cada filtro), pra que a
+   mesma linha de pesquisa tenha sempre a mesma cor em qualquer gráfico/lista,
+   e a cor do PPG na checklist bata com a cor das linhas dele em todo o resto
+   do painel. Ordem alfabética do código do PPG garante uma atribuição estável
+   entre execuções (mesmo conjunto de PPGs -> mesmas cores, sempre). */
+function buildPPGColorScale(ppgs) {
+  const codigos = [...ppgs].map((p) => p.codigo).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  const palette = generateCategoricalColors(codigos.length);
   const scale = new Map();
-  top.forEach((k, i) => scale.set(k, palette[i]));
-  return { scale, top, otherLabel: "Outras linhas de pesquisa", otherColor: OTHER_COLOR };
+  codigos.forEach((c, i) => scale.set(c, palette[i]));
+  return { scale, codigos };
 }
-function colorForLinha(titulo, colorInfo) {
-  return colorInfo.scale.get(titulo) || colorInfo.otherColor;
+function colorForPPG(codigo, colorInfo) {
+  return colorInfo.scale.get(codigo) || OTHER_COLOR;
 }
 
 /* ---------- tooltip global ---------- */

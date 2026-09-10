@@ -212,26 +212,22 @@ def carregar_docentes() -> list[dict]:
 def export_professores() -> list[dict]:
     """Lista de docentes da UEA por PPG, direto da planilha (ver
     DATA BASE UEA/PPGS_LINHAS/etl/build_docentes.py) — não depende mais de
-    DATA BASE UEA/LATTES. Um docente que aparece em mais de um PPG (mesmo
-    nome exato em linhas diferentes da planilha) vira uma única entrada, com
-    todos os PPGs em `programas`."""
-    por_nome: dict[str, dict] = {}
-    ordem: list[str] = []
+    DATA BASE UEA/LATTES. Uma linha da planilha = uma entrada aqui (mesmo
+    nome em PPGs diferentes vira uma entrada por PPG, não é fundido num só
+    "docente multi-PPG") — só descarta linha (nome, PPG) IDÊNTICA repetida
+    na planilha, pra não listar a mesma linha duplicada à toa."""
+    vistos: set[tuple[str, str]] = set()
+    professores = []
     for d in carregar_docentes():
-        nome = d["nome"]
-        if nome not in por_nome:
-            por_nome[nome] = {"nome": nome, "orcid": d.get("orcid"), "programas": []}
-            ordem.append(nome)
-        entry = por_nome[nome]
-        if d["ppg_codigo"] not in entry["programas"]:
-            entry["programas"].append(d["ppg_codigo"])
-        if not entry["orcid"] and d.get("orcid"):
-            entry["orcid"] = d["orcid"]
+        chave = (d["nome"], d["ppg_codigo"])
+        if chave in vistos:
+            continue
+        vistos.add(chave)
+        professores.append({
+            "nome": d["nome"], "orcid": d.get("orcid"), "programas": [d["ppg_codigo"]],
+        })
 
-    return [
-        {"id": i + 1, **por_nome[nome]}
-        for i, nome in enumerate(ordem)
-    ]
+    return [{"id": i + 1, **p} for i, p in enumerate(professores)]
 
 
 def export_institutions(linha_matches: list[dict], geocoder: Geocoder) -> list[dict]:

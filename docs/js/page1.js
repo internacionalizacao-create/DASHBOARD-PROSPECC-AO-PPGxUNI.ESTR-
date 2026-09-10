@@ -21,6 +21,9 @@
 
   const ALL_PPGS = ppgs.map((p) => p.codigo).sort((a, b) => a.localeCompare(b, "pt-BR"));
   const ALL_PAISES = [...new Set(linha_matches.map((m) => m.foreign_country))].sort();
+  // cor fixa por PPG (mesma cor em toda parte: checklist, lista de linhas,
+  // Sankey) — calculada uma vez só, não muda com o filtro ativo
+  const ppgColorInfo = buildPPGColorScale(ppgs);
 
   function linhasDisponiveis() {
     const codigos = filters.ppgs.size ? [...filters.ppgs] : ALL_PPGS;
@@ -151,9 +154,7 @@
     renderProfessorList();
     renderForeignRanking(matchesForCharts);
 
-    const colorInfo = buildLinhaColorScale(matchesForCharts.length ? matchesForCharts : linha_matches.filter((m) => linhaIdsAtuais.has(m.linha_id)));
-
-    renderSankey(document.getElementById("sankey-chart"), matchesForCharts, colorInfo, {
+    renderSankey(document.getElementById("sankey-chart"), matchesForCharts, ppgColorInfo, {
       onLinhaClick: toggleLinhaByTitulo,
       onInstituicaoClick: toggleInstituicao,
       activeLinhaTitulos: new Set([...filters.linhaIds].map((id) => linhaById.get(id)?.titulo).filter(Boolean)),
@@ -191,6 +192,7 @@
       .classed("checkrow--dim", (d) => capesActive && !ppgMatchesCapesFilters(d, capesByCode, filters))
       .html((d) => `
         <input type="checkbox" ${filters.ppgs.has(d) ? "checked" : ""} />
+        <span class="dot" style="background:${colorForPPG(d, ppgColorInfo)}"></span>
         <span>${d}</span>${capesConceitoBadge(d)}`);
     rows.select("input").on("change", (_, d) => togglePPG(d));
 
@@ -223,7 +225,6 @@
 
   function renderLinhasList(linhasAtuais, matchSubset) {
     const counts = countBy(matchSubset, (m) => m.linha_id);
-    const colorInfo = buildLinhaColorScale(matchSubset);
 
     const linhasOrdenadas = [...linhasAtuais].sort((a, b) => (counts.get(b.id) || 0) - (counts.get(a.id) || 0));
 
@@ -234,7 +235,7 @@
       .attr("class", (d) => "pickrow" + (filters.linhaIds.has(d.id) ? " is-active" : ""));
     rows.attr("title", (d) => d.descricao || d.titulo);
     rows.html((d) => `
-      <span class="dot" style="background:${colorForLinha(d.titulo, colorInfo)}"></span>
+      <span class="dot" style="background:${colorForPPG(d.ppg_codigo, ppgColorInfo)}"></span>
       <span class="label">${d.titulo}</span><span class="count">${fmt(counts.get(d.id) || 0)}</span>`);
     rows.on("click", (_, d) => toggleLinha(d.id));
   }
