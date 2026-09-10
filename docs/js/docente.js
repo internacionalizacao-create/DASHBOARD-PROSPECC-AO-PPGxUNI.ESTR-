@@ -65,7 +65,13 @@
     d3.select("#p-sub").text(docente.programas.join(" · "));
 
     const badges = [];
-    if (docente.orcid) badges.push(`<a class="badge badge--link" href="https://orcid.org/${docente.orcid}" target="_blank" rel="noopener">ORCID ${docente.orcid}</a>`);
+    if (docente.orcid) {
+      badges.push(`<a class="badge badge--link" href="https://orcid.org/${docente.orcid}" target="_blank" rel="noopener"><img class="badge-icon" src="image/orcid-icon.webp" alt="" />ORCID ${docente.orcid}</a>`);
+      badges.push(`<a class="badge badge--link" href="https://openalex.org/works?filter=author.orcid:${docente.orcid}" target="_blank" rel="noopener"><img class="badge-icon" src="image/openalex-icon.svg" alt="" />OpenAlex</a>`);
+    }
+    if (docente.lattes_id) {
+      badges.push(`<a class="badge badge--link" href="http://lattes.cnpq.br/${docente.lattes_id}" target="_blank" rel="noopener"><img class="badge-icon" src="image/lattes-icon.png" alt="" />Currículo Lattes</a>`);
+    }
     badges.push(`<span class="badge">Universidade do Estado do Amazonas</span>`);
     d3.select("#p-badges").html(badges.join(""));
 

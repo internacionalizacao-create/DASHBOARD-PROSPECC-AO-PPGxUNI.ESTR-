@@ -1,17 +1,21 @@
 """Gera data/dashboard.json a partir de:
   DATA BASE UEA/PPGS_LINHAS/output/ppgs_linhas.json  (linhas de pesquisa oficiais por PPG)
-  DATA BASE UEA/PPGS_LINHAS/output/docentes.json     (docentes da UEA por PPG, com ORCID)
+  DATA BASE UEA/PPGS_LINHAS/output/docentes.json     (docentes da UEA por PPG, com ORCID e ID Lattes)
   output/linha_matches.json                          (matches linha x pesquisador estrangeiro,
                                                         ver etl/linha_match.py)
 
 Schema (substitui o antigo researchers/edges por keyword de professor):
   ppgs           - [{codigo, nome, linhas: [{id, titulo, descricao}]}]
-  professores    - [{id, nome, orcid, programas: [codigo,...]}]
+  professores    - [{id, nome, orcid, lattes_id, programas: [codigo,...]}]
   linha_matches  - [{linha_id, ppg_codigo, foreign_author_name, foreign_author_orcid,
                       foreign_author_openalex_id, foreign_institution, foreign_country,
                       score, sample_work_title, sample_work_doi}]
   institutions   - instituições estrangeiras distintas (agregado de linha_matches), geocodificadas
   manaus         - ponto fixo de origem (Manaus/AM)
+
+`orcid` e `lattes_id` vêm direto da planilha (aba "PPGxDocente", ver
+DATA BASE UEA/PPGS_LINHAS/etl/build_docentes.py) — não usamos os currículos
+Lattes em PDF nem nenhum banco derivado deles pra nada aqui.
 
 Uso:
     python3 etl/export_dashboard_data.py
@@ -211,11 +215,13 @@ def carregar_docentes() -> list[dict]:
 
 def export_professores() -> list[dict]:
     """Lista de docentes da UEA por PPG, direto da planilha (ver
-    DATA BASE UEA/PPGS_LINHAS/etl/build_docentes.py) — não depende mais de
-    DATA BASE UEA/LATTES. Uma linha da planilha = uma entrada aqui (mesmo
-    nome em PPGs diferentes vira uma entrada por PPG, não é fundido num só
-    "docente multi-PPG") — só descarta linha (nome, PPG) IDÊNTICA repetida
-    na planilha, pra não listar a mesma linha duplicada à toa."""
+    DATA BASE UEA/PPGS_LINHAS/etl/build_docentes.py) — orcid e lattes_id são
+    os que a própria planilha já tem preenchidos, sem cruzar com nenhum
+    banco derivado de currículo Lattes em PDF. Uma linha da planilha = uma
+    entrada aqui (mesmo nome em PPGs diferentes vira uma entrada por PPG,
+    não é fundido num só "docente multi-PPG") — só descarta linha
+    (nome, PPG) IDÊNTICA repetida na planilha, pra não listar a mesma linha
+    duplicada à toa."""
     vistos: set[tuple[str, str]] = set()
     professores = []
     for d in carregar_docentes():
@@ -224,7 +230,8 @@ def export_professores() -> list[dict]:
             continue
         vistos.add(chave)
         professores.append({
-            "nome": d["nome"], "orcid": d.get("orcid"), "programas": [d["ppg_codigo"]],
+            "nome": d["nome"], "orcid": d.get("orcid"), "lattes_id": d.get("lattes_id"),
+            "programas": [d["ppg_codigo"]],
         })
 
     return [{"id": i + 1, **p} for i, p in enumerate(professores)]
@@ -277,8 +284,9 @@ def main() -> None:
     )
 
     n_com_orcid = sum(1 for p in professores if p["orcid"])
+    n_com_lattes = sum(1 for p in professores if p["lattes_id"])
     print(f"dashboard.json -> {len(dashboard['ppgs'])} PPGs, {len(professores)} docentes "
-          f"({n_com_orcid} com ORCID), {len(linha_matches)} matches, "
+          f"({n_com_orcid} com ORCID, {n_com_lattes} com ID Lattes), {len(linha_matches)} matches, "
           f"{len(institutions)} instituições estrangeiras")
     print(f"pasta de saída: {DATA_DIR}")
 

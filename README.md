@@ -21,7 +21,7 @@ universidades do Reino Unido.
 | **Painel** (`docs/index.html`) | Filtro em cascata **PPG → Linha de pesquisa** (selecionar um PPG agrupa todos os seus docentes e mostra só as linhas oficiais dele), gráfico Sankey linha de pesquisa × instituição estrangeira, mapa do país estrangeiro e ranking de pesquisadores estrangeiros. Cada docente aparece com o ícone de ORCID (quando cadastrado), que leva direto ao perfil público dele |
 | **Mapa de Fluxo** (`docs/flowmap.html`) | Globo 3D arrastável/zoom com arcos de Manaus até cada instituição estrangeira; clicar num arco mostra as linhas de pesquisa e os docentes dos PPGs envolvidos, e permite abrir o perfil de qualquer um deles |
 | **Perfil do pesquisador estrangeiro** (`docs/professor.html`) | Ao clicar num pesquisador estrangeiro: dados pessoais, linhas de pesquisa em comum, docentes UEA conectados, dados da instituição (com mini-mapa e info ao vivo via OpenAlex) e lista de publicações reais (ORCID) |
-| **Perfil do docente UEA** (`docs/docente.html`) | Ao clicar num docente UEA: PPG(s), linhas de pesquisa oficiais do(s) PPG(s), pesquisadores estrangeiros conectados a elas, mini-mapa da UEA e publicações reais via ORCID (quando cadastrado) |
+| **Perfil do docente UEA** (`docs/docente.html`) | Ao clicar num docente UEA: PPG(s), linhas de pesquisa oficiais do(s) PPG(s), pesquisadores estrangeiros conectados a elas, mini-mapa da UEA, links/ícones de ORCID, OpenAlex e Currículo Lattes (quando cadastrados na planilha) e publicações reais via ORCID |
 
 Todo o site é **estático** (HTML/CSS/JS + um único JSON de dados, sem
 backend) e roda inteiramente no navegador — publicado via GitHub Pages a
@@ -60,7 +60,7 @@ DASHBOARD PROSPECÇAO PPGxUNI.ESTR/
 ```
 
 A base canônica de PPGs/linhas de pesquisa (nome + descrição oficial) e a
-lista de docentes por PPG (com ORCID) vivem fora deste repositório, em
+lista de docentes por PPG (com ORCID e ID Lattes) vivem fora deste repositório, em
 `DATA BASE UEA/PPGS_LINHAS/` (pasta irmã) — ver o README de lá para como são
 geradas a partir da planilha da UEA.
 
@@ -68,8 +68,8 @@ geradas a partir da planilha da UEA.
 > `germany_match.py` (aquisição OpenAlex por keyword de professor) ficaram no
 > histórico do repositório mas **não são mais usados** para montar
 > `data/dashboard.json` — a lista de docentes por PPG deixou de vir de
-> currículos Lattes e passou a vir inteiramente da planilha (ver Fase G do
-> README de `DATA BASE UEA/PPGS_LINHAS/`).
+> currículos Lattes e passou a vir inteiramente da planilha, ORCID e ID Lattes
+> incluídos (ver Fases G e H do README de `DATA BASE UEA/PPGS_LINHAS/`).
 
 > `cache/` e `output/` **não são versionados** (dados intermediários de
 > matching, não pessoais). Só `data/dashboard.json` vai para o repositório
@@ -80,7 +80,7 @@ geradas a partir da planilha da UEA.
 ```bash
 cd "DATA BASE UEA/PPGS_LINHAS/etl"
 python3 build_ppgs_linhas.py           # linhas de pesquisa oficiais (aba "PPGs")
-python3 build_docentes.py              # docentes por PPG + ORCID (aba "PPGxDocente")
+python3 build_docentes.py              # docentes por PPG + ORCID + ID Lattes (aba "PPGxDocente")
 
 cd "../../../DASHBOARD/DASHBOARD PROSPECÇAO PPGxUNI.ESTR"
 python3 etl/linha_match.py             # cruza as linhas de pesquisa oficiais dos PPGs x estrangeiros
@@ -113,20 +113,23 @@ Depois abra `http://localhost:8000/docs/index.html`.
 
 - **Planilha PPGs/Linhas de pesquisa (PROPESP/ARI)** — nome e descrição
   oficial de cada linha de pesquisa por PPG (fonte da comparação semântica)
-- **Planilha PPGxDocente (PROPESP/ARI)** — nome, PPG e ORCID de cada docente
-  da UEA (fonte da seção "Docentes UEA")
+- **Planilha PPGxDocente (PROPESP/ARI)** — nome, PPG, ORCID e ID Lattes de
+  cada docente da UEA (fonte da seção "Docentes UEA" e dos links do perfil)
 - **OpenAlex** — publicações de pesquisadores estrangeiros e de docentes da
   UEA (quando têm ORCID cadastrado na planilha), para o match e os perfis
 - **Nominatim (OpenStreetMap)** — geocoding de instituições estrangeiras
 - **ORCID** — perfil público usado como canal de contato tanto dos
   pesquisadores estrangeiros quanto dos docentes da UEA (não coletamos
   e-mail/telefone)
+- **Lattes (CNPq)** — só o link/ID já cadastrado na planilha PPGxDocente, sem
+  parsing de PDF
 
 ## Limitações conhecidas
 
-- O ORCID de cada docente é preenchido manualmente pela UEA na planilha — na
-  maior parte dos docentes esse campo ainda está vazio, então o ícone de
-  ORCID e as publicações do perfil só aparecem pra quem já foi preenchido.
+- ORCID e ID Lattes de cada docente são preenchidos manualmente pela UEA na
+  planilha — na maior parte dos docentes esses campos ainda estão vazios,
+  então os ícones/links correspondentes e as publicações do perfil só
+  aparecem pra quem já foi preenchido.
 - Como o match agora é por linha de pesquisa do PPG (não por professor
   individual), todo docente de um PPG vê os mesmos pesquisadores estrangeiros
   conectados — não há (ainda) uma amarração fina de qual docente pesquisa
