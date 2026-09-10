@@ -336,6 +336,10 @@ select.dropdown:focus { outline: none; border-color: var(--accent); box-shadow: 
 .pickrow .label { font-size: 12.5px; font-weight: 600; color: var(--ink-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pickrow.is-active .label { color: var(--ink-primary); }
 .pickrow .count { margin-left: auto; font-size: 10.5px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.orcid-link { margin-left: auto; flex: none; display: flex; align-items: center; }
+.orcid-icon { width: 16px; height: 16px; display: block; opacity: .85; transition: opacity var(--dur-fast) var(--ease); }
+.orcid-link:hover .orcid-icon { opacity: 1; }
+.orcid-link--empty { width: 16px; height: 16px; }
 
 .rank { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-radius: var(--radius-sm); transition: background var(--dur-fast) var(--ease); cursor: pointer; }
 .rank:hover { background: var(--surface-hover); }

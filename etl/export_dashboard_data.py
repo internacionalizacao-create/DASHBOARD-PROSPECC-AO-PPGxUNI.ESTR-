@@ -1,11 +1,12 @@
-"""Gera data/dashboard.json a partir de: output/gerbras.db (professores UEA),
-DATA BASE UEA/PPGS_LINHAS/output/ppgs_linhas.json (linhas de pesquisa oficiais por PPG)
-e output/linha_matches.json (matches linha x pesquisador estrangeiro, ver etl/linha_match.py).
+"""Gera data/dashboard.json a partir de:
+  DATA BASE UEA/PPGS_LINHAS/output/ppgs_linhas.json  (linhas de pesquisa oficiais por PPG)
+  DATA BASE UEA/PPGS_LINHAS/output/docentes.json     (docentes da UEA por PPG, com ORCID)
+  output/linha_matches.json                          (matches linha x pesquisador estrangeiro,
+                                                        ver etl/linha_match.py)
 
-Schema novo (substitui o antigo researchers/edges por keyword de professor):
+Schema (substitui o antigo researchers/edges por keyword de professor):
   ppgs           - [{codigo, nome, linhas: [{id, titulo, descricao}]}]
-  professores    - [{id, nome, orcid, universidade, cidade, uf, programas: [codigo,...],
-                      linhas_canonicas: [linha_id,...], n_publicacoes}]
+  professores    - [{id, nome, orcid, programas: [codigo,...]}]
   linha_matches  - [{linha_id, ppg_codigo, foreign_author_name, foreign_author_orcid,
                       foreign_author_openalex_id, foreign_institution, foreign_country,
                       score, sample_work_title, sample_work_doi}]
@@ -18,23 +19,17 @@ Uso:
 from __future__ import annotations
 
 import json
-import subprocess
 import sys
-import tempfile
-from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import db
 from geocode import Geocoder
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
 
 MANAUS = {"cidade": "Manaus", "uf": "AM", "pais": "Brasil", "lat": -3.1316333, "lon": -59.9825041}
-
-LINHA_CANONICA_LIMIAR = 0.45
 
 # Coordenadas conhecidas p/ instituições que o Nominatim não resolve pelo nome
 # (associações "guarda-chuva", institutos sem tag OSM correspondente).
@@ -206,138 +201,37 @@ def carregar_linha_matches() -> list[dict]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _linhas_lattes_por_researcher(conn) -> dict[int, list[str]]:
-    """researcher_id (deste banco) -> títulos de linha de pesquisa LIVRES do
-    Lattes desse mesmo pesquisador (DATA BASE UEA/LATTES/data/gerbras.db,
-    casando pelo lattes_id). Usado só pra tentar amarrar o professor a UMA
-    linha CANÔNICA do próprio PPG (ver export_professores) — não confundir
-    com a extração livre em si, que não é a lista oficial do PPG."""
-    import sqlite3
-
+def carregar_docentes() -> list[dict]:
     raiz = _raiz_projetos_dashboards(Path(__file__).resolve())
-    lattes_db_path = raiz / "DATA BASE UEA" / "LATTES" / "data" / "gerbras.db"
-    if not lattes_db_path.exists():
-        return {}
-
-    lattes_id_por_researcher = dict(conn.execute(
-        "SELECT id, lattes_id FROM researchers WHERE lattes_id IS NOT NULL"
-    ).fetchall())
-    if not lattes_id_por_researcher:
-        return {}
-
-    lattes_con = sqlite3.connect(lattes_db_path)
-    titulos_por_id_lattes: dict[str, list[str]] = defaultdict(list)
-    for id_lattes, titulo in lattes_con.execute(
-        """SELECT p.id_lattes, l.titulo FROM pesquisadores p
-           JOIN pesquisador_linha pl ON pl.pesquisador_id = p.id
-           JOIN linhas_pesquisa l ON l.id = pl.linha_id"""
-    ).fetchall():
-        if titulo not in titulos_por_id_lattes[id_lattes]:
-            titulos_por_id_lattes[id_lattes].append(titulo)
-    lattes_con.close()
-
-    return {
-        rid: titulos_por_id_lattes[id_lattes]
-        for rid, id_lattes in lattes_id_por_researcher.items()
-        if id_lattes in titulos_por_id_lattes
-    }
-
-
-def _melhores_matches_pt(itens_a: list[dict], itens_b: list[dict], top_k: int, limiar: float) -> list[dict]:
-    """Roda MATCHING/matcher.py::melhores_matches (Sentence-BERT, PT-PT — ambos
-    os lados passam por padronizar_termo, que traduz PT->EN antes de comparar,
-    então funciona igual comparando dois textos em português) via subprocess
-    no venv de MATCHING/."""
-    if not itens_a or not itens_b:
+    path = raiz / "DATA BASE UEA" / "PPGS_LINHAS" / "output" / "docentes.json"
+    if not path.exists():
         return []
-    raiz = _raiz_projetos_dashboards(Path(__file__).resolve())
-    matching_python = raiz / "MATCHING" / ".venv" / "bin" / "python"
-
-    codigo = (
-        "import json, sys\n"
-        "sys.path.insert(0, %r)\n"
-        "sys.path.insert(0, %r)\n"
-        "from matcher import melhores_matches\n"
-        "from padronizar import padronizar_termo\n"
-        "itens_a, itens_b, top_k, limiar = json.load(sys.stdin)\n"
-        "for it in itens_a + itens_b:\n"
-        "    it['termo_padronizado'] = padronizar_termo(it['termo'], it.get('idioma', 'pt'))\n"
-        "res = melhores_matches(itens_a, itens_b, top_k=top_k, limiar=limiar)\n"
-        "json.dump(res, sys.stdout, ensure_ascii=False)\n"
-    ) % (str(raiz / "MATCHING"), str(raiz / "PADRONIZAÇAO"))
-
-    proc = subprocess.run(
-        [str(matching_python), "-c", codigo],
-        input=json.dumps([itens_a, itens_b, top_k, limiar], ensure_ascii=False),
-        capture_output=True, text=True,
-    )
-    try:
-        return json.loads(proc.stdout)
-    except json.JSONDecodeError:
-        print(proc.stderr, file=sys.stderr)
-        return []
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
-def export_professores(conn, ppgs_por_codigo: dict[str, list[dict]]) -> list[dict]:
-    rows = conn.execute(
-        """SELECT id, nome, orcid, universidade, cidade, uf, pais, latitude, longitude, programa
-           FROM researchers"""
-    ).fetchall()
+def export_professores() -> list[dict]:
+    """Lista de docentes da UEA por PPG, direto da planilha (ver
+    DATA BASE UEA/PPGS_LINHAS/etl/build_docentes.py) — não depende mais de
+    DATA BASE UEA/LATTES. Um docente que aparece em mais de um PPG (mesmo
+    nome exato em linhas diferentes da planilha) vira uma única entrada, com
+    todos os PPGs em `programas`."""
+    por_nome: dict[str, dict] = {}
+    ordem: list[str] = []
+    for d in carregar_docentes():
+        nome = d["nome"]
+        if nome not in por_nome:
+            por_nome[nome] = {"nome": nome, "orcid": d.get("orcid"), "programas": []}
+            ordem.append(nome)
+        entry = por_nome[nome]
+        if d["ppg_codigo"] not in entry["programas"]:
+            entry["programas"].append(d["ppg_codigo"])
+        if not entry["orcid"] and d.get("orcid"):
+            entry["orcid"] = d["orcid"]
 
-    n_pubs = dict(conn.execute(
-        "SELECT researcher_id, COUNT(*) FROM publications GROUP BY researcher_id"
-    ).fetchall())
-
-    professores = []
-    for rid, nome, orcid, universidade, cidade, uf, pais, lat, lon, programa in rows:
-        programas = [p.strip() for p in (programa or "").split(",") if p.strip()]
-        professores.append({
-            "id": rid, "nome": nome, "orcid": orcid, "universidade": universidade,
-            "cidade": cidade, "uf": uf, "pais": pais, "lat": lat, "lon": lon,
-            "programas": programas,
-            "linhas_canonicas": [],
-            "n_publicacoes": n_pubs.get(rid, 0),
-        })
-
-    # tenta amarrar cada professor a uma linha canônica do(s) seu(s) PPG(s),
-    # a partir das linhas livres extraídas do Lattes (ver _linhas_lattes_por_researcher)
-    linhas_livres = _linhas_lattes_por_researcher(conn)
-    itens_a = []
-    a_por_rid: dict[str, tuple[int, str]] = {}
-    for prof in professores:
-        titulos = linhas_livres.get(prof["id"])
-        if not titulos:
-            continue
-        candidatas_ids = {l["id"] for codigo in prof["programas"] for l in ppgs_por_codigo.get(codigo, [])}
-        if not candidatas_ids:
-            continue
-        for i, titulo in enumerate(titulos):
-            item_id = f"{prof['id']}|{i}"
-            itens_a.append({"id": item_id, "termo": titulo, "idioma": "pt"})
-            a_por_rid[item_id] = (prof["id"], titulo)
-
-    if itens_a:
-        todas_linhas = [
-            {"id": l["id"], "termo": l["titulo"], "idioma": "pt"}
-            for linhas in ppgs_por_codigo.values() for l in linhas
-        ]
-        resultados = _melhores_matches_pt(itens_a, todas_linhas, top_k=5, limiar=0.30)
-        prof_por_id = {p["id"]: p for p in professores}
-        linha_ppg_por_id = {
-            l["id"]: codigo for codigo, linhas in ppgs_por_codigo.items() for l in linhas
-        }
-        for r in resultados:
-            rid, _titulo = a_por_rid[r["id"]]
-            prof = prof_por_id[rid]
-            for cand in r.get("matches", []):
-                if cand["score"] < LINHA_CANONICA_LIMIAR:
-                    continue
-                if linha_ppg_por_id.get(cand["id"]) not in prof["programas"]:
-                    continue
-                if cand["id"] not in prof["linhas_canonicas"]:
-                    prof["linhas_canonicas"].append(cand["id"])
-
-    return professores
+    return [
+        {"id": i + 1, **por_nome[nome]}
+        for i, nome in enumerate(ordem)
+    ]
 
 
 def export_institutions(linha_matches: list[dict], geocoder: Geocoder) -> list[dict]:
@@ -364,13 +258,11 @@ def export_institutions(linha_matches: list[dict], geocoder: Geocoder) -> list[d
 
 def main() -> None:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    conn = db.connect()
     geocoder = Geocoder()
 
     ppgs_linhas = carregar_ppgs_linhas()
-    ppgs_por_codigo = {p["codigo"]: p["linhas"] for p in ppgs_linhas["ppgs"]}
 
-    professores = export_professores(conn, ppgs_por_codigo)
+    professores = export_professores()
     linha_matches = carregar_linha_matches()
     institutions = export_institutions(linha_matches, geocoder)
 
@@ -388,13 +280,11 @@ def main() -> None:
         json.dumps(dashboard, ensure_ascii=False, indent=None), encoding="utf-8"
     )
 
-    n_com_linha = sum(1 for p in professores if p["linhas_canonicas"])
-    print(f"dashboard.json -> {len(dashboard['ppgs'])} PPGs, {len(professores)} professores "
-          f"({n_com_linha} com linha canônica identificada), {len(linha_matches)} matches, "
+    n_com_orcid = sum(1 for p in professores if p["orcid"])
+    print(f"dashboard.json -> {len(dashboard['ppgs'])} PPGs, {len(professores)} docentes "
+          f"({n_com_orcid} com ORCID), {len(linha_matches)} matches, "
           f"{len(institutions)} instituições estrangeiras")
     print(f"pasta de saída: {DATA_DIR}")
-
-    conn.close()
 
 
 if __name__ == "__main__":

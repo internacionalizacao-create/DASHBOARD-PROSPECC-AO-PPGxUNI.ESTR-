@@ -18,9 +18,10 @@ universidades do Reino Unido.
 
 | Página | Conteúdo |
 |---|---|
-| **Painel** (`docs/index.html`) | Filtro em cascata **PPG → Linha de pesquisa** (selecionar um PPG agrupa todos os seus professores e mostra só as linhas oficiais dele), gráfico Sankey linha de pesquisa × instituição estrangeira, mapa do país estrangeiro, ranking de linhas de pesquisa e de pesquisadores estrangeiros |
-| **Mapa de Fluxo** (`docs/flowmap.html`) | Globo 3D arrastável/zoom com arcos de Manaus até cada instituição estrangeira; clicar num arco mostra as linhas de pesquisa e os professores dos PPGs envolvidos, e permite voltar ao painel já filtrado |
-| **Perfil do pesquisador** (`docs/professor.html`) | Ao clicar num pesquisador estrangeiro: dados pessoais, linhas de pesquisa em comum, professores dos PPGs conectados, dados da instituição (com mini-mapa e info ao vivo via OpenAlex) e lista de publicações reais (ORCID) |
+| **Painel** (`docs/index.html`) | Filtro em cascata **PPG → Linha de pesquisa** (selecionar um PPG agrupa todos os seus docentes e mostra só as linhas oficiais dele), gráfico Sankey linha de pesquisa × instituição estrangeira, mapa do país estrangeiro e ranking de pesquisadores estrangeiros. Cada docente aparece com o ícone de ORCID (quando cadastrado), que leva direto ao perfil público dele |
+| **Mapa de Fluxo** (`docs/flowmap.html`) | Globo 3D arrastável/zoom com arcos de Manaus até cada instituição estrangeira; clicar num arco mostra as linhas de pesquisa e os docentes dos PPGs envolvidos, e permite abrir o perfil de qualquer um deles |
+| **Perfil do pesquisador estrangeiro** (`docs/professor.html`) | Ao clicar num pesquisador estrangeiro: dados pessoais, linhas de pesquisa em comum, docentes UEA conectados, dados da instituição (com mini-mapa e info ao vivo via OpenAlex) e lista de publicações reais (ORCID) |
+| **Perfil do docente UEA** (`docs/docente.html`) | Ao clicar num docente UEA: PPG(s), linhas de pesquisa oficiais do(s) PPG(s), pesquisadores estrangeiros conectados a elas, mini-mapa da UEA e publicações reais via ORCID (quando cadastrado) |
 
 Todo o site é **estático** (HTML/CSS/JS + um único JSON de dados, sem
 backend) e roda inteiramente no navegador — publicado via GitHub Pages a
@@ -33,9 +34,10 @@ DASHBOARD PROSPECÇAO PPGxUNI.ESTR/
 ├── docs/                     # o dashboard publicado (GitHub Pages)
 │   ├── index.html            # Página 1 — Painel
 │   ├── flowmap.html          # Página 2 — Mapa de Fluxo
-│   ├── professor.html        # Página 3 — Perfil do pesquisador
+│   ├── professor.html        # Página 3 — Perfil do pesquisador estrangeiro
+│   ├── docente.html          # Página 4 — Perfil do docente UEA
 │   ├── css/style.css
-│   ├── js/                   # common.js, charts.js, page1.js, flowmap.js, professor.js, report.js
+│   ├── js/                   # common.js, charts.js, page1.js, flowmap.js, professor.js, docente.js, report.js
 │   └── lib/                  # D3, d3-sankey, topojson (vendorizados, sem CDN)
 │
 ├── data/
@@ -44,40 +46,43 @@ DASHBOARD PROSPECÇAO PPGxUNI.ESTR/
 │   └── capes_notas.json      # conceito CAPES por PPG (Avaliação Quadrienal 2021-2024)
 │
 ├── etl/                       # pipeline Python que gera data/dashboard.json
-│   ├── lattes_parser.py      # extrai nome, ORCID, universidade, endereço dos PDFs Lattes
-│   ├── geocode.py             # geocoding via Nominatim (cache local)
-│   ├── openalex_enrich.py     # DOIs e keywords dos últimos 5 anos, via OpenAlex (perfil do professor)
-│   ├── germany_match.py       # aquisição de candidatos OpenAlex — Alemanha (país inteiro)
-│   ├── linha_match.py         # ⭐ NOVO: match linha de pesquisa oficial × pesquisadores
-│   │                          #    estrangeiros (Alemanha + Gana + Argélia + Moçambique +
-│   │                          #    África do Sul ×2 + Angola + Reino Unido ×8), via OpenAlex
-│   │                          #    + rerank semântico (MATCHING/rerank.py)
-│   ├── db.py                  # schema SQLite (researchers, publications, keywords, research_areas)
-│   ├── run_etl.py              # orquestrador principal (Lattes -> banco de professores)
+│   ├── linha_match.py         # match linha de pesquisa oficial × pesquisadores estrangeiros
+│   │                          #    (Alemanha + Gana + Argélia + Moçambique + África do Sul ×2 +
+│   │                          #    Angola + Reino Unido ×8), via OpenAlex + rerank semântico
+│   │                          #    (MATCHING/rerank.py)
+│   ├── geocode.py             # geocoding via Nominatim (cache local, usado nas instituições estrangeiras)
 │   ├── export_dashboard_data.py  # gera data/dashboard.json (ppgs + professores + linha_matches)
-│   └── export_csv.py           # exporta as tabelas em CSV (separador `|`)
+│   └── export_csv.py           # exporta as tabelas em CSV (separador `|`) — legado
 │
 ├── cache/                     # cache local de OpenAlex/Nominatim/matching (gitignored)
-├── output/                    # gerbras.db (SQLite) + linha_matches.json (gitignored)
+├── output/                    # linha_matches.json (gitignored)
 └── index.html                 # redireciona a raiz do site para docs/index.html
 ```
 
-A base canônica de PPGs/linhas de pesquisa (nome + descrição oficial) vive
-fora deste repositório, em `DATA BASE UEA/PPGS_LINHAS/` (pasta irmã) — ver o
-README de lá para como ela é gerada a partir da planilha da UEA.
+A base canônica de PPGs/linhas de pesquisa (nome + descrição oficial) e a
+lista de docentes por PPG (com ORCID) vivem fora deste repositório, em
+`DATA BASE UEA/PPGS_LINHAS/` (pasta irmã) — ver o README de lá para como são
+geradas a partir da planilha da UEA.
 
-> `cache/` e `output/` **não são versionados** — o banco SQLite carrega dados
-> pessoais dos professores (ORCID, endereço) extraídos dos currículos Lattes.
-> Só `data/dashboard.json` (agregado, sem dado pessoal sensível) vai para o
-> repositório público. O `.gitignore` já cuida disso.
+> `lattes_parser.py`, `db.py`, `run_etl.py`, `openalex_enrich.py` e
+> `germany_match.py` (aquisição OpenAlex por keyword de professor) ficaram no
+> histórico do repositório mas **não são mais usados** para montar
+> `data/dashboard.json` — a lista de docentes por PPG deixou de vir de
+> currículos Lattes e passou a vir inteiramente da planilha (ver Fase G do
+> README de `DATA BASE UEA/PPGS_LINHAS/`).
+
+> `cache/` e `output/` **não são versionados** (dados intermediários de
+> matching, não pessoais). Só `data/dashboard.json` vai para o repositório
+> público.
 
 ## Como atualizar os dados
 
-Com Python 3 e o `pdftotext` (poppler, `brew install poppler`) instalados:
-
 ```bash
-cd "DASHBOARD PROSPECÇAO PPGxUNI.ESTR"
-python3 etl/run_etl.py                 # reprocessa os currículos Lattes -> banco de professores
+cd "DATA BASE UEA/PPGS_LINHAS/etl"
+python3 build_ppgs_linhas.py           # linhas de pesquisa oficiais (aba "PPGs")
+python3 build_docentes.py              # docentes por PPG + ORCID (aba "PPGxDocente")
+
+cd "../../../DASHBOARD/DASHBOARD PROSPECÇAO PPGxUNI.ESTR"
 python3 etl/linha_match.py             # cruza as linhas de pesquisa oficiais dos PPGs x estrangeiros
 python3 etl/export_dashboard_data.py   # gera data/dashboard.json (ppgs + professores + matches)
 ```
@@ -108,24 +113,23 @@ Depois abra `http://localhost:8000/docs/index.html`.
 
 - **Planilha PPGs/Linhas de pesquisa (PROPESP/ARI)** — nome e descrição
   oficial de cada linha de pesquisa por PPG (fonte da comparação semântica)
-- **Lattes (CNPq)** — identificação, ORCID, universidade/endereço, PPG e
-  linhas de pesquisa (texto livre) de cada professor da UEA
-- **OpenAlex** — publicações de pesquisadores estrangeiros (para o match) e
-  do próprio professor da UEA (para o perfil), por ORCID
-- **Nominatim (OpenStreetMap)** — geocoding de cidades e instituições
-- **ORCID** — perfil público usado como canal de contato dos pesquisadores
-  estrangeiros (não coletamos e-mail/telefone)
+- **Planilha PPGxDocente (PROPESP/ARI)** — nome, PPG e ORCID de cada docente
+  da UEA (fonte da seção "Docentes UEA")
+- **OpenAlex** — publicações de pesquisadores estrangeiros e de docentes da
+  UEA (quando têm ORCID cadastrado na planilha), para o match e os perfis
+- **Nominatim (OpenStreetMap)** — geocoding de instituições estrangeiras
+- **ORCID** — perfil público usado como canal de contato tanto dos
+  pesquisadores estrangeiros quanto dos docentes da UEA (não coletamos
+  e-mail/telefone)
 
 ## Limitações conhecidas
 
-- A planilha de linhas de pesquisa cita alguns PPGs que ainda não têm
-  currículos Lattes coletados (PPGEEC, Rede PROFMAT, PROFSAÚDE, PPGSC) — para
-  esses, a linha de pesquisa e os matches estrangeiros existem normalmente,
-  mas o grupo de professores da UEA fica vazio até os currículos serem
-  coletados.
-- Nem toda linha de pesquisa livre extraída do Lattes de um professor é
-  amarrada de volta à linha canônica do PPG (a similaridade semântica precisa
-  passar de um limiar) — quando isso acontece, o professor continua listado
-  no seu PPG, só sem a tag de linha específica.
+- O ORCID de cada docente é preenchido manualmente pela UEA na planilha — na
+  maior parte dos docentes esse campo ainda está vazio, então o ícone de
+  ORCID e as publicações do perfil só aparecem pra quem já foi preenchido.
+- Como o match agora é por linha de pesquisa do PPG (não por professor
+  individual), todo docente de um PPG vê os mesmos pesquisadores estrangeiros
+  conectados — não há (ainda) uma amarração fina de qual docente pesquisa
+  exatamente qual linha dentro do PPG.
 - Coordenadas de algumas instituições estrangeiras são aproximadas (nível de
   cidade), quando o nome não é resolvido pelo Nominatim.

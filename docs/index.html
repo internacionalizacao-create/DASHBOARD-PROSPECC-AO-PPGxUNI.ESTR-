@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script>(function(){var t=localStorage.getItem('gerbras-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);})();</script>
 <title>PROPESP · Parcerias Internacionais UEA</title>
-<link rel="stylesheet" href="css/style.css?v=21" />
+<link rel="stylesheet" href="css/style.css?v=22" />
 </head>
 <body>
 
@@ -83,15 +83,15 @@
       </div>
     </div>
 
-    <div class="panel panel--grow" style="height:440px;" data-help="Lista todos os professores do(s) PPG(s) selecionado(s) — ou de todos, se nenhum PPG estiver selecionado. Busque pelo nome ou clique num professor para ver seu PPG.">
+    <div class="panel panel--grow" style="height:440px;" data-help="Lista todos os docentes da UEA do(s) PPG(s) selecionado(s) — ou de todos, se nenhum PPG estiver selecionado. Busque pelo nome; o ícone de ORCID (quando disponível) leva ao perfil público do docente. Clique no nome pra abrir o perfil dele no dashboard.">
       <div class="panel__header">
-        <span class="panel__title">Professores</span>
+        <span class="panel__title">Docentes UEA</span>
         <span class="panel__hint" id="prof-count-hint"></span>
       </div>
       <div class="panel__body">
         <div class="search-box">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input type="text" id="prof-search" placeholder="Buscar professor…" />
+          <input type="text" id="prof-search" placeholder="Buscar docente…" />
         </div>
         <div class="picklist" id="prof-list"></div>
       </div>
@@ -154,11 +154,6 @@
       <div class="panel__body" id="map-chart" style="flex:1; min-height:0;"></div>
     </div>
 
-    <div class="panel" style="height:380px; display:flex; flex-direction:column;" data-help="Ranking das linhas de pesquisa mais frequentes entre as conexões filtradas no momento, com a contagem de conexões de cada uma.">
-      <div class="panel__header"><span class="panel__title">Linhas de pesquisa</span></div>
-      <div class="panel__body" id="bar-chart" style="flex:1; min-height:0;"></div>
-    </div>
-
     <div class="panel panel--grow" style="height:500px;" data-help="Ranking dos pesquisadores estrangeiros com mais conexões (matches) com professores da UEA, considerando os filtros ativos. Clique num nome para abrir o perfil completo daquele pesquisador.">
       <div class="panel__header">
         <span class="panel__title">Pesquisadores estrangeiros</span>
@@ -176,9 +171,9 @@
 <script src="lib/d3.v7.min.js"></script>
 <script src="lib/d3-sankey.min.js"></script>
 <script src="lib/topojson-client.min.js"></script>
-<script src="js/common.js?v=20"></script>
-<script src="js/charts.js?v=20"></script>
-<script src="js/report.js?v=20"></script>
-<script src="js/page1.js?v=20"></script>
+<script src="js/common.js?v=22"></script>
+<script src="js/charts.js?v=22"></script>
+<script src="js/report.js?v=22"></script>
+<script src="js/page1.js?v=22"></script>
 </body>
 </html>

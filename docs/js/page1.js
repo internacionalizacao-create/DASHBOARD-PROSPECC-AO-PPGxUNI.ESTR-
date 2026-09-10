@@ -50,7 +50,7 @@
   /* ---- topbar stats ---- */
   d3.select("#topbar-stats").html(`
     <div class="topbar__stat" data-help="Número de Programas de Pós-Graduação da UEA na base."><b>${fmt(ppgs.length)}</b><small>PPGs</small></div>
-    <div class="topbar__stat" data-help="Número de professores da UEA na base, agrupados por PPG."><b>${fmt(professores.length)}</b><small>Professores</small></div>
+    <div class="topbar__stat" data-help="Número de docentes da UEA na base, agrupados por PPG."><b>${fmt(professores.length)}</b><small>Docentes UEA</small></div>
     <div class="topbar__stat" data-help="Número de instituições estrangeiras distintas com pelo menos um pesquisador com linha de pesquisa semelhante a alguma linha oficial de um PPG da UEA."><b>${fmt(institutions.length)}</b><small>Instituições estrangeiras</small></div>
     <div class="topbar__stat" data-help="Número total de pares (linha de pesquisa do PPG, pesquisador estrangeiro) identificados como possível parceria, considerando os filtros ativos."><b>${fmt(linha_matches.length)}</b><small>Conexões</small></div>
   `);
@@ -107,10 +107,6 @@
     history.replaceState(null, "", location.pathname + (qs ? "?" + qs : ""));
   }
 
-  function toggleProfessor(id) {
-    filters.professorId = filters.professorId === id ? null : id;
-    syncURL(); render();
-  }
   function togglePPG(codigo) {
     filters.ppgs.has(codigo) ? filters.ppgs.delete(codigo) : filters.ppgs.add(codigo);
     // uma linha selecionada que não pertence mais a nenhum PPG ativo some do filtro
@@ -166,7 +162,6 @@
     });
     updateSbertCard(null);
     renderCountryMap(document.getElementById("map-chart"), matchesForCharts);
-    renderBarChart(document.getElementById("bar-chart"), matchesForCharts, colorInfo, { n: 10 });
 
     d3.select("#sankey-hint").text(`${fmt(matchesForCharts.length)} conexões`);
     d3.select("#prof-count-hint").text(`${fmt(currentFilteredProfessores.length)} / ${fmt(professores.length)}`);
@@ -250,15 +245,18 @@
     ).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
     const wrap = d3.select("#prof-list");
-    if (!filtered.length) { wrap.html('<div class="empty-hint">Nenhum professor encontrado.</div>'); return; }
+    if (!filtered.length) { wrap.html('<div class="empty-hint">Nenhum docente encontrado.</div>'); return; }
 
     const rows = wrap.selectAll(".pickrow").data(filtered, (d) => d.id).join("div")
-      .attr("class", (d) => "pickrow" + (filters.professorId === d.id ? " is-active" : ""));
+      .attr("class", "pickrow");
     rows.html((d) => `
       <span class="dot" style="background:var(--accent)"></span>
       <span class="label" title="${d.nome} · ${d.programas.join(', ')}">${d.nome}</span>
-      <span class="count">${d.n_publicacoes || 0}</span>`);
-    rows.on("click", (_, d) => toggleProfessor(d.id));
+      ${d.orcid
+        ? `<a class="orcid-link" href="https://orcid.org/${d.orcid}" target="_blank" rel="noopener" title="Perfil ORCID de ${d.nome}"><img src="image/orcid-icon.webp" alt="ORCID" class="orcid-icon" /></a>`
+        : `<span class="orcid-link orcid-link--empty" title="ORCID não cadastrado"></span>`}`);
+    rows.select(".orcid-link").on("click", (ev) => ev.stopPropagation());
+    rows.style("cursor", "pointer").on("click", (_, d) => { location.href = `docente.html?id=${d.id}`; });
   }
 
   function renderForeignRanking(matchSubset) {

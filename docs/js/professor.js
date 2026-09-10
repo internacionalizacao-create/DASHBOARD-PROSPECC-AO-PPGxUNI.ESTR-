@@ -89,7 +89,7 @@
     } else {
       const rows = wrap.selectAll(".pickrow").data(ueaProfs, (d) => d.id).join("div").attr("class", "pickrow");
       rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label">${d.nome}</span><span class="count">${d.programas.join(', ')}</span>`);
-      rows.style("cursor", "pointer").on("click", (_, d) => { location.href = `index.html?professor=${d.id}`; });
+      rows.style("cursor", "pointer").on("click", (_, d) => { location.href = `docente.html?id=${d.id}`; });
     }
   }
 

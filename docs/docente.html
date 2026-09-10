@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script>(function(){var t=localStorage.getItem('gerbras-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);})();</script>
-<title>GERBRAS · Perfil do Pesquisador</title>
+<title>GERBRAS · Perfil do Docente UEA</title>
 <link rel="stylesheet" href="css/style.css?v=22" />
 </head>
 <body>
@@ -15,7 +15,7 @@
     <img src="image/logo_internacionalizacao.png" alt="Comissão de Internacionalização da Pós-Graduação" class="topbar__logo topbar__logo--intl" />
     <div class="topbar__title">
       <strong>Parcerias Internacionais</strong>
-      <span>Perfil do pesquisador estrangeiro</span>
+      <span>Perfil do docente UEA</span>
     </div>
   </div>
 
@@ -37,7 +37,7 @@
   <!-- ===================== Coluna 1 — Pessoal ===================== -->
   <section class="col col--left">
 
-    <div class="panel" data-help="Dados básicos do pesquisador estrangeiro: nome, instituição, país e distintivos que resumem o perfil dele.">
+    <div class="panel" data-help="Dados básicos do docente da UEA: nome, PPG(s) e distintivos que resumem o perfil dele.">
       <div class="profile-head">
         <div class="avatar" id="p-avatar">--</div>
         <div>
@@ -48,14 +48,14 @@
       <div class="badge-row" id="p-badges"></div>
     </div>
 
-    <div class="panel" data-help="Informações de contato disponíveis para este pesquisador estrangeiro, quando existentes.">
+    <div class="panel" data-help="Informações de contato disponíveis para este docente, quando existentes.">
       <div class="panel__header"><span class="panel__title">Contato</span></div>
       <div id="p-contact"></div>
     </div>
 
-    <div class="panel panel--grow" data-help="Linhas de pesquisa do Lattes dos professores da UEA que geraram este match, cruzadas com as keywords do OpenAlex deste pesquisador estrangeiro.">
+    <div class="panel panel--grow" data-help="Linhas de pesquisa oficiais do(s) PPG(s) deste docente.">
       <div class="panel__header">
-        <span class="panel__title">Linhas de pesquisa em comum</span>
+        <span class="panel__title">Linhas de pesquisa do PPG</span>
         <span class="panel__hint" id="p-linhas-hint"></span>
       </div>
       <div class="panel__body">
@@ -63,9 +63,9 @@
       </div>
     </div>
 
-    <div class="panel panel--grow" data-help="Professores da UEA conectados a este pesquisador estrangeiro. Clique num nome para abrir o painel principal já filtrado por ele.">
+    <div class="panel panel--grow" data-help="Pesquisadores estrangeiros conectados às linhas de pesquisa do(s) PPG(s) deste docente. Clique num nome para abrir o perfil completo dele.">
       <div class="panel__header">
-        <span class="panel__title">Professores UEA conectados</span>
+        <span class="panel__title">Pesquisadores estrangeiros conectados</span>
         <span class="panel__hint" id="p-profs-hint"></span>
       </div>
       <div class="panel__body">
@@ -75,34 +75,17 @@
 
   </section>
 
-  <!-- ===================== Coluna 2 — Instituição ===================== -->
+  <!-- ===================== Coluna 2 — PPG(s) ===================== -->
   <section class="col col--center">
 
-    <div class="panel" data-help="Instituição estrangeira deste pesquisador, com o total de conexões (matches) e de professores da UEA associados a ela.">
-      <div class="panel__header"><span class="panel__title">Instituição</span></div>
-      <h1 id="i-nome" style="font-size:20px;">—</h1>
-      <div class="muted" id="i-sub" style="margin-top:2px;">—</div>
-      <div class="stat-row" style="margin-top:14px;">
-        <div class="stat-tile"><b id="i-matches">—</b><small>Conexões</small></div>
-        <div class="stat-tile"><b id="i-researchers">—</b><small>Prof. UEA</small></div>
-      </div>
+    <div class="panel" data-help="Programa(s) de Pós-Graduação da UEA a que este docente está vinculado, com o conceito CAPES (Avaliação Quadrienal 2021-2024) de cada um.">
+      <div class="panel__header"><span class="panel__title">Programa(s) de Pós-Graduação</span></div>
+      <div id="i-ppgs"></div>
     </div>
 
-    <div class="panel panel--grow" style="min-height:220px;" data-help="Localização geográfica da instituição estrangeira, geocodificada a partir do nome/país cadastrado.">
+    <div class="panel panel--grow" style="min-height:220px;" data-help="Localização da Universidade do Estado do Amazonas (Manaus).">
       <div class="panel__header"><span class="panel__title">Localização</span></div>
       <div class="panel__body" id="institution-map"></div>
-    </div>
-
-    <div class="panel" data-help="Descrição da instituição obtida automaticamente via API do OpenAlex.">
-      <div class="panel__header">
-        <span class="panel__title">Sobre a instituição</span>
-        <span class="panel__hint">via OpenAlex</span>
-      </div>
-      <div id="i-details">
-        <div class="skeleton" style="width:80%;"></div>
-        <div class="skeleton" style="width:60%;"></div>
-        <div class="skeleton" style="width:70%;"></div>
-      </div>
     </div>
 
   </section>
@@ -110,7 +93,7 @@
   <!-- ===================== Coluna 3 — Publicações ===================== -->
   <section class="col col--right">
 
-    <div class="panel panel--grow" data-help="Amostra de publicações do OpenAlex que geraram o match entre este pesquisador estrangeiro e professores da UEA.">
+    <div class="panel panel--grow" data-help="Publicações mais recentes deste docente, via ORCID/OpenAlex — só disponível quando o ORCID está cadastrado na planilha de docentes.">
       <div class="panel__header">
         <span class="panel__title">Publicações</span>
         <span class="panel__hint" id="pub-hint">via OpenAlex</span>
@@ -133,6 +116,6 @@
 <script src="lib/topojson-client.min.js"></script>
 <script src="js/common.js?v=22"></script>
 <script src="js/charts.js?v=22"></script>
-<script src="js/professor.js?v=22"></script>
+<script src="js/docente.js?v=22"></script>
 </body>
 </html>

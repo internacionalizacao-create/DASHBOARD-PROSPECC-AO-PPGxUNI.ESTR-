@@ -216,7 +216,7 @@
     rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label">${d.nome}</span><span class="count">${d.programas.join(', ')}</span>`);
     rows.style("cursor", "pointer").on("click", (ev, d) => {
       ev.stopPropagation();
-      location.href = `index.html?professor=${d.id}`;
+      location.href = `docente.html?id=${d.id}`;
     });
 
     d3.select("#flow-detail").classed("is-visible", true);

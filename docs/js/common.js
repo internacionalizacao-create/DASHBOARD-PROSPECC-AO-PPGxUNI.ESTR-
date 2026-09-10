@@ -3,8 +3,8 @@
 
    Estrutura de dados (ver etl/export_dashboard_data.py):
      ppgs           - [{codigo, nome, linhas: [{id, titulo, descricao}]}]
-     professores    - [{id, nome, orcid, universidade, cidade, uf, programas: [codigo,...],
-                         linhas_canonicas: [linha_id,...], n_publicacoes}]
+     professores    - [{id, nome, orcid, programas: [codigo,...]}]  (docentes UEA,
+                        direto de DATA BASE UEA/PPGS_LINHAS/output/docentes.json)
      linha_matches  - [{linha_id, ppg_codigo, foreign_author_name, foreign_author_orcid,
                          foreign_author_openalex_id, foreign_institution, foreign_country,
                          score, sample_work_title, sample_work_doi}]
