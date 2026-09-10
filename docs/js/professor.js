@@ -70,7 +70,7 @@
 
     const badges = [];
     if (foreignOrcid) badges.push(`<a class="badge badge--link" href="https://orcid.org/${foreignOrcid}" target="_blank" rel="noopener"><img class="badge-icon" src="image/orcid-icon.webp" alt="" />ORCID ${foreignOrcid}</a>`);
-    if (foreignOaId) badges.push(`<a class="badge badge--link" href="${foreignOaId}" target="_blank" rel="noopener"><img class="badge-icon" src="image/openalex-icon.svg" alt="" />Perfil OpenAlex</a>`);
+    if (foreignOaId) badges.push(`<a class="badge badge--link" href="${foreignOaId}" target="_blank" rel="noopener"><img class="badge-icon" src="image/openalex-icon.png" alt="" />Perfil OpenAlex</a>`);
     badges.push(`<span class="badge">${country}</span>`);
     d3.select("#p-badges").html(badges.join(""));
 
