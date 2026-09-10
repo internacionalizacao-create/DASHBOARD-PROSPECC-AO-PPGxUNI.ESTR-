@@ -116,7 +116,12 @@ Depois abra `http://localhost:8000/docs/index.html`.
 - **Planilha PPGxDocente (PROPESP/ARI)** — nome, PPG, ORCID e ID Lattes de
   cada docente da UEA (fonte da seção "Docentes UEA" e dos links do perfil)
 - **OpenAlex** — publicações de pesquisadores estrangeiros e de docentes da
-  UEA (quando têm ORCID cadastrado na planilha), para o match e os perfis
+  UEA (quando têm ORCID cadastrado na planilha), para o match e os perfis;
+  nos perfis, a API de busca semântica (`search.semantic`, ver
+  [help.openalex.org/api/semantic-search](https://help.openalex.org/api/semantic-search))
+  também estima um "grau de afinidade" (barra horizontal, calculada aos
+  poucos pros 8 primeiros conectados) entre a publicação mais recente de uma
+  pessoa e as publicações da outra, filtrando por ORCID
 - **Nominatim (OpenStreetMap)** — geocoding de instituições estrangeiras
 - **ORCID** — perfil público usado como canal de contato tanto dos
   pesquisadores estrangeiros quanto dos docentes da UEA (não coletamos

@@ -43,9 +43,17 @@
   }
   const estrangeirosOrdenados = [...estrangeiros.values()].sort((a, b) => b.conexoes - a.conexoes);
 
+  let profRowByKey = new Map();
+
   renderPersonal();
   renderPPGs();
-  renderPublications();
+  renderPublications().then((works) => {
+    const tituloRecente = works && works[0] && works[0].title;
+    if (!tituloRecente) return;
+    calcularAfinidadeSemantica(estrangeirosOrdenados, tituloRecente, (d) => d.orcid, 8, (item, score, maxScore) => {
+      atualizarBarraAfinidade(item.orcid || item.nome, score, maxScore);
+    });
+  });
   wireBackButton();
 
   window.addEventListener("gerbras:themechange", () => {
@@ -87,16 +95,29 @@
 
     d3.select("#p-profs-hint").text(fmt(estrangeirosOrdenados.length));
     const wrap = d3.select("#p-profs");
+    profRowByKey = new Map();
     if (!estrangeirosOrdenados.length) {
       wrap.html('<div class="empty-hint">Nenhum pesquisador estrangeiro conectado ainda.</div>');
     } else {
       const rows = wrap.selectAll(".pickrow").data(estrangeirosOrdenados, (d) => d.orcid || d.nome).join("div").attr("class", "pickrow");
-      rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label" title="${d.instituicao} · ${d.pais}">${d.nome}</span><span class="count">${d.conexoes}</span>`);
+      rows.html((d) => `
+        <span class="dot" style="background:var(--accent)"></span>
+        <span class="label" title="${d.instituicao} · ${d.pais}">${d.nome}</span>
+        <span class="sim-wrap"><span class="sim-bar" title="Calculando afinidade semântica (OpenAlex)…"><span class="sim-bar__fill"></span></span><span class="count">${d.conexoes}</span></span>`);
       rows.style("cursor", "pointer").on("click", (_, d) => {
         const q = new URLSearchParams({ oa: d.oaId, name: d.nome });
         location.href = `professor.html?${q.toString()}`;
       });
+      rows.each(function (d) { profRowByKey.set(d.orcid || d.nome, this); });
     }
+  }
+
+  function atualizarBarraAfinidade(key, score, maxScore) {
+    const node = profRowByKey.get(key);
+    if (!node) return;
+    const pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+    d3.select(node).select(".sim-bar__fill").style("width", pct + "%");
+    d3.select(node).select(".sim-bar").attr("title", `Afinidade semântica (OpenAlex): ${score.toFixed(2)} (relativo ao maior valor encontrado entre estes)`);
   }
 
   /* ---------------- coluna 2: PPG(s) + mapa ---------------- */
@@ -126,7 +147,7 @@
     if (!docente.orcid) {
       el.innerHTML = '<div class="empty-hint">ORCID não cadastrado para este docente — publicações indisponíveis.</div>';
       d3.select("#pub-hint").text("");
-      return;
+      return null;
     }
 
     try {
@@ -141,12 +162,14 @@
       if (!works.length) {
         el.innerHTML = '<div class="empty-hint">Nenhuma publicação encontrada no OpenAlex para este ORCID.</div>';
         d3.select("#pub-hint").text("");
-        return;
+        return null;
       }
       d3.select("#pub-hint").text(`${fmt(works.length)} via OpenAlex`);
       el.innerHTML = works.map(pubCardHtml).join("");
+      return works;
     } catch (e) {
       el.innerHTML = '<div class="empty-hint">Não foi possível carregar publicações agora.</div>';
+      return null;
     }
   }
 

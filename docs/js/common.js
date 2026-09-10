@@ -309,6 +309,54 @@ function initHelpTooltips() {
   window.addEventListener("blur", hideHelpTooltip);
 }
 
+/* ---------- afinidade semântica entre publicações, via OpenAlex ----------
+   Usa a API de busca semântica do OpenAlex (search.semantic — só texto, até
+   2000 caracteres, no máx. 50 resultados, limite de 1 req/s:
+   https://help.openalex.org/api/semantic-search) pra estimar o quão
+   relacionado é o corpo de publicações de duas pessoas: pega o título da
+   publicação mais recente de uma (o "texto de busca") e filtra os
+   resultados pelo ORCID da outra — o relevance_score do melhor resultado
+   vira o "grau de afinidade" exibido como barra horizontal. Não é uma
+   métrica oficial de similaridade entre pessoas (a API não oferece isso
+   diretamente) — é uma aproximação via busca semântica de texto único
+   restrita a um autor. */
+const OPENALEX_SEMANTIC_DELAY_MS = 1100;
+
+async function relevanciaSemanticaOpenAlex(textoBusca, orcidAlvo) {
+  if (!textoBusca || !orcidAlvo) return null;
+  const params = new URLSearchParams({
+    "search.semantic": textoBusca.slice(0, 2000),
+    filter: `author.orcid:${orcidAlvo}`,
+    "per-page": "1",
+    select: "id,relevance_score",
+  });
+  try {
+    const data = await fetch(`https://api.openalex.org/works?${params.toString()}`).then((r) => r.json());
+    const w = data.results && data.results[0];
+    return w && w.relevance_score != null ? w.relevance_score : null;
+  } catch {
+    return null;
+  }
+}
+
+/* roda sequencialmente (respeitando o limite de 1 req/s da API), só pros
+   primeiros `limite` itens de `itens` que tiverem ORCID (via `obterOrcid`) —
+   chama onScore(item, score, maiorScoreAteAgora) a cada resultado, pra quem
+   estiver ouvindo atualizar a barra daquele item aos poucos. */
+async function calcularAfinidadeSemantica(itens, textoBusca, obterOrcid, limite, onScore) {
+  if (!textoBusca) return;
+  const alvo = itens.filter((it) => obterOrcid(it)).slice(0, limite);
+  let maxScore = 0;
+  for (const item of alvo) {
+    const score = await relevanciaSemanticaOpenAlex(textoBusca, obterOrcid(item));
+    if (score != null) {
+      maxScore = Math.max(maxScore, score);
+      onScore(item, score, maxScore);
+    }
+    await new Promise((r) => setTimeout(r, OPENALEX_SEMANTIC_DELAY_MS));
+  }
+}
+
 function fmt(n) { return n.toLocaleString("pt-BR"); }
 
 function debounce(fn, ms) {

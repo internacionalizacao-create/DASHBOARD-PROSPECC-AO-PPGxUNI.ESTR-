@@ -337,6 +337,11 @@ select.dropdown:focus { outline: none; border-color: var(--accent); box-shadow: 
 .pickrow .label { font-size: 12.5px; font-weight: 600; color: var(--ink-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pickrow.is-active .label { color: var(--ink-primary); }
 .pickrow .count { margin-left: auto; font-size: 10.5px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+/* barra horizontal de afinidade semântica (OpenAlex search.semantic) ao lado
+   do nome, nas listas de "pesquisadores conectados" dos perfis */
+.sim-wrap { display: flex; align-items: center; gap: 6px; margin-left: auto; flex: none; }
+.sim-bar { width: 46px; height: 6px; border-radius: 3px; background: var(--border-hairline); overflow: hidden; flex: none; }
+.sim-bar__fill { height: 100%; width: 0%; background: var(--accent); border-radius: 3px; transition: width .4s var(--ease); }
 .orcid-link { margin-left: auto; flex: none; display: flex; align-items: center; }
 .orcid-icon { width: 16px; height: 16px; display: block; opacity: .85; transition: opacity var(--dur-fast) var(--ease); }
 .orcid-link:hover .orcid-icon { opacity: 1; }

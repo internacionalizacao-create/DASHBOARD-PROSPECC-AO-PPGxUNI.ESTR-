@@ -47,9 +47,17 @@
     }
   }
 
+  let profRowByKey = new Map();
+
   renderPersonal();
   renderInstitution();
-  renderPublications();
+  renderPublications().then((works) => {
+    const tituloRecente = works && works[0] && works[0].title;
+    if (!tituloRecente) return;
+    calcularAfinidadeSemantica(ueaProfs, tituloRecente, (d) => d.orcid, 8, (item, score, maxScore) => {
+      atualizarBarraAfinidade(item.id, score, maxScore);
+    });
+  });
   wireBackButton();
 
   window.addEventListener("gerbras:themechange", () => {
@@ -86,13 +94,26 @@
 
     d3.select("#p-profs-hint").text(fmt(ueaProfs.length));
     const wrap = d3.select("#p-profs");
+    profRowByKey = new Map();
     if (!ueaProfs.length) {
       wrap.html('<div class="empty-hint">Nenhum professor encontrado.</div>');
     } else {
       const rows = wrap.selectAll(".pickrow").data(ueaProfs, (d) => d.id).join("div").attr("class", "pickrow");
-      rows.html((d) => `<span class="dot" style="background:var(--accent)"></span><span class="label">${d.nome}</span><span class="count">${d.programas.join(', ')}</span>`);
+      rows.html((d) => `
+        <span class="dot" style="background:var(--accent)"></span>
+        <span class="label">${d.nome}</span>
+        <span class="sim-wrap"><span class="sim-bar" title="Calculando afinidade semântica (OpenAlex)…"><span class="sim-bar__fill"></span></span><span class="count">${d.programas.join(', ')}</span></span>`);
       rows.style("cursor", "pointer").on("click", (_, d) => { location.href = `docente.html?id=${d.id}`; });
+      rows.each(function (d) { profRowByKey.set(d.id, this); });
     }
+  }
+
+  function atualizarBarraAfinidade(key, score, maxScore) {
+    const node = profRowByKey.get(key);
+    if (!node) return;
+    const pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+    d3.select(node).select(".sim-bar__fill").style("width", pct + "%");
+    d3.select(node).select(".sim-bar").attr("title", `Afinidade semântica (OpenAlex): ${score.toFixed(2)} (relativo ao maior valor encontrado entre estes)`);
   }
 
   /* ---------------- coluna 2: instituição ---------------- */
@@ -136,7 +157,7 @@
   /* ---------------- coluna 3: publicações ---------------- */
   async function renderPublications() {
     const el = document.getElementById("pub-list");
-    if (!foreignOrcid) { renderPubFallback(el); return; }
+    if (!foreignOrcid) { renderPubFallback(el); return null; }
 
     try {
       const url = `https://api.openalex.org/works?filter=author.orcid:${foreignOrcid}&sort=publication_date:desc&per-page=25&select=id,doi,title,publication_year,primary_location`;
@@ -147,11 +168,13 @@
         source: (w.primary_location && w.primary_location.source && w.primary_location.source.display_name) || null,
         doi: w.doi ? w.doi.replace("https://doi.org/", "") : null,
       }));
-      if (!works.length) { renderPubFallback(el); return; }
+      if (!works.length) { renderPubFallback(el); return null; }
       d3.select("#pub-hint").text(`${fmt(works.length)} via OpenAlex`);
       el.innerHTML = works.map(pubCardHtml).join("");
+      return works;
     } catch (e) {
       renderPubFallback(el);
+      return null;
     }
   }
 
