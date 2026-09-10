@@ -181,6 +181,7 @@ html, body {
 
 .topbar__brand { display: flex; align-items: center; gap: 14px; }
 .topbar__logo { height: calc(var(--topbar-h) * 0.6); max-height: 44px; width: auto; display: block; }
+.topbar__logo--intl { max-width: 190px; padding-left: 14px; border-left: 1px solid var(--border); }
 .topbar__title { display: flex; flex-direction: column; line-height: 1.15; }
 .topbar__title strong { color: var(--ink-primary); font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
 .topbar__title span { color: var(--ink-muted); font-size: 12px; font-weight: 500; }
