@@ -78,10 +78,13 @@ function aggregateForReport(matches) {
     const fKey = m.foreign_author_orcid || m.foreign_author_name;
     if (!byForeignResearcher.has(fKey)) {
       byForeignResearcher.set(fKey, {
-        nome: m.foreign_author_name, instituicao: m.foreign_institution, pais: m.foreign_country, conexoes: 0,
+        nome: m.foreign_author_name, instituicao: m.foreign_institution, pais: m.foreign_country,
+        conexoes: 0, ppgs: new Map(), // ppg_codigo -> conexões com esse PPG
       });
     }
-    byForeignResearcher.get(fKey).conexoes += 1;
+    const fEntry = byForeignResearcher.get(fKey);
+    fEntry.conexoes += 1;
+    fEntry.ppgs.set(m.ppg_codigo, (fEntry.ppgs.get(m.ppg_codigo) || 0) + 1);
   }
 
   return { byCountry, byInstitution, byForeignResearcher };
@@ -219,14 +222,19 @@ function buildReportHTML({ professores, matches, filters, professorById, linhaBy
 
   const foreignRankedRows = [...agg.byForeignResearcher.values()]
     .sort((a, b) => b.conexoes - a.conexoes)
-    .map((f, i) => `
+    .map((f, i) => {
+      const top3Ppgs = [...f.ppgs.entries()]
+        .sort((a, b) => b[1] - a[1]).slice(0, 3).map(([codigo]) => codigo).join(", ");
+      return `
       <tr>
         <td class="num">${i + 1}</td>
         <td>${reportEsc(f.nome)}</td>
         <td>${reportEsc(f.instituicao)}</td>
         <td>${reportEsc(f.pais)}</td>
+        <td>${reportEsc(top3Ppgs)}</td>
         <td class="num">${reportFmt(f.conexoes)}</td>
-      </tr>`).join("");
+      </tr>`;
+    }).join("");
 
   const institutionHierarchySection = buildInstitutionHierarchySection(matches);
 
@@ -331,15 +339,15 @@ function buildReportHTML({ professores, matches, filters, professorById, linhaBy
 
 ${linhasByPPGSection}
 
+${institutionHierarchySection}
+
 <section class="report-section">
   <h2>Pesquisadores estrangeiros mais conectados</h2>
   <table class="report-table">
-    <thead><tr><th class="num">#</th><th>Nome</th><th>Instituição</th><th>País</th><th class="num">Conexões</th></tr></thead>
-    <tbody>${foreignRankedRows || `<tr><td colspan="5">Sem dados para os filtros atuais.</td></tr>`}</tbody>
+    <thead><tr><th class="num">#</th><th>Nome</th><th>Instituição</th><th>País</th><th>PPGs mais conectados</th><th class="num">Conexões</th></tr></thead>
+    <tbody>${foreignRankedRows || `<tr><td colspan="6">Sem dados para os filtros atuais.</td></tr>`}</tbody>
   </table>
 </section>
-
-${institutionHierarchySection}
 
 <div class="report-footer">
   Gerado automaticamente pelo Painel de Parcerias Internacionais — PROPESP/UEA. Fonte dos matches: linha de pesquisa oficial de cada PPG (nome + descrição) × publicações de pesquisadores estrangeiros indexadas no OpenAlex, ranqueados por similaridade semântica (Sentence-BERT).
