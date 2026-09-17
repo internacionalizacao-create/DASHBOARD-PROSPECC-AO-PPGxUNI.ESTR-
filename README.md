@@ -13,7 +13,7 @@ Argélia, Moçambique, África do Sul (Johannesburg + Stellenbosch), Angola e 8
 universidades do Reino Unido.
 
 **🔗 Site publicado:** https://willpine1992.github.io/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR/
-**🔗 Acesso pela conta de Internacionalização:** https://github.com/internacionalizacao-create/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR-
+**🔗 Repositório na conta de Internacionalização:** https://github.com/internacionalizacao-create/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR-
 
 ## O que tem no dashboard
 
