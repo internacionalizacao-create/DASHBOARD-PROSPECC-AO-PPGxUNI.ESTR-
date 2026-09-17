@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GERBRAS Dashboard — geração de Relatório de Prospecção (HTML imprimível)
+   FAAP Dashboard — geração de Relatório de Prospecção (HTML imprimível)
 
    Recebe o recorte JÁ FILTRADO pela página (mesmos filtros do painel: PPG,
    linha de pesquisa, país, instituição, professor…) e monta um documento

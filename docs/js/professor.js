@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GERBRAS Dashboard — Página 3: Perfil do pesquisador estrangeiro
+   FAAP Dashboard — Página 3: Perfil do pesquisador estrangeiro
    ========================================================================== */
 (async function () {
   const { ppgs, linha_matches, institutions, professores, linhaById } = await loadData();
@@ -60,7 +60,7 @@
   });
   wireBackButton();
 
-  window.addEventListener("gerbras:themechange", () => {
+  window.addEventListener("faap:themechange", () => {
     renderPersonal();
     if (inst && inst.lat != null) renderInstitutionMap(document.getElementById("institution-map"), inst.lat, inst.lon, instName);
   });

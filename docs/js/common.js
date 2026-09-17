@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GERBRAS Dashboard — utilidades compartilhadas: dados, paleta, filtros
+   FAAP Dashboard — utilidades compartilhadas: dados, paleta, filtros
 
    Estrutura de dados (ver etl/export_dashboard_data.py):
      ppgs           - [{codigo, nome, linhas: [{id, titulo, descricao}]}]
@@ -45,7 +45,7 @@ let CHART_MAP_BORDER = "#ffffff";
 let CHART_NODE_NEUTRAL = "#0b3d2b";
 
 /* ---------- tema claro/escuro ---------- */
-const THEME_KEY = "gerbras-theme";
+const THEME_KEY = "faap-theme";
 
 function readCssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -71,7 +71,7 @@ function applyTheme(theme) {
   refreshThemeColors();
   const btn = document.getElementById("theme-toggle");
   if (btn) btn.setAttribute("aria-label", theme === "dark" ? "Mudar para tema claro" : "Mudar para tema escuro");
-  window.dispatchEvent(new CustomEvent("gerbras:themechange", { detail: { theme } }));
+  window.dispatchEvent(new CustomEvent("faap:themechange", { detail: { theme } }));
 }
 
 function toggleTheme() { applyTheme(getTheme() === "dark" ? "light" : "dark"); }

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GERBRAS Dashboard — funções de gráfico (D3): Sankey, mapa, barras
+   FAAP Dashboard — funções de gráfico (D3): Sankey, mapa, barras
    ========================================================================== */
 
 /* ---------------- Sankey: linha de pesquisa (oficial do PPG) -> instituição estrangeira ---------------- */

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GERBRAS Dashboard — Página 2: Flow Map Manaus → instituições estrangeiras
+   FAAP Dashboard — Página 2: Flow Map Manaus → instituições estrangeiras
    ========================================================================== */
 (async function () {
   const data = await loadData();
@@ -34,7 +34,7 @@
   initThemeToggle();
   build();
   window.addEventListener("resize", debounce(build, 200));
-  window.addEventListener("gerbras:themechange", () => {
+  window.addEventListener("faap:themechange", () => {
     computeScales();
     renderLegend();
     build();

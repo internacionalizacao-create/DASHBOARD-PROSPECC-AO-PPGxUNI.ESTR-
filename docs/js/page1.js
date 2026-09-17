@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GERBRAS Dashboard — Página 1: orquestração de filtros e gráficos
+   FAAP Dashboard — Página 1: orquestração de filtros e gráficos
 
    Cascata de filtro: PPG (agrupa todos os professores daquele PPG) -> Linha
    de pesquisa oficial daquele(s) PPG(s). Os matches (linha_matches) já
@@ -102,7 +102,7 @@
   });
 
   window.addEventListener("resize", debounce(render, 200));
-  window.addEventListener("gerbras:themechange", render);
+  window.addEventListener("faap:themechange", render);
   initThemeToggle();
 
   function syncURL() {

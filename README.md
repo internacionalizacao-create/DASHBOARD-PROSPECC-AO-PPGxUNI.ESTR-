@@ -1,4 +1,4 @@
-# GERBRAS · Parcerias Internacionais UEA (PPG × Universidades Estrangeiras)
+# FIND A ACADEMIC PARTNER - FAAP · Parcerias Internacionais UEA (PPG × Universidades Estrangeiras)
 
 Dashboard interativo que cruza os **Programas de Pós-Graduação (PPG)** da
 **Universidade do Estado do Amazonas (UEA)** — e suas linhas de pesquisa
@@ -13,6 +13,7 @@ Argélia, Moçambique, África do Sul (Johannesburg + Stellenbosch), Angola e 8
 universidades do Reino Unido.
 
 **🔗 Site publicado:** https://willpine1992.github.io/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR/
+**🔗 Acesso pela conta de Internacionalização:** https://github.com/internacionalizacao-create/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR-
 
 ## O que tem no dashboard
 

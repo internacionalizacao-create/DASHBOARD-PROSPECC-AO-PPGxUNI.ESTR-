@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GERBRAS Dashboard — Perfil do docente UEA (espelha professor.js, mas para
+   FAAP Dashboard — Perfil do docente UEA (espelha professor.js, mas para
    o lado UEA: PPG(s) no lugar de instituição estrangeira, linhas oficiais do
    PPG no lugar de "linhas em comum", pesquisadores estrangeiros conectados
    via qualquer linha do PPG no lugar de "professores UEA conectados").
@@ -56,7 +56,7 @@
   });
   wireBackButton();
 
-  window.addEventListener("gerbras:themechange", () => {
+  window.addEventListener("faap:themechange", () => {
     renderPersonal();
     renderInstitutionMap(document.getElementById("institution-map"), manaus.lat, manaus.lon, "UEA · Manaus");
   });
