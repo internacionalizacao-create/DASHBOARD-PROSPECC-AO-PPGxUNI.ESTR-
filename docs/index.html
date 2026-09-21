@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script>(function(){var t=localStorage.getItem('faap-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);})();</script>
 <title>FIND A ACADEMIC PARTNER - FAAP · Painel</title>
-<link rel="stylesheet" href="css/style.css?v=28" />
+<link rel="stylesheet" href="css/style.css?v=29" />
 </head>
 <body>
 
@@ -155,6 +155,20 @@
       <div class="panel__body" id="map-chart" style="flex:1; min-height:0;"></div>
     </div>
 
+    <div class="panel" id="ods-panel" data-help="ODS da ONU ligados às linhas de pesquisa da UEA que têm conexões com pesquisadores estrangeiros, considerando os filtros ativos. O número em cada quadro é a quantidade de pesquisadores estrangeiros distintos com conexão a linhas classificadas naquele ODS. Escolha uma universidade para ver só as conexões dela; clique num ODS para abrir a página ODS.">
+      <div class="panel__header">
+        <span class="panel__title">ODS</span>
+        <a class="panel__hint ods-panel__link" href="ods.html" id="ods-panel-link">ver página ODS →</a>
+      </div>
+      <div class="field">
+        <label for="filter-ods-inst">Universidade</label>
+        <select id="filter-ods-inst" class="dropdown">
+          <option value="">Todas</option>
+        </select>
+      </div>
+      <div class="ods-grid ods-grid--mini" id="ods-mini-grid" role="group" aria-label="ODS com conexões"></div>
+    </div>
+
     <div class="panel panel--grow" style="height:500px;" data-help="Ranking dos pesquisadores estrangeiros com mais conexões (matches) com professores da UEA, considerando os filtros ativos. Clique num nome para abrir o perfil completo daquele pesquisador.">
       <div class="panel__header">
         <span class="panel__title">Pesquisadores estrangeiros</span>
@@ -174,7 +188,7 @@
 <script src="lib/topojson-client.min.js"></script>
 <script src="js/common.js?v=27"></script>
 <script src="js/charts.js?v=27"></script>
-<script src="js/report.js?v=27"></script>
-<script src="js/page1.js?v=27"></script>
+<script src="js/report.js?v=30"></script>
+<script src="js/page1.js?v=30"></script>
 </body>
 </html>

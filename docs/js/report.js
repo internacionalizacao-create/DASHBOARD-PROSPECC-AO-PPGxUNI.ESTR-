@@ -17,6 +17,21 @@ function reportEsc(s) {
   ));
 }
 
+/* ---------- ODS de cada linha de pesquisa ---------- */
+// definido em generateProspectingReport (dados de data/ods.json); null = sem tags de ODS
+let reportOds = null;
+
+function reportOdsTags(linhaId) {
+  if (!reportOds) return "";
+  const c = reportOds.linhas[linhaId];
+  if (!c) return "";
+  return c.ods.map((o) => {
+    const meta = reportOds.ods.find((x) => x.n === o.n);
+    const tip = `ODS ${o.n} · ${meta.nome} (peso ${Math.round(o.peso * 100)}%)${c.fraca ? " · baixa confiança" : ""}`;
+    return `<span class="tag tag--ods" style="background:${meta.cor}" title="${reportEsc(tip)}">ODS ${o.n}</span>`;
+  }).join("");
+}
+
 function reportFmt(n) { return Number(n || 0).toLocaleString("pt-BR"); }
 
 async function fetchLogoDataURI() {
@@ -92,11 +107,13 @@ function aggregateForReport(matches) {
 
 /* ---------- linhas de pesquisa, separadas por PPG ---------- */
 function aggregateLinhasByPPG(matches) {
-  const byPPG = new Map(); // ppg_codigo -> Map(linha_titulo -> conexoes)
+  const byPPG = new Map(); // ppg_codigo -> Map(linha_titulo -> { linhaId, n })
   for (const m of matches) {
     if (!byPPG.has(m.ppg_codigo)) byPPG.set(m.ppg_codigo, new Map());
     const mm = byPPG.get(m.ppg_codigo);
-    mm.set(m.linha_titulo, (mm.get(m.linha_titulo) || 0) + 1);
+    const e = mm.get(m.linha_titulo) || { linhaId: m.linha_id, n: 0 };
+    e.n += 1;
+    mm.set(m.linha_titulo, e);
   }
   return byPPG;
 }
@@ -106,9 +123,9 @@ function buildLinhasByPPGSection(matches) {
   const ppgEntries = [...byPPG.entries()].sort((a, b) => a[0].localeCompare(b[0], "pt-BR"));
 
   const blocks = ppgEntries.map(([ppg, linhaMap]) => {
-    const entries = [...linhaMap.entries()].sort((a, b) => b[1] - a[1]);
+    const entries = [...linhaMap.entries()].sort((a, b) => b[1].n - a[1].n);
     const rows = entries
-      .map(([titulo, n]) => `<tr><td>${reportEsc(titulo)}</td><td class="num">${reportFmt(n)}</td></tr>`).join("");
+      .map(([titulo, e]) => `<tr><td>${reportEsc(titulo)}${reportOdsTags(e.linhaId)}</td><td class="num">${reportFmt(e.n)}</td></tr>`).join("");
 
     return `
       <div class="ppg-block">
@@ -123,7 +140,7 @@ function buildLinhasByPPGSection(matches) {
   return `
     <section class="report-section">
       <h2>Linhas de pesquisa com conexão internacional, por PPG</h2>
-      <p class="report-note">Para cada Programa de Pós-Graduação da UEA presente no recorte atual, as linhas de pesquisa oficiais com mais conexões internacionais identificadas.</p>
+      <p class="report-note">Para cada Programa de Pós-Graduação da UEA presente no recorte atual, as linhas de pesquisa oficiais com mais conexões internacionais identificadas.${reportOds ? " Ao lado de cada linha, o(s) ODS da ONU em que ela foi classificada (similaridade semântica; até 3 por linha)." : ""}</p>
       <div class="ppg-grid">${blocks || ""}</div>
       ${!blocks ? '<p class="report-note">Sem linhas de pesquisa com conexão para os filtros atuais.</p>' : ""}
     </section>`;
@@ -145,7 +162,7 @@ function aggregateInstitutionHierarchy(matches) {
     inst.conexoes += 1;
 
     if (!inst.linhas.has(m.linha_titulo)) {
-      inst.linhas.set(m.linha_titulo, { ppg_codigo: m.ppg_codigo, conexoes: 0, estrangeiros: new Map() });
+      inst.linhas.set(m.linha_titulo, { ppg_codigo: m.ppg_codigo, linha_id: m.linha_id, conexoes: 0, estrangeiros: new Map() });
     }
     const linha = inst.linhas.get(m.linha_titulo);
     linha.conexoes += 1;
@@ -177,7 +194,7 @@ function buildInstitutionHierarchySection(matches) {
 
       return `
         <div class="linha-block">
-          <h4>${reportEsc(titulo)} <span class="tag">${reportEsc(linha.ppg_codigo)}</span></h4>
+          <h4>${reportEsc(titulo)} <span class="tag">${reportEsc(linha.ppg_codigo)}</span>${reportOdsTags(linha.linha_id)}</h4>
           <div class="prof-chips">${foreignChips || '<span class="report-note">Nenhum pesquisador identificado.</span>'}</div>
         </div>`;
     }).join("");
@@ -278,6 +295,8 @@ function buildReportHTML({ professores, matches, filters, professorById, linhaBy
   table.report-table--compact td, table.report-table--compact th { padding: 4px 6px; font-size: 11.5px; }
   .tag { display: inline-block; font-size: 9.5px; color: var(--ink-muted); background: var(--wash); border: 1px solid var(--border);
     border-radius: 999px; padding: 1px 6px; margin-left: 4px; }
+  .tag--ods { color: #fff; border-color: transparent; font-weight: 700;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .inst-block { break-inside: avoid; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   .inst-block:last-child { border-bottom: none; }
   .inst-block h3 { color: var(--ink-primary); font-size: 14px; margin: 0 0 3px; }
@@ -364,7 +383,8 @@ ${institutionHierarchySection}
    e bloqueia a aba silenciosamente (sem erro no console, sem cair no
    `if (!win)`). Por isso abrimos a aba (em branco, com uma mensagem de
    carregando) ANTES de qualquer await, e só depois preenchemos o conteúdo. */
-function generateProspectingReport({ professores, matches, filters, professorById, linhaById, totals }) {
+function generateProspectingReport({ professores, matches, filters, professorById, linhaById, totals, odsData }) {
+  reportOds = odsData || null;
   const win = window.open("", "_blank");
   if (!win) {
     alert("O navegador bloqueou a abertura da nova aba. Permita pop-ups para este site e tente novamente.");

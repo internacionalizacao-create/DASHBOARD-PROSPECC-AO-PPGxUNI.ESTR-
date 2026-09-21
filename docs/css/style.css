@@ -742,3 +742,12 @@ h1, h2, h3 { color: var(--ink-primary); margin: 0; font-weight: 700; letter-spac
   .ods-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .ods-detail { max-height: none; }
 }
+
+/* painel ODS compacto na página 1 (coluna da direita) */
+.ods-grid--mini { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+.ods-grid--mini .ods-tile { border-radius: 8px; }
+.ods-grid--mini .ods-tile__count { bottom: 3px; right: 3px; min-width: 16px; padding: 1px 5px; font-size: 9.5px; }
+.ods-tile.is-empty { opacity: 0.35; }
+.ods-tile.is-empty:hover { opacity: 0.8; }
+.ods-panel__link { text-decoration: none; }
+.ods-panel__link:hover { color: var(--ink-primary); text-decoration: underline; }

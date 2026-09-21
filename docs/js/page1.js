@@ -8,6 +8,8 @@
    ========================================================================== */
 (async function () {
   const { ppgs, professores, linha_matches, institutions, manaus, professorById, linhaById, capesByCode, capesOpcoes } = await loadData();
+  // classificação das linhas da UEA em ODS (etl/ods_classify.py); se faltar, o painel de ODS só some
+  const odsData = await fetch("../data/ods.json", { cache: "no-cache" }).then((r) => r.json()).catch(() => null);
 
   let filters = readFiltersFromURL();
   let profSearchText = filters.q || "";
@@ -69,6 +71,7 @@
     }
     syncURL(); render();
   });
+  d3.select("#filter-ods-inst").on("change", function () { filters.instituicao = this.value; syncURL(); render(); });
   d3.select("#prof-search").property("value", profSearchText).on("input", debounce(function (ev) {
     profSearchText = ev.target.value;
     renderProfessorList();
@@ -96,7 +99,7 @@
     generateProspectingReport({
       professores: currentFilteredProfessores,
       matches: currentMatchesForReport,
-      filters, professorById, linhaById,
+      filters, professorById, linhaById, odsData,
       totals: { professores: professores.length, institutions: institutions.length },
     });
   });
@@ -163,9 +166,46 @@
     });
     updateSbertCard(null);
     renderCountryMap(document.getElementById("map-chart"), matchesForCharts);
+    renderOdsPanel(matchesForCharts, linhaIdsAtuais);
 
     d3.select("#sankey-hint").text(`${fmt(matchesForCharts.length)} conexões`);
     d3.select("#prof-count-hint").text(`${fmt(currentFilteredProfessores.length)} / ${fmt(professores.length)}`);
+  }
+
+  /* ---- painel ODS: pesquisadores estrangeiros distintos por ODS (via linha da UEA → ODS) ---- */
+  function renderOdsPanel(matchesForCharts, linhaIdsAtuais) {
+    const panel = document.getElementById("ods-panel");
+    if (!odsData) { panel.style.display = "none"; return; }
+
+    // opções de universidade: respeita PPG + linha + país, mas NÃO a própria instituição escolhida
+    const semInst = applyLinhaMatchFilters(linha_matches, { ...filters, instituicao: "" })
+      .filter((m) => linhaIdsAtuais.has(m.linha_id));
+    const nomes = [...new Set(semInst.map((m) => m.foreign_institution))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+    if (filters.instituicao && !nomes.includes(filters.instituicao)) nomes.unshift(filters.instituicao);
+    const sel = d3.select("#filter-ods-inst");
+    sel.selectAll("option:not(:first-child)").remove();
+    sel.selectAll(null).data(nomes).join("option").attr("value", (d) => d).text((d) => d);
+    sel.property("value", filters.instituicao || "");
+
+    const porOds = new Map(odsData.ods.map((o) => [o.n, new Set()]));
+    for (const m of matchesForCharts) {
+      const c = odsData.linhas[m.linha_id];
+      if (!c) continue;
+      const autor = m.foreign_author_openalex_id || m.foreign_author_name;
+      for (const o of c.ods) porOds.get(o.n).add(autor);
+    }
+
+    const qs = filters.pais ? `&pais=${encodeURIComponent(filters.pais)}` : "";
+    const grid = document.getElementById("ods-mini-grid");
+    grid.innerHTML = odsData.ods.map((o) => {
+      const n = porOds.get(o.n).size;
+      const tip = `ODS ${o.n} · ${o.nome} — ${n} pesquisador${n === 1 ? "" : "es"} estrangeiro${n === 1 ? "" : "s"}`;
+      return `<button type="button" class="ods-tile${n ? "" : " is-empty"}" title="${tip}" aria-label="${tip}"
+          onclick="location.href='ods.html?ods=${o.n}${qs}'">
+          <img src="${o.imagem}" alt="ODS ${o.n}" loading="lazy" /><span class="ods-tile__count">${fmt(n)}</span></button>`;
+    }).join("") +
+      `<div class="ods-logo"><img src="image/ods/ods.png" alt="Objetivos de Desenvolvimento Sustentável" /></div>`;
+    document.getElementById("ods-panel-link").href = "ods.html" + (filters.pais ? `?pais=${encodeURIComponent(filters.pais)}` : "");
   }
 
   function capesConceitoBadge(codigo) {
