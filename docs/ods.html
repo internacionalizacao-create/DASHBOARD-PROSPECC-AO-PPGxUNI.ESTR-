@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>(function(){var t=localStorage.getItem('faap-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);})();</script>
+<title>FIND A ACADEMIC PARTNER - FAAP · ODS</title>
+<link rel="stylesheet" href="css/style.css?v=28" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <img src="image/propespuea.svg" alt="PROPESP UEA" class="topbar__logo" />
+    <img src="image/logo_internacionalizacao.png" alt="Comissão de Internacionalização da Pós-Graduação" class="topbar__logo topbar__logo--intl" />
+    <div class="topbar__title">
+      <strong>FIND A ACADEMIC PARTNER - FAAP</strong>
+      <span>Objetivos de Desenvolvimento Sustentável</span>
+    </div>
+  </div>
+
+  <nav class="topbar__nav">
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+    <a href="index.html" class="topbar__link">Painel</a>
+    <a href="ods.html" class="topbar__link is-active">ODS</a>
+    <a href="flowmap.html" class="topbar__link">Mapa de Fluxo</a>
+  </nav>
+</header>
+
+<div class="statbar" id="topbar-stats"></div>
+
+<main class="ods-page">
+  <div class="ods-hero">
+    <div>
+      <h1>Agenda 2030 × linhas de pesquisa da UEA</h1>
+      <p>Os 17 Objetivos de Desenvolvimento Sustentável da ONU. Cada linha de pesquisa oficial dos PPGs da UEA foi classificada em até três ODS por similaridade semântica (Sentence-BERT, offline). Clique num ODS para ver as linhas da UEA associadas e as universidades estrangeiras com pesquisadores nessas linhas.</p>
+    </div>
+    <div class="field ods-hero__filter">
+      <label for="ods-pais">País</label>
+      <select id="ods-pais" class="dropdown"><option value="">Todos os países</option></select>
+    </div>
+  </div>
+
+  <div class="ods-top">
+    <section class="panel ods-grid-panel" data-help="Os 17 ODS em ordem. O número no canto de cada quadro é a quantidade de linhas de pesquisa da UEA classificadas naquele ODS. Clique para ver os detalhes.">
+      <div class="ods-grid" id="ods-grid" role="group" aria-label="Objetivos de Desenvolvimento Sustentável"></div>
+    </section>
+
+    <section class="panel ods-detail" id="ods-detail" aria-live="polite">
+      <div class="empty-hint">Selecione um ODS ao lado.</div>
+    </section>
+  </div>
+
+  <section class="panel ods-matrix-panel" data-help="Quadro universidade × ODS: cada célula mostra quantos pesquisadores distintos da instituição tiveram match forte (score ≥ 0,50) com linhas da UEA classificadas no ODS. Com os dados do OpenAlex, também é possível ver a participação do ODS na produção da universidade e o índice de especialização. Clique no ícone de um ODS para destacá-lo.">
+    <div class="panel__header">
+      <span class="panel__title">Universidade × ODS</span>
+      <span class="ods-matrix__controls">
+        <label for="ods-metric" class="muted text-xs">Métrica</label>
+        <select id="ods-metric" class="dropdown"></select>
+      </span>
+    </div>
+    <div class="ods-matrix-note" id="ods-matrix-note"></div>
+    <div class="ods-matrix-scroll" id="ods-matrix"></div>
+  </section>
+</main>
+
+<footer class="site-credit">Powered by William Pinheiro</footer>
+
+<script src="js/common.js?v=28"></script>
+<script src="js/ods.js?v=28"></script>
+</body>
+</html>

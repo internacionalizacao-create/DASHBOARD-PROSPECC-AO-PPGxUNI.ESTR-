@@ -1,0 +1,8437 @@
+{
+ "gerado_em": "2026-09-21",
+ "metodo": {
+  "classificador": "Sentence-BERT all-MiniLM-L6-v2 (cosseno entre linha traduzida p/ EN e descrição do ODS)",
+  "min_sim": 0.2,
+  "margem_top": 0.06,
+  "max_ods_por_linha": 3,
+  "score_alto_matching": 0.5
+ },
+ "ods": [
+  {
+   "n": 1,
+   "cor": "#E5243B",
+   "nome": "Erradicação da pobreza",
+   "meta": "Acabar com a pobreza em todas as suas formas, em todos os lugares.",
+   "imagem": "image/ods/ods1.png"
+  },
+  {
+   "n": 2,
+   "cor": "#DDA63A",
+   "nome": "Fome zero e agricultura sustentável",
+   "meta": "Acabar com a fome, alcançar a segurança alimentar e melhoria da nutrição e promover a agricultura sustentável.",
+   "imagem": "image/ods/ods2.png"
+  },
+  {
+   "n": 3,
+   "cor": "#4C9F38",
+   "nome": "Saúde e bem-estar",
+   "meta": "Assegurar uma vida saudável e promover o bem-estar para todas e todos, em todas as idades.",
+   "imagem": "image/ods/ods3.png"
+  },
+  {
+   "n": 4,
+   "cor": "#C5192D",
+   "nome": "Educação de qualidade",
+   "meta": "Assegurar a educação inclusiva e equitativa e de qualidade, e promover oportunidades de aprendizagem ao longo da vida.",
+   "imagem": "image/ods/ods4.png"
+  },
+  {
+   "n": 5,
+   "cor": "#FF3A21",
+   "nome": "Igualdade de gênero",
+   "meta": "Alcançar a igualdade de gênero e empoderar todas as mulheres e meninas.",
+   "imagem": "image/ods/ods5.png"
+  },
+  {
+   "n": 6,
+   "cor": "#26BDE2",
+   "nome": "Água potável e saneamento",
+   "meta": "Assegurar a disponibilidade e gestão sustentável da água e saneamento para todas e todos.",
+   "imagem": "image/ods/ods6.png"
+  },
+  {
+   "n": 7,
+   "cor": "#FCC30B",
+   "nome": "Energia limpa e acessível",
+   "meta": "Assegurar o acesso confiável, sustentável, moderno e a preço acessível à energia para todas e todos.",
+   "imagem": "image/ods/ods7.png"
+  },
+  {
+   "n": 8,
+   "cor": "#A21942",
+   "nome": "Trabalho decente e crescimento econômico",
+   "meta": "Promover o crescimento econômico sustentado, inclusivo e sustentável, emprego pleno e trabalho decente.",
+   "imagem": "image/ods/ods8.png"
+  },
+  {
+   "n": 9,
+   "cor": "#FD6925",
+   "nome": "Indústria, inovação e infraestrutura",
+   "meta": "Construir infraestruturas resilientes, promover a industrialização inclusiva e sustentável e fomentar a inovação.",
+   "imagem": "image/ods/ods9.png"
+  },
+  {
+   "n": 10,
+   "cor": "#DD1367",
+   "nome": "Redução das desigualdades",
+   "meta": "Reduzir a desigualdade dentro dos países e entre eles.",
+   "imagem": "image/ods/ods10.png"
+  },
+  {
+   "n": 11,
+   "cor": "#FD9D24",
+   "nome": "Cidades e comunidades sustentáveis",
+   "meta": "Tornar as cidades e os assentamentos humanos inclusivos, seguros, resilientes e sustentáveis.",
+   "imagem": "image/ods/ods11.png"
+  },
+  {
+   "n": 12,
+   "cor": "#BF8B2E",
+   "nome": "Consumo e produção responsáveis",
+   "meta": "Assegurar padrões de produção e de consumo sustentáveis.",
+   "imagem": "image/ods/ods12.png"
+  },
+  {
+   "n": 13,
+   "cor": "#3F7E44",
+   "nome": "Ação contra a mudança global do clima",
+   "meta": "Tomar medidas urgentes para combater a mudança climática e seus impactos.",
+   "imagem": "image/ods/ods13.png"
+  },
+  {
+   "n": 14,
+   "cor": "#0A97D9",
+   "nome": "Vida na água",
+   "meta": "Conservação e uso sustentável dos oceanos, dos mares e dos recursos marinhos.",
+   "imagem": "image/ods/ods14.png"
+  },
+  {
+   "n": 15,
+   "cor": "#56C02B",
+   "nome": "Vida terrestre",
+   "meta": "Proteger, recuperar e promover o uso sustentável dos ecossistemas terrestres, gerir florestas e deter a perda de biodiversidade.",
+   "imagem": "image/ods/ods15.png"
+  },
+  {
+   "n": 16,
+   "cor": "#00689D",
+   "nome": "Paz, justiça e instituições eficazes",
+   "meta": "Promover sociedades pacíficas e inclusivas, proporcionar acesso à justiça e construir instituições eficazes.",
+   "imagem": "image/ods/ods16.png"
+  },
+  {
+   "n": 17,
+   "cor": "#19486A",
+   "nome": "Parcerias e meios de implementação",
+   "meta": "Fortalecer os meios de implementação e revitalizar a parceria global para o desenvolvimento sustentável.",
+   "imagem": "image/ods/ods17.png"
+  }
+ ],
+ "linhas": {
+  "CLIAMB-1": {
+   "ppg_codigo": "CLIAMB",
+   "titulo": "Clima e funcionamento dos ecossistemas amazônicos",
+   "sims": [
+    0.113,
+    0.137,
+    0.098,
+    0.05,
+    0.066,
+    0.221,
+    0.125,
+    0.101,
+    0.053,
+    0.142,
+    0.161,
+    0.169,
+    0.427,
+    0.359,
+    0.578,
+    0.062,
+    0.1
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.578,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "CLIAMB-2": {
+   "ppg_codigo": "CLIAMB",
+   "titulo": "Meteorologia tropical",
+   "sims": [
+    0.133,
+    0.154,
+    0.232,
+    0.011,
+    0.042,
+    0.137,
+    0.082,
+    0.1,
+    0.012,
+    0.121,
+    0.095,
+    0.056,
+    0.374,
+    0.163,
+    0.276,
+    0.028,
+    0.127
+   ],
+   "ods": [
+    {
+     "n": 13,
+     "sim": 0.374,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "CLIAMB-3": {
+   "ppg_codigo": "CLIAMB",
+   "titulo": "Modelagem climática",
+   "sims": [
+    0.146,
+    0.185,
+    0.101,
+    0.024,
+    0.135,
+    0.248,
+    0.16,
+    0.118,
+    0.081,
+    0.18,
+    0.205,
+    0.175,
+    0.561,
+    0.271,
+    0.509,
+    0.004,
+    0.146
+   ],
+   "ods": [
+    {
+     "n": 13,
+     "sim": 0.561,
+     "peso": 0.525
+    },
+    {
+     "n": 15,
+     "sim": 0.509,
+     "peso": 0.475
+    }
+   ],
+   "fraca": false
+  },
+  "CLIAMB-4": {
+   "ppg_codigo": "CLIAMB",
+   "titulo": "Processos interação biosfera-atmosfera",
+   "sims": [
+    -0.003,
+    0.101,
+    0.024,
+    -0.03,
+    0.01,
+    0.116,
+    0.073,
+    -0.031,
+    -0.023,
+    0.042,
+    0.079,
+    0.094,
+    0.303,
+    0.215,
+    0.401,
+    0.024,
+    0.089
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.401,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "CLIAMB-5": {
+   "ppg_codigo": "CLIAMB",
+   "titulo": "Interações Clima",
+   "sims": [
+    0.132,
+    0.181,
+    0.155,
+    0.018,
+    0.127,
+    0.172,
+    0.193,
+    0.12,
+    0.121,
+    0.202,
+    0.256,
+    0.172,
+    0.616,
+    0.288,
+    0.287,
+    0.061,
+    0.238
+   ],
+   "ods": [
+    {
+     "n": 13,
+     "sim": 0.616,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "CLIAMB-6": {
+   "ppg_codigo": "CLIAMB",
+   "titulo": "Processos Interação Biosfera",
+   "sims": [
+    0.049,
+    0.082,
+    0.137,
+    -0.037,
+    0.037,
+    0.229,
+    0.131,
+    0.077,
+    0.1,
+    0.07,
+    0.165,
+    0.163,
+    0.225,
+    0.245,
+    0.277,
+    0.028,
+    0.148
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.277,
+     "peso": 0.37
+    },
+    {
+     "n": 14,
+     "sim": 0.245,
+     "peso": 0.326
+    },
+    {
+     "n": 6,
+     "sim": 0.229,
+     "peso": 0.305
+    }
+   ],
+   "fraca": false
+  },
+  "DASPAM-1": {
+   "ppg_codigo": "DASPAM",
+   "titulo": "Estudos de Processo Saúde/Doença/Atenção",
+   "sims": [
+    0.071,
+    0.098,
+    0.357,
+    0.114,
+    0.065,
+    0.234,
+    0.064,
+    0.126,
+    0.05,
+    0.052,
+    0.09,
+    0.129,
+    0.059,
+    0.074,
+    0.034,
+    0.099,
+    0.114
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.357,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "DASPAM-2": {
+   "ppg_codigo": "DASPAM",
+   "titulo": "Vulnerabilidade, Situações de Saúde, Gestão, Organização e Avaliação de Serviços e Cuidados de APS na Amazônia",
+   "sims": [
+    0.257,
+    0.144,
+    0.319,
+    0.15,
+    0.129,
+    0.219,
+    0.067,
+    0.105,
+    0.166,
+    0.131,
+    0.155,
+    0.199,
+    0.094,
+    0.234,
+    0.379,
+    0.176,
+    0.179
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.379,
+     "peso": 0.543
+    },
+    {
+     "n": 3,
+     "sim": 0.319,
+     "peso": 0.457
+    }
+   ],
+   "fraca": false
+  },
+  "DASPAM-3": {
+   "ppg_codigo": "DASPAM",
+   "titulo": "Dinâmica, Diagnóstico, Cuidado Clínico e Controle de Doenças Infecciosas Endêmicas na Amazônia",
+   "sims": [
+    0.096,
+    0.07,
+    0.319,
+    0.017,
+    0.035,
+    0.156,
+    -0.037,
+    0.027,
+    -0.012,
+    0.126,
+    0.031,
+    0.006,
+    0.073,
+    0.169,
+    0.37,
+    0.048,
+    0.058
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.37,
+     "peso": 0.537
+    },
+    {
+     "n": 3,
+     "sim": 0.319,
+     "peso": 0.463
+    }
+   ],
+   "fraca": false
+  },
+  "EDUCANORTE-1": {
+   "ppg_codigo": "EDUCANORTE",
+   "titulo": "Educação",
+   "sims": [
+    0.211,
+    0.2,
+    0.233,
+    0.444,
+    0.22,
+    0.167,
+    0.127,
+    0.188,
+    0.21,
+    0.216,
+    0.086,
+    0.088,
+    0.086,
+    0.116,
+    0.102,
+    0.193,
+    0.257
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.444,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "EDUCANORTE-2": {
+   "ppg_codigo": "EDUCANORTE",
+   "titulo": "ESTADO, POLÍTICAS PÚBLICAS E GESTÃO DA EDUCAÇÃO",
+   "sims": [
+    0.185,
+    0.251,
+    0.195,
+    0.526,
+    0.249,
+    0.297,
+    0.214,
+    0.239,
+    0.219,
+    0.231,
+    0.255,
+    0.216,
+    0.17,
+    0.12,
+    0.11,
+    0.351,
+    0.241
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.526,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "EDUCANORTE-3": {
+   "ppg_codigo": "EDUCANORTE",
+   "titulo": "SABERES, LINGUAGEM E EDUCAÇÃO",
+   "sims": [
+    0.217,
+    0.17,
+    0.266,
+    0.395,
+    0.206,
+    0.185,
+    0.133,
+    0.174,
+    0.21,
+    0.23,
+    0.078,
+    0.074,
+    0.08,
+    0.134,
+    0.141,
+    0.228,
+    0.21
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.395,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "EDUCANORTE-4": {
+   "ppg_codigo": "EDUCANORTE",
+   "titulo": "EDUCAÇÃO NA AMAZÔNIA",
+   "sims": [
+    0.108,
+    0.111,
+    0.132,
+    0.422,
+    0.151,
+    0.088,
+    0.017,
+    0.131,
+    0.083,
+    0.22,
+    0.052,
+    0.101,
+    0.045,
+    0.155,
+    0.385,
+    0.071,
+    0.151
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.422,
+     "peso": 0.523
+    },
+    {
+     "n": 15,
+     "sim": 0.385,
+     "peso": 0.477
+    }
+   ],
+   "fraca": false
+  },
+  "PMBqBM-1": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Bioquímica em Estados Patológicos (BEP)",
+   "sims": [
+    -0.005,
+    0.056,
+    0.112,
+    -0.014,
+    -0.114,
+    0.081,
+    0.01,
+    0.042,
+    0.06,
+    -0.057,
+    0.132,
+    0.083,
+    0.044,
+    0.017,
+    0.031,
+    0.015,
+    0.056
+   ],
+   "ods": [
+    {
+     "n": 11,
+     "sim": 0.132,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PMBqBM-2": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Biotecnologia (BT)",
+   "sims": [
+    0.025,
+    0.249,
+    0.158,
+    0.043,
+    0.113,
+    0.264,
+    0.294,
+    0.206,
+    0.308,
+    0.016,
+    0.097,
+    0.317,
+    0.173,
+    0.274,
+    0.329,
+    0.036,
+    0.27
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.329,
+     "peso": 0.345
+    },
+    {
+     "n": 12,
+     "sim": 0.317,
+     "peso": 0.332
+    },
+    {
+     "n": 9,
+     "sim": 0.308,
+     "peso": 0.323
+    }
+   ],
+   "fraca": false
+  },
+  "PMBqBM-3": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Genômica Funcional (GF)",
+   "sims": [
+    0.036,
+    0.112,
+    0.109,
+    -0.081,
+    0.064,
+    0.083,
+    0.099,
+    0.036,
+    0.047,
+    0.024,
+    0.06,
+    0.09,
+    0.137,
+    0.153,
+    0.128,
+    0.002,
+    0.096
+   ],
+   "ods": [
+    {
+     "n": 14,
+     "sim": 0.153,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PMBqBM-4": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Mediadores Celulares (MC)",
+   "sims": [
+    -0.026,
+    0.134,
+    0.152,
+    0.016,
+    0.039,
+    0.133,
+    0.081,
+    0.026,
+    0.06,
+    -0.079,
+    0.034,
+    0.043,
+    0.08,
+    0.156,
+    0.051,
+    0.016,
+    0.092
+   ],
+   "ods": [
+    {
+     "n": 14,
+     "sim": 0.156,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PMBqBM-5": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Bioquímica e Biologia Molecular",
+   "sims": [
+    0.015,
+    0.105,
+    0.199,
+    0.146,
+    0.171,
+    0.174,
+    0.074,
+    0.106,
+    0.114,
+    0.001,
+    0.059,
+    0.103,
+    0.122,
+    0.207,
+    0.182,
+    0.1,
+    0.131
+   ],
+   "ods": [
+    {
+     "n": 14,
+     "sim": 0.207,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PMBqBM-6": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Bioquímica em estados patológicos",
+   "sims": [
+    -0.024,
+    0.032,
+    0.15,
+    -0.081,
+    -0.04,
+    0.108,
+    -0.025,
+    -0.001,
+    -0.025,
+    -0.05,
+    0.052,
+    0.015,
+    -0.01,
+    0.148,
+    0.107,
+    0.062,
+    -0.057
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.15,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PMBqBM-7": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Genômica funcional",
+   "sims": [
+    0.033,
+    0.043,
+    0.122,
+    -0.058,
+    0.087,
+    0.046,
+    0.074,
+    0.09,
+    0.133,
+    0.042,
+    0.058,
+    0.052,
+    0.069,
+    0.125,
+    0.05,
+    0.048,
+    0.122
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.133,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PMBqBM-8": {
+   "ppg_codigo": "PMBqBM",
+   "titulo": "Mediadores celulares",
+   "sims": [
+    0.075,
+    0.109,
+    0.139,
+    0.055,
+    0.072,
+    0.054,
+    0.102,
+    0.059,
+    0.233,
+    0.05,
+    0.04,
+    0.014,
+    0.039,
+    0.12,
+    0.064,
+    0.073,
+    0.158
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.233,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPG PROENSP-1": {
+   "ppg_codigo": "PPG PROENSP",
+   "titulo": "Tecnologias Sociais e Educativas como Instrumentos para Promoção da Saúde",
+   "sims": [
+    0.215,
+    0.201,
+    0.356,
+    0.343,
+    0.142,
+    0.191,
+    0.156,
+    0.063,
+    0.157,
+    0.139,
+    0.112,
+    0.167,
+    0.039,
+    0.094,
+    0.078,
+    0.144,
+    0.185
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.356,
+     "peso": 0.509
+    },
+    {
+     "n": 4,
+     "sim": 0.343,
+     "peso": 0.491
+    }
+   ],
+   "fraca": false
+  },
+  "PPG PROENSP-2": {
+   "ppg_codigo": "PPG PROENSP",
+   "titulo": "Tecnologias de Cuidado e de Gestão em Enfermagem e Saúde",
+   "sims": [
+    0.182,
+    0.146,
+    0.367,
+    0.11,
+    0.078,
+    0.245,
+    0.084,
+    0.104,
+    0.262,
+    0.042,
+    0.088,
+    0.164,
+    0.019,
+    0.069,
+    0.137,
+    0.138,
+    0.243
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.367,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPG PROENSP-3": {
+   "ppg_codigo": "PPG PROENSP",
+   "titulo": "Práticas de Enfermagem em Saúde Pública na Amazônia",
+   "sims": [
+    0.13,
+    0.114,
+    0.343,
+    0.198,
+    0.19,
+    0.17,
+    0.048,
+    0.087,
+    0.014,
+    0.123,
+    0.105,
+    0.153,
+    0.063,
+    0.132,
+    0.279,
+    0.148,
+    0.111
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.343,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGBEC-1": {
+   "ppg_codigo": "PPGBEC",
+   "titulo": "Biodiversidade e Ensino de Ciências Naturais na Amazônia",
+   "sims": [
+    0.085,
+    0.128,
+    0.164,
+    0.229,
+    0.154,
+    0.16,
+    0.088,
+    0.087,
+    0.045,
+    0.208,
+    0.088,
+    0.13,
+    0.218,
+    0.375,
+    0.621,
+    0.043,
+    0.105
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.621,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGBEC-2": {
+   "ppg_codigo": "PPGBEC",
+   "titulo": "Etnobiodiversidade e Conservação da Amazônia",
+   "sims": [
+    0.179,
+    0.159,
+    0.14,
+    0.1,
+    0.146,
+    0.115,
+    0.083,
+    0.124,
+    0.165,
+    0.312,
+    0.178,
+    0.218,
+    0.225,
+    0.299,
+    0.548,
+    0.102,
+    0.096
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.548,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGBEC-3": {
+   "ppg_codigo": "PPGBEC",
+   "titulo": "Ensino de Ciências Naturais na Amazônia",
+   "sims": [
+    0.049,
+    0.126,
+    0.189,
+    0.255,
+    0.197,
+    0.144,
+    0.139,
+    0.123,
+    0.123,
+    0.176,
+    0.043,
+    0.132,
+    0.203,
+    0.319,
+    0.473,
+    0.031,
+    0.137
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.473,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGCAD-1": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Dermatologia Clínica",
+   "sims": [
+    0.016,
+    0.001,
+    0.201,
+    0.024,
+    0.075,
+    0.174,
+    0.087,
+    -0.042,
+    -0.034,
+    0.075,
+    0.144,
+    0.113,
+    0.118,
+    0.013,
+    0.055,
+    0.028,
+    0.01
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.201,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGCAD-2": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Pesquisa Experimental em Dermatologia",
+   "sims": [
+    -0.026,
+    -0.045,
+    0.064,
+    -0.048,
+    0.003,
+    0.14,
+    0.028,
+    -0.045,
+    0.023,
+    0.004,
+    0.025,
+    0.019,
+    -0.047,
+    -0.053,
+    -0.015,
+    -0.031,
+    0.003
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.14,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGCAD-3": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Dermatoses De Origem Fúngica",
+   "sims": [
+    -0.007,
+    -0.05,
+    0.068,
+    -0.018,
+    -0.061,
+    -0.001,
+    -0.021,
+    -0.028,
+    -0.061,
+    0.041,
+    -0.065,
+    0.022,
+    -0.072,
+    0.021,
+    0.028,
+    -0.039,
+    -0.104
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.068,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGCAD-4": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Dermatoses Inflamatórias, Infecciosas, Neoplásicas, Autoimunes e Genodermatoses",
+   "sims": [
+    0.019,
+    0.004,
+    0.125,
+    -0.044,
+    0.007,
+    -0.013,
+    0.029,
+    0.013,
+    -0.044,
+    0.056,
+    0.006,
+    -0.047,
+    0.018,
+    -0.024,
+    -0.062,
+    -0.033,
+    -0.071
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.125,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGCAD-5": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Hanseníase",
+   "sims": [
+    0.182,
+    0.083,
+    0.184,
+    -0.011,
+    0.068,
+    0.005,
+    0.009,
+    0.024,
+    0.041,
+    -0.057,
+    -0.054,
+    -0.04,
+    0.012,
+    0.021,
+    -0.059,
+    -0.015,
+    0.069
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.184,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGCAD-6": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Leishmaniose",
+   "sims": [
+    0.093,
+    0.084,
+    0.234,
+    -0.017,
+    0.025,
+    0.04,
+    -0.031,
+    0.018,
+    -0.041,
+    -0.009,
+    -0.011,
+    -0.028,
+    -0.019,
+    0.052,
+    0.01,
+    -0.022,
+    -0.033
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.234,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGCAD-7": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Genética das Doenças Dermatológicas",
+   "sims": [
+    -0.022,
+    -0.117,
+    0.09,
+    -0.041,
+    -0.009,
+    -0.005,
+    -0.049,
+    -0.059,
+    -0.092,
+    0.068,
+    -0.027,
+    -0.021,
+    -0.048,
+    -0.061,
+    -0.07,
+    -0.036,
+    -0.044
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.09,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGCAD-8": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Infecções Sexualmente Transmissíveis",
+   "sims": [
+    0.092,
+    0.028,
+    0.265,
+    0.004,
+    0.146,
+    0.119,
+    -0.022,
+    0.019,
+    0.023,
+    0.023,
+    0.04,
+    -0.018,
+    0.024,
+    0.02,
+    -0.02,
+    0.067,
+    0.06
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.265,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGCAD-9": {
+   "ppg_codigo": "PPGCAD",
+   "titulo": "Oncologia Cutânea",
+   "sims": [
+    -0.022,
+    -0.071,
+    0.035,
+    -0.017,
+    0.027,
+    -0.088,
+    -0.046,
+    -0.042,
+    -0.091,
+    -0.003,
+    -0.086,
+    -0.081,
+    -0.068,
+    -0.032,
+    0.023,
+    -0.011,
+    -0.073
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.035,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGCSA-1": {
+   "ppg_codigo": "PPGCSA",
+   "titulo": "Ciências da Saúde na Amazônia",
+   "sims": [
+    0.113,
+    0.152,
+    0.363,
+    0.18,
+    0.189,
+    0.226,
+    0.112,
+    0.138,
+    0.115,
+    0.172,
+    0.109,
+    0.168,
+    0.139,
+    0.334,
+    0.475,
+    0.09,
+    0.203
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.475,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGCSA-2": {
+   "ppg_codigo": "PPGCSA",
+   "titulo": "Epidemiologia e promoção à saúde em populações amazônidas",
+   "sims": [
+    0.138,
+    0.141,
+    0.378,
+    0.035,
+    0.125,
+    0.134,
+    0.029,
+    0.031,
+    -0.065,
+    0.249,
+    0.095,
+    0.086,
+    0.153,
+    0.242,
+    0.395,
+    0.018,
+    0.065
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.395,
+     "peso": 0.511
+    },
+    {
+     "n": 3,
+     "sim": 0.378,
+     "peso": 0.489
+    }
+   ],
+   "fraca": false
+  },
+  "PPGCSA-3": {
+   "ppg_codigo": "PPGCSA",
+   "titulo": "Prevenção, diagnóstico e cuidados de agravos à saúde em populações Amazônidas",
+   "sims": [
+    0.179,
+    0.12,
+    0.376,
+    0.099,
+    0.121,
+    0.206,
+    0.038,
+    0.068,
+    -0.019,
+    0.247,
+    0.133,
+    0.11,
+    0.106,
+    0.22,
+    0.372,
+    0.02,
+    0.049
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.376,
+     "peso": 0.503
+    },
+    {
+     "n": 15,
+     "sim": 0.372,
+     "peso": 0.497
+    }
+   ],
+   "fraca": false
+  },
+  "PPGDA-1": {
+   "ppg_codigo": "PPGDA",
+   "titulo": "CONSERVAÇÃO DOS RECURSOS NATURAIS E DESENVOLVIMENTO SUSTENTÁVEL",
+   "sims": [
+    0.275,
+    0.217,
+    0.298,
+    0.288,
+    0.237,
+    0.363,
+    0.258,
+    0.217,
+    0.189,
+    0.368,
+    0.38,
+    0.379,
+    0.265,
+    0.373,
+    0.555,
+    0.336,
+    0.184
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.555,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGDA-2": {
+   "ppg_codigo": "PPGDA",
+   "titulo": "DIREITOS DA SÓCIO E BIODIVERSIDADE",
+   "sims": [
+    0.282,
+    0.199,
+    0.319,
+    0.256,
+    0.321,
+    0.427,
+    0.327,
+    0.241,
+    0.267,
+    0.337,
+    0.409,
+    0.347,
+    0.271,
+    0.39,
+    0.481,
+    0.408,
+    0.195
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.481,
+     "peso": 0.53
+    },
+    {
+     "n": 6,
+     "sim": 0.427,
+     "peso": 0.47
+    }
+   ],
+   "fraca": false
+  },
+  "PPGDA-3": {
+   "ppg_codigo": "PPGDA",
+   "titulo": "Direito Ambiental",
+   "sims": [
+    0.101,
+    0.088,
+    0.16,
+    0.05,
+    0.152,
+    0.299,
+    0.234,
+    0.026,
+    0.182,
+    0.151,
+    0.3,
+    0.317,
+    0.33,
+    0.301,
+    0.288,
+    0.206,
+    0.115
+   ],
+   "ods": [
+    {
+     "n": 13,
+     "sim": 0.33,
+     "peso": 0.348
+    },
+    {
+     "n": 12,
+     "sim": 0.317,
+     "peso": 0.335
+    },
+    {
+     "n": 14,
+     "sim": 0.301,
+     "peso": 0.317
+    }
+   ],
+   "fraca": false
+  },
+  "PPGDA-4": {
+   "ppg_codigo": "PPGDA",
+   "titulo": "Direito da Sócio e Biodiversidade",
+   "sims": [
+    0.143,
+    0.189,
+    0.163,
+    0.027,
+    0.113,
+    0.173,
+    0.102,
+    0.046,
+    0.129,
+    0.219,
+    0.114,
+    0.189,
+    0.237,
+    0.322,
+    0.366,
+    0.131,
+    0.35
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.366,
+     "peso": 0.352
+    },
+    {
+     "n": 17,
+     "sim": 0.35,
+     "peso": 0.337
+    },
+    {
+     "n": 14,
+     "sim": 0.322,
+     "peso": 0.31
+    }
+   ],
+   "fraca": false
+  },
+  "PPGED-1": {
+   "ppg_codigo": "PPGED",
+   "titulo": "Educação, formação de professores e práticas educativas",
+   "sims": [
+    0.197,
+    0.165,
+    0.062,
+    0.499,
+    0.191,
+    0.096,
+    0.01,
+    0.078,
+    0.037,
+    0.209,
+    0.074,
+    0.094,
+    0.065,
+    0.066,
+    0.086,
+    0.187,
+    0.008
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.499,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGED-2": {
+   "ppg_codigo": "PPGED",
+   "titulo": "Educação, saberes e culturas",
+   "sims": [
+    0.205,
+    0.183,
+    0.124,
+    0.426,
+    0.229,
+    0.141,
+    0.077,
+    0.104,
+    0.13,
+    0.288,
+    0.139,
+    0.119,
+    0.132,
+    0.097,
+    0.109,
+    0.21,
+    0.131
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.426,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGED-3": {
+   "ppg_codigo": "PPGED",
+   "titulo": "Educação e sociodiversidade na Amazônia",
+   "sims": [
+    0.266,
+    0.211,
+    0.19,
+    0.459,
+    0.231,
+    0.161,
+    0.069,
+    0.181,
+    0.11,
+    0.436,
+    0.171,
+    0.134,
+    0.113,
+    0.238,
+    0.437,
+    0.202,
+    0.126
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.459,
+     "peso": 0.345
+    },
+    {
+     "n": 15,
+     "sim": 0.437,
+     "peso": 0.328
+    },
+    {
+     "n": 10,
+     "sim": 0.436,
+     "peso": 0.327
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEC-1": {
+   "ppg_codigo": "PPGEEC",
+   "titulo": "Currículo, Cognição e Formação de Professores",
+   "sims": [
+    0.002,
+    0.123,
+    0.062,
+    0.341,
+    0.137,
+    0.096,
+    0.041,
+    -0.015,
+    0.072,
+    0.051,
+    0.078,
+    0.062,
+    0.157,
+    0.093,
+    0.124,
+    -0.006,
+    0.07
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.341,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEC-2": {
+   "ppg_codigo": "PPGEEC",
+   "titulo": "Epistemologias, Divulgação Científica e Espaços Não Formais",
+   "sims": [
+    -0.028,
+    0.075,
+    0.036,
+    0.182,
+    0.078,
+    0.045,
+    0.112,
+    0.046,
+    0.146,
+    0.043,
+    0.158,
+    0.109,
+    0.12,
+    0.192,
+    0.166,
+    0.073,
+    0.104
+   ],
+   "ods": [
+    {
+     "n": 14,
+     "sim": 0.192,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGEEC-3": {
+   "ppg_codigo": "PPGEEC",
+   "titulo": "Educação em Ciências",
+   "sims": [
+    0.011,
+    0.116,
+    0.12,
+    0.332,
+    0.24,
+    0.165,
+    0.12,
+    0.073,
+    0.199,
+    0.08,
+    0.077,
+    0.094,
+    0.188,
+    0.161,
+    0.15,
+    0.024,
+    0.2
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.332,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEC-4": {
+   "ppg_codigo": "PPGEEC",
+   "titulo": "Educação em Ciências, Cognição e Currículo",
+   "sims": [
+    0.036,
+    0.089,
+    0.145,
+    0.434,
+    0.204,
+    0.161,
+    0.129,
+    0.111,
+    0.221,
+    0.173,
+    0.115,
+    0.079,
+    0.19,
+    0.174,
+    0.173,
+    0.079,
+    0.211
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.434,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEC-5": {
+   "ppg_codigo": "PPGEEC",
+   "titulo": "Educação em Ciências, Divulgação Científica e Espaços Não Formais",
+   "sims": [
+    0.006,
+    0.118,
+    0.088,
+    0.244,
+    0.182,
+    0.071,
+    0.133,
+    0.098,
+    0.203,
+    0.103,
+    0.126,
+    0.094,
+    0.159,
+    0.206,
+    0.163,
+    0.106,
+    0.222
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.244,
+     "peso": 0.364
+    },
+    {
+     "n": 17,
+     "sim": 0.222,
+     "peso": 0.33
+    },
+    {
+     "n": 14,
+     "sim": 0.206,
+     "peso": 0.306
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEC-6": {
+   "ppg_codigo": "PPGEEC",
+   "titulo": "Ensino de Ciências",
+   "sims": [
+    0.02,
+    0.107,
+    0.126,
+    0.232,
+    0.225,
+    0.097,
+    0.084,
+    0.047,
+    0.131,
+    0.059,
+    -0.006,
+    0.074,
+    0.16,
+    0.173,
+    0.175,
+    0.019,
+    0.099
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.232,
+     "peso": 0.508
+    },
+    {
+     "n": 5,
+     "sim": 0.225,
+     "peso": 0.492
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEL-1": {
+   "ppg_codigo": "PPGEEL",
+   "titulo": "Sistemas Embarcados",
+   "sims": [
+    0.11,
+    0.142,
+    0.052,
+    0.089,
+    0.097,
+    0.081,
+    0.108,
+    0.03,
+    0.238,
+    0.1,
+    0.032,
+    0.124,
+    0.05,
+    0.106,
+    0.098,
+    0.172,
+    0.149
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.238,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEL-2": {
+   "ppg_codigo": "PPGEEL",
+   "titulo": "Internet das Coisas e Inteligência Artificial",
+   "sims": [
+    0.09,
+    0.138,
+    0.067,
+    0.155,
+    0.187,
+    0.193,
+    0.174,
+    0.116,
+    0.355,
+    0.017,
+    0.118,
+    0.093,
+    0.089,
+    0.095,
+    0.125,
+    0.109,
+    0.255
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.355,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEEL-3": {
+   "ppg_codigo": "PPGEEL",
+   "titulo": "Sistemas de Controle Inteligente",
+   "sims": [
+    0.085,
+    0.147,
+    0.037,
+    0.107,
+    0.073,
+    0.173,
+    0.197,
+    0.04,
+    0.241,
+    0.069,
+    0.043,
+    0.183,
+    0.131,
+    0.085,
+    0.123,
+    0.149,
+    0.154
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.241,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEO-1": {
+   "ppg_codigo": "PPGEO",
+   "titulo": "ESPAÇO, NATUREZA E ENSINO NA GEOGRAFIA",
+   "sims": [
+    0.158,
+    0.242,
+    0.196,
+    0.327,
+    0.156,
+    0.218,
+    0.156,
+    0.211,
+    0.226,
+    0.256,
+    0.25,
+    0.112,
+    0.241,
+    0.259,
+    0.396,
+    0.126,
+    0.184
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.396,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEO-2": {
+   "ppg_codigo": "PPGEO",
+   "titulo": "DINÂMICAS ESPACIAIS E REGIONAIS",
+   "sims": [
+    -0.049,
+    -0.059,
+    -0.011,
+    -0.027,
+    0.001,
+    -0.063,
+    0.021,
+    0.092,
+    0.057,
+    0.01,
+    0.002,
+    -0.1,
+    0.146,
+    0.046,
+    0.06,
+    0.078,
+    0.038
+   ],
+   "ods": [
+    {
+     "n": 13,
+     "sim": 0.146,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGEO-3": {
+   "ppg_codigo": "PPGEO",
+   "titulo": "SISTEMAS DA NATUREZA NA AMAZÔNIA",
+   "sims": [
+    0.126,
+    0.204,
+    0.209,
+    0.053,
+    0.124,
+    0.234,
+    0.129,
+    0.076,
+    0.077,
+    0.151,
+    0.14,
+    0.208,
+    0.229,
+    0.396,
+    0.583,
+    0.036,
+    0.099
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.583,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGEO-4": {
+   "ppg_codigo": "PPGEO",
+   "titulo": "ENSINO E FORMAÇÂO DE PROFESSORES DE GEOGRAFIA",
+   "sims": [
+    0.095,
+    0.184,
+    0.04,
+    0.38,
+    0.103,
+    0.12,
+    0.007,
+    0.112,
+    0.089,
+    0.192,
+    0.103,
+    0.037,
+    0.155,
+    0.096,
+    0.193,
+    0.033,
+    0.078
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.38,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGH-1": {
+   "ppg_codigo": "PPGH",
+   "titulo": "Hematologia",
+   "sims": [
+    -0.012,
+    -0.05,
+    0.174,
+    -0.026,
+    -0.006,
+    0.118,
+    -0.026,
+    0.008,
+    -0.016,
+    -0.037,
+    0.004,
+    -0.047,
+    -0.015,
+    0.032,
+    0.036,
+    0.028,
+    -0.014
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.174,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGH-2": {
+   "ppg_codigo": "PPGH",
+   "titulo": "Hemoterapia",
+   "sims": [
+    0.093,
+    -0.016,
+    0.144,
+    0.103,
+    0.043,
+    0.088,
+    -0.037,
+    -0.028,
+    0.014,
+    0.051,
+    0.023,
+    -0.066,
+    -0.007,
+    0.01,
+    0.014,
+    0.097,
+    0.103
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.144,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGICH-1": {
+   "ppg_codigo": "PPGICH",
+   "titulo": "Capital imaterial: produção e circulação de saberes",
+   "sims": [
+    0.057,
+    0.113,
+    0.077,
+    0.299,
+    0.105,
+    0.088,
+    0.062,
+    0.16,
+    0.197,
+    0.187,
+    0.126,
+    0.175,
+    0.025,
+    0.116,
+    0.052,
+    0.114,
+    0.174
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.299,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGICH-2": {
+   "ppg_codigo": "PPGICH",
+   "titulo": "Crítica, interpretação e história das formas da arte",
+   "sims": [
+    0.043,
+    0.057,
+    0.082,
+    0.14,
+    0.062,
+    0.095,
+    0.042,
+    0.182,
+    0.11,
+    0.145,
+    0.177,
+    0.098,
+    -0.02,
+    0.098,
+    0.161,
+    0.156,
+    -0.018
+   ],
+   "ods": [
+    {
+     "n": 8,
+     "sim": 0.182,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGICH-3": {
+   "ppg_codigo": "PPGICH",
+   "titulo": "Espaços, memórias e configurações sociais",
+   "sims": [
+    0.127,
+    0.02,
+    0.037,
+    0.121,
+    0.219,
+    0.082,
+    0.002,
+    0.043,
+    0.109,
+    0.36,
+    0.23,
+    0.051,
+    0.043,
+    0.104,
+    0.062,
+    0.16,
+    0.026
+   ],
+   "ods": [
+    {
+     "n": 10,
+     "sim": 0.36,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGICH-4": {
+   "ppg_codigo": "PPGICH",
+   "titulo": "Teoria, História e Crítica da Cultura",
+   "sims": [
+    0.091,
+    0.112,
+    0.143,
+    0.191,
+    0.223,
+    0.097,
+    0.008,
+    0.19,
+    0.106,
+    0.274,
+    0.167,
+    0.16,
+    0.046,
+    0.132,
+    0.12,
+    0.24,
+    0.046
+   ],
+   "ods": [
+    {
+     "n": 10,
+     "sim": 0.274,
+     "peso": 0.372
+    },
+    {
+     "n": 16,
+     "sim": 0.24,
+     "peso": 0.326
+    },
+    {
+     "n": 5,
+     "sim": 0.223,
+     "peso": 0.302
+    }
+   ],
+   "fraca": false
+  },
+  "PPGICH-5": {
+   "ppg_codigo": "PPGICH",
+   "titulo": "Capital Imaterial",
+   "sims": [
+    0.079,
+    0.068,
+    0.074,
+    0.113,
+    0.072,
+    0.087,
+    0.141,
+    0.302,
+    0.336,
+    0.066,
+    0.183,
+    0.128,
+    0.011,
+    0.072,
+    0.005,
+    0.217,
+    0.241
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.336,
+     "peso": 0.526
+    },
+    {
+     "n": 8,
+     "sim": 0.302,
+     "peso": 0.474
+    }
+   ],
+   "fraca": false
+  },
+  "PPGLA-1": {
+   "ppg_codigo": "PPGLA",
+   "titulo": "Arquivo, Memória e Interpretação",
+   "sims": [
+    0.012,
+    0.009,
+    0.043,
+    0.102,
+    0.051,
+    0.003,
+    0.016,
+    0.153,
+    0.097,
+    0.095,
+    0.09,
+    0.089,
+    0.003,
+    0.071,
+    0.122,
+    0.135,
+    0.045
+   ],
+   "ods": [
+    {
+     "n": 8,
+     "sim": 0.153,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGLA-2": {
+   "ppg_codigo": "PPGLA",
+   "titulo": "Linguagem, Discurso e Práticas Sociais",
+   "sims": [
+    0.1,
+    0.056,
+    0.079,
+    0.139,
+    0.084,
+    0.104,
+    0.075,
+    0.069,
+    0.072,
+    0.108,
+    0.12,
+    0.065,
+    0.08,
+    0.159,
+    0.139,
+    0.098,
+    0.072
+   ],
+   "ods": [
+    {
+     "n": 14,
+     "sim": 0.159,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGLA-3": {
+   "ppg_codigo": "PPGLA",
+   "titulo": "Teoria, Crítica e Processos de Criação",
+   "sims": [
+    0.04,
+    0.022,
+    0.049,
+    0.085,
+    0.094,
+    0.049,
+    -0.016,
+    0.131,
+    0.112,
+    0.076,
+    0.074,
+    0.125,
+    0.033,
+    0.063,
+    0.102,
+    0.132,
+    0.074
+   ],
+   "ods": [
+    {
+     "n": 16,
+     "sim": 0.132,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGLA-4": {
+   "ppg_codigo": "PPGLA",
+   "titulo": "Representação e interpretação artística, literária e linguística",
+   "sims": [
+    0.088,
+    0.026,
+    0.038,
+    0.104,
+    0.085,
+    0.073,
+    0.066,
+    0.151,
+    0.057,
+    0.143,
+    0.118,
+    0.061,
+    0.096,
+    0.106,
+    0.127,
+    0.136,
+    0.008
+   ],
+   "ods": [
+    {
+     "n": 8,
+     "sim": 0.151,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMBT-1": {
+   "ppg_codigo": "PPGMBT",
+   "titulo": "Bioprospecção, Bioprocessos e Bioprodutos",
+   "sims": [
+    0.042,
+    0.173,
+    0.072,
+    -0.03,
+    0.07,
+    0.24,
+    0.23,
+    0.139,
+    0.224,
+    0.106,
+    0.086,
+    0.331,
+    0.163,
+    0.356,
+    0.47,
+    -0.019,
+    0.204
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.47,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMBT-2": {
+   "ppg_codigo": "PPGMBT",
+   "titulo": "Biodiversidade: Conhecimento, Conservação e Uso Sustentável",
+   "sims": [
+    0.2,
+    0.24,
+    0.185,
+    0.148,
+    0.085,
+    0.297,
+    0.322,
+    0.246,
+    0.332,
+    0.193,
+    0.377,
+    0.405,
+    0.247,
+    0.322,
+    0.491,
+    0.077,
+    0.315
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.491,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMBT-3": {
+   "ppg_codigo": "PPGMBT",
+   "titulo": "Prospecção E Uso De Recursos Naturais",
+   "sims": [
+    0.236,
+    0.355,
+    0.238,
+    0.127,
+    0.11,
+    0.37,
+    0.437,
+    0.329,
+    0.336,
+    0.324,
+    0.374,
+    0.4,
+    0.334,
+    0.369,
+    0.509,
+    0.188,
+    0.296
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.509,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMBT-4": {
+   "ppg_codigo": "PPGMBT",
+   "titulo": "Bioindicadores e Diversidade Ambiental",
+   "sims": [
+    0.173,
+    0.2,
+    0.151,
+    0.032,
+    0.155,
+    0.255,
+    0.218,
+    0.062,
+    0.152,
+    0.243,
+    0.256,
+    0.235,
+    0.243,
+    0.392,
+    0.401,
+    0.05,
+    0.113
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.401,
+     "peso": 0.505
+    },
+    {
+     "n": 14,
+     "sim": 0.392,
+     "peso": 0.495
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMBT-5": {
+   "ppg_codigo": "PPGMBT",
+   "titulo": "Etnoconhecimento e Bioprospecção",
+   "sims": [
+    0.06,
+    0.182,
+    0.245,
+    0.029,
+    0.09,
+    0.104,
+    0.049,
+    -0.032,
+    0.03,
+    0.158,
+    0.079,
+    0.12,
+    0.048,
+    0.195,
+    0.204,
+    -0.022,
+    0.073
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.245,
+     "peso": 0.545
+    },
+    {
+     "n": 15,
+     "sim": 0.204,
+     "peso": 0.455
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMBT-6": {
+   "ppg_codigo": "PPGMBT",
+   "titulo": "Uso Sustentável da Biodivesidade",
+   "sims": [
+    0.211,
+    0.261,
+    0.26,
+    0.11,
+    0.112,
+    0.31,
+    0.327,
+    0.193,
+    0.222,
+    0.206,
+    0.403,
+    0.474,
+    0.294,
+    0.379,
+    0.514,
+    0.072,
+    0.203
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.514,
+     "peso": 0.52
+    },
+    {
+     "n": 12,
+     "sim": 0.474,
+     "peso": 0.48
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMBT-7": {
+   "ppg_codigo": "PPGMBT",
+   "titulo": "Biotecnologia e Bioprospecção",
+   "sims": [
+    0.072,
+    0.214,
+    0.139,
+    0.029,
+    0.145,
+    0.27,
+    0.21,
+    0.14,
+    0.26,
+    0.014,
+    0.092,
+    0.219,
+    0.108,
+    0.244,
+    0.231,
+    0.033,
+    0.232
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.27,
+     "peso": 0.349
+    },
+    {
+     "n": 9,
+     "sim": 0.26,
+     "peso": 0.335
+    },
+    {
+     "n": 14,
+     "sim": 0.244,
+     "peso": 0.315
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-1": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Estudos pré-clínicos, clínicos e de validação de tecnologias para prevenção, diagnóstico e terapêutica das doenças tropicais e infecciosas (DTIs)",
+   "sims": [
+    0.075,
+    0.093,
+    0.318,
+    0.016,
+    -0.03,
+    0.093,
+    -0.007,
+    -0.046,
+    0.026,
+    -0.015,
+    0.006,
+    0.054,
+    0.039,
+    0.007,
+    0.108,
+    -0.043,
+    0.133
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.318,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-2": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Estudos sobre a carga, prognóstico e identificação de marcadores genéticos, imunológicos, sociais, culturais, e econômicos das doenças tropicais e infecciosas (DTIs)",
+   "sims": [
+    0.187,
+    0.16,
+    0.497,
+    0.051,
+    0.038,
+    0.143,
+    0.024,
+    0.05,
+    -0.028,
+    0.195,
+    0.108,
+    0.085,
+    0.107,
+    0.108,
+    0.194,
+    0.014,
+    0.084
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.497,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-3": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Estudos sobre a interação entre os diferentes componentes dos ciclos das doenças tropicais e infecciosas (DTIs), incluindo humanos, animais, patógenos e meio ambiente.",
+   "sims": [
+    0.139,
+    0.187,
+    0.422,
+    0.039,
+    0.142,
+    0.25,
+    0.075,
+    0.082,
+    0.022,
+    0.181,
+    0.164,
+    0.171,
+    0.27,
+    0.282,
+    0.461,
+    0.067,
+    0.124
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.461,
+     "peso": 0.522
+    },
+    {
+     "n": 3,
+     "sim": 0.422,
+     "peso": 0.478
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-4": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doenças Tropicais e Infecciosas",
+   "sims": [
+    0.178,
+    0.177,
+    0.524,
+    0.018,
+    0.04,
+    0.217,
+    0.055,
+    0.117,
+    0.023,
+    0.123,
+    0.094,
+    0.047,
+    0.159,
+    0.202,
+    0.266,
+    0.084,
+    0.117
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.524,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-5": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Acidentes por animais peçonhentos",
+   "sims": [
+    0.02,
+    -0.033,
+    0.194,
+    -0.001,
+    0.077,
+    0.122,
+    -0.048,
+    0.014,
+    0.076,
+    0.051,
+    0.086,
+    0.068,
+    0.075,
+    0.144,
+    0.171,
+    0.138,
+    0.01
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.194,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMT-6": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Agravos inusitados e doenças infecciosas emergentes e re",
+   "sims": [
+    0.11,
+    0.083,
+    0.409,
+    -0.039,
+    -0.009,
+    0.129,
+    0.015,
+    0.063,
+    0.042,
+    0.011,
+    0.028,
+    -0.046,
+    0.042,
+    0.068,
+    0.032,
+    0.048,
+    0.076
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.409,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-7": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Anátomopatologia Tropical",
+   "sims": [
+    0.063,
+    0.035,
+    0.265,
+    -0.024,
+    0.006,
+    0.125,
+    0.005,
+    0.082,
+    -0.049,
+    0.09,
+    0.017,
+    -0.013,
+    0.087,
+    0.191,
+    0.289,
+    0.01,
+    0.044
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.289,
+     "peso": 0.522
+    },
+    {
+     "n": 3,
+     "sim": 0.265,
+     "peso": 0.478
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-8": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Arboviroses",
+   "sims": [
+    0.102,
+    0.073,
+    0.225,
+    -0.029,
+    0.085,
+    0.018,
+    -0.001,
+    -0.008,
+    0.008,
+    0.024,
+    -0.031,
+    -0.11,
+    0.056,
+    0.033,
+    0.071,
+    0.007,
+    -0.001
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.225,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-9": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Aspectos biológicos e mecanismos de interação patógeno",
+   "sims": [
+    0.066,
+    0.001,
+    0.228,
+    -0.005,
+    0.033,
+    0.051,
+    -0.094,
+    -0.031,
+    -0.041,
+    0.073,
+    -0.022,
+    -0.04,
+    0.028,
+    0.049,
+    0.051,
+    0.039,
+    0.064
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.228,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-10": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Dermatologia Infecciosa",
+   "sims": [
+    0.006,
+    -0.049,
+    0.233,
+    0.007,
+    0.047,
+    0.102,
+    -0.025,
+    -0.023,
+    -0.024,
+    0.037,
+    0.008,
+    -0.01,
+    -0.04,
+    -0.008,
+    -0.02,
+    0.026,
+    -0.011
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.233,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-11": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Dermatologia Tropical e Infecciosa",
+   "sims": [
+    0.092,
+    0.026,
+    0.354,
+    0.008,
+    0.048,
+    0.16,
+    0.037,
+    0.054,
+    -0.038,
+    0.113,
+    0.053,
+    0.022,
+    0.103,
+    0.13,
+    0.21,
+    0.056,
+    0.041
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.354,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-12": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doença de Chagas",
+   "sims": [
+    0.091,
+    0.113,
+    0.255,
+    0.028,
+    -0.031,
+    0.127,
+    -0.001,
+    0.031,
+    -0.083,
+    0.014,
+    0.045,
+    0.042,
+    0.028,
+    0.042,
+    0.039,
+    0.001,
+    0.024
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.255,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-13": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doença de veiculação hídrica incluindo os vírus hepatotrópicos",
+   "sims": [
+    0.016,
+    0.034,
+    0.243,
+    -0.031,
+    -0.036,
+    0.305,
+    0.005,
+    0.011,
+    0.027,
+    -0.077,
+    0.103,
+    -0.019,
+    0.056,
+    0.192,
+    0.043,
+    0.016,
+    0.043
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.305,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-14": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doenças de transmissão por vetores",
+   "sims": [
+    0.125,
+    0.178,
+    0.318,
+    0.027,
+    -0.023,
+    0.049,
+    -0.015,
+    0.061,
+    0.016,
+    0.057,
+    0.014,
+    -0.03,
+    0.024,
+    -0.008,
+    0.087,
+    -0.008,
+    0.011
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.318,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-15": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doenças dermatológicas, DST E Aids",
+   "sims": [
+    0.117,
+    0.087,
+    0.341,
+    0.099,
+    0.152,
+    0.167,
+    0.107,
+    0.104,
+    0.06,
+    0.116,
+    0.137,
+    0.076,
+    0.091,
+    0.037,
+    0.056,
+    0.125,
+    0.108
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.341,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-16": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doenças Sexualmente Transmissiveis",
+   "sims": [
+    0.141,
+    0.11,
+    0.341,
+    0.043,
+    0.163,
+    0.14,
+    0.002,
+    0.046,
+    0.056,
+    0.051,
+    0.098,
+    0.01,
+    0.081,
+    0.027,
+    0.03,
+    0.098,
+    0.108
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.341,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-17": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doenças Sexualmente Transmissiveis e HIV/Aids",
+   "sims": [
+    0.216,
+    0.182,
+    0.415,
+    0.106,
+    0.198,
+    0.168,
+    0.089,
+    0.117,
+    0.098,
+    0.125,
+    0.118,
+    0.028,
+    0.15,
+    0.093,
+    0.117,
+    0.173,
+    0.167
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.415,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-18": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Doenças Sexualmente Transmissíveis e Hepatites Virais",
+   "sims": [
+    0.057,
+    0.063,
+    0.296,
+    0.031,
+    0.128,
+    0.083,
+    0.005,
+    0.046,
+    0.011,
+    0.003,
+    0.06,
+    -0.058,
+    0.033,
+    -0.025,
+    0.025,
+    0.094,
+    0.069
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.296,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-19": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Ensaios imunobiológicos com princípios bioativos",
+   "sims": [
+    -0.037,
+    0.039,
+    0.186,
+    0.013,
+    0.038,
+    0.027,
+    -0.07,
+    -0.061,
+    -0.088,
+    -0.041,
+    -0.057,
+    -0.095,
+    -0.013,
+    -0.052,
+    -0.014,
+    0.02,
+    -0.035
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.186,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMT-20": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Ensaios imunologicos e terapeuticos com principios bioativos",
+   "sims": [
+    -0.026,
+    0.032,
+    0.145,
+    0.009,
+    0.028,
+    0.018,
+    -0.046,
+    -0.041,
+    -0.077,
+    -0.065,
+    -0.067,
+    -0.078,
+    -0.026,
+    -0.041,
+    -0.03,
+    0.036,
+    -0.016
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.145,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMT-21": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Epidemiologia, controle e vigilância em doenças infecciosas e parasitárias",
+   "sims": [
+    0.052,
+    0.116,
+    0.315,
+    -0.041,
+    0.016,
+    0.096,
+    -0.058,
+    -0.035,
+    -0.04,
+    0.046,
+    0.038,
+    0.014,
+    0.022,
+    0.044,
+    0.069,
+    0.032,
+    -0.001
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.315,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-22": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Epidemiologia de Doenças Infecciosas",
+   "sims": [
+    0.048,
+    0.035,
+    0.387,
+    -0.019,
+    0.063,
+    0.098,
+    -0.078,
+    -0.024,
+    -0.034,
+    0.097,
+    0.075,
+    -0.018,
+    0.027,
+    -0.004,
+    0.02,
+    0.052,
+    -0.032
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.387,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-23": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Hepatites Infecciosas E Pos",
+   "sims": [
+    0.015,
+    0.049,
+    0.303,
+    0.02,
+    0.03,
+    0.135,
+    -0.012,
+    0.03,
+    -0.038,
+    -0.007,
+    0.028,
+    -0.025,
+    -0.057,
+    0.006,
+    -0.015,
+    0.086,
+    0.008
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.303,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-24": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Hepatites Virais",
+   "sims": [
+    -0.007,
+    0.052,
+    0.273,
+    0.001,
+    0.005,
+    0.032,
+    -0.031,
+    0.01,
+    0.022,
+    -0.052,
+    -0.039,
+    -0.081,
+    -0.056,
+    -0.015,
+    -0.013,
+    0.038,
+    0.056
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.273,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-25": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Malária",
+   "sims": [
+    0.188,
+    0.198,
+    0.502,
+    -0.018,
+    0.073,
+    0.137,
+    -0.001,
+    0.079,
+    0.021,
+    0.06,
+    0.019,
+    0.009,
+    0.083,
+    0.14,
+    0.177,
+    0.071,
+    0.071
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.502,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGMT-26": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Métodos Sorológicos, Biológicos E Moleculares Utilizados no Diagnóstico das Doenças Infecciosas e Parasitárias",
+   "sims": [
+    0.016,
+    0.026,
+    0.191,
+    -0.093,
+    -0.097,
+    0.047,
+    -0.069,
+    0.031,
+    -0.062,
+    -0.03,
+    -0.045,
+    -0.062,
+    -0.098,
+    0.05,
+    0.027,
+    -0.015,
+    -0.051
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.191,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMT-27": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Micobacterioses",
+   "sims": [
+    0.009,
+    -0.007,
+    0.17,
+    -0.085,
+    -0.029,
+    0.067,
+    -0.011,
+    -0.012,
+    -0.048,
+    -0.042,
+    -0.088,
+    -0.002,
+    -0.019,
+    0.121,
+    0.033,
+    0.007,
+    -0.049
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.17,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMT-28": {
+   "ppg_codigo": "PPGMT",
+   "titulo": "Micoses",
+   "sims": [
+    0.093,
+    0.085,
+    0.106,
+    0.004,
+    0.054,
+    0.064,
+    0.052,
+    0.052,
+    0.058,
+    0.041,
+    -0.011,
+    -0.001,
+    -0.025,
+    0.128,
+    0.071,
+    0.123,
+    0.026
+   ],
+   "ods": [
+    {
+     "n": 14,
+     "sim": 0.128,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMUS-1": {
+   "ppg_codigo": "PPGMUS",
+   "titulo": "PRÁTICAS MUSICAIS",
+   "sims": [
+    0.018,
+    0.078,
+    0.107,
+    0.149,
+    0.123,
+    0.118,
+    0.027,
+    0.098,
+    0.086,
+    0.119,
+    0.11,
+    0.112,
+    0.099,
+    0.131,
+    0.104,
+    0.101,
+    0.102
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.149,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMUS-2": {
+   "ppg_codigo": "PPGMUS",
+   "titulo": "INTERPRETAÇÃO MUSICAL E PRÁTICAS DA PERFORMANCE",
+   "sims": [
+    -0.012,
+    -0.015,
+    -0.041,
+    0.132,
+    0.082,
+    -0.006,
+    -0.039,
+    0.058,
+    -0.045,
+    0.101,
+    0.05,
+    0.079,
+    0.021,
+    0.069,
+    0.062,
+    0.083,
+    0.012
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.132,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PPGMUS-3": {
+   "ppg_codigo": "PPGMUS",
+   "titulo": "PEDAGOGIA VOCAL / INSTRUMENTAL / REGÊNCIA",
+   "sims": [
+    0.12,
+    0.125,
+    0.118,
+    0.293,
+    0.104,
+    0.115,
+    0.096,
+    0.11,
+    0.056,
+    0.116,
+    0.065,
+    0.091,
+    0.056,
+    0.091,
+    0.129,
+    0.115,
+    0.096
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.293,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSC-1": {
+   "ppg_codigo": "PPGSC",
+   "titulo": "SAÚDE COLETIVA",
+   "sims": [
+    0.181,
+    0.196,
+    0.434,
+    0.127,
+    0.145,
+    0.236,
+    0.158,
+    0.106,
+    0.113,
+    0.148,
+    0.235,
+    0.148,
+    0.136,
+    0.114,
+    0.158,
+    0.197,
+    0.231
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.434,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSC-2": {
+   "ppg_codigo": "PPGSC",
+   "titulo": "Distribuição e determinação dos agravos em saúde na região amazônica",
+   "sims": [
+    0.199,
+    0.153,
+    0.414,
+    0.07,
+    0.08,
+    0.265,
+    0.081,
+    0.141,
+    0.05,
+    0.252,
+    0.154,
+    0.119,
+    0.143,
+    0.296,
+    0.464,
+    0.074,
+    0.073
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.464,
+     "peso": 0.528
+    },
+    {
+     "n": 3,
+     "sim": 0.414,
+     "peso": 0.472
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSC-3": {
+   "ppg_codigo": "PPGSC",
+   "titulo": "Política, Planejamento e Gestão em Saúde",
+   "sims": [
+    0.186,
+    0.254,
+    0.43,
+    0.226,
+    0.161,
+    0.325,
+    0.255,
+    0.246,
+    0.138,
+    0.131,
+    0.334,
+    0.261,
+    0.245,
+    0.158,
+    0.131,
+    0.223,
+    0.269
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.43,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSC-4": {
+   "ppg_codigo": "PPGSC",
+   "titulo": "Diversidade sociocultural das práticas e direitos na saúde na região amazônica",
+   "sims": [
+    0.256,
+    0.126,
+    0.353,
+    0.206,
+    0.264,
+    0.18,
+    0.068,
+    0.105,
+    0.001,
+    0.349,
+    0.145,
+    0.129,
+    0.098,
+    0.228,
+    0.395,
+    0.187,
+    0.101
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.395,
+     "peso": 0.36
+    },
+    {
+     "n": 3,
+     "sim": 0.353,
+     "peso": 0.322
+    },
+    {
+     "n": 10,
+     "sim": 0.349,
+     "peso": 0.318
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSP-1": {
+   "ppg_codigo": "PPGSP",
+   "titulo": "Sociedade, Estado, Cultura e Segurança Pública",
+   "sims": [
+    0.3,
+    0.161,
+    0.207,
+    0.211,
+    0.374,
+    0.188,
+    0.06,
+    0.086,
+    0.237,
+    0.258,
+    0.373,
+    0.175,
+    0.195,
+    0.1,
+    0.135,
+    0.489,
+    0.19
+   ],
+   "ods": [
+    {
+     "n": 16,
+     "sim": 0.489,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSP-2": {
+   "ppg_codigo": "PPGSP",
+   "titulo": "Políticas e Gestão Em Segurança Pública",
+   "sims": [
+    0.125,
+    0.067,
+    0.186,
+    0.102,
+    0.132,
+    0.246,
+    0.07,
+    0.029,
+    0.188,
+    0.004,
+    0.326,
+    0.231,
+    0.202,
+    0.053,
+    0.124,
+    0.366,
+    0.158
+   ],
+   "ods": [
+    {
+     "n": 16,
+     "sim": 0.366,
+     "peso": 0.528
+    },
+    {
+     "n": 11,
+     "sim": 0.326,
+     "peso": 0.472
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSP-3": {
+   "ppg_codigo": "PPGSP",
+   "titulo": "Segurança Pública, Cidadania e Direitos Humanos",
+   "sims": [
+    0.33,
+    0.226,
+    0.334,
+    0.225,
+    0.356,
+    0.227,
+    0.167,
+    0.183,
+    0.229,
+    0.336,
+    0.194,
+    0.095,
+    0.116,
+    0.149,
+    0.143,
+    0.559,
+    0.189
+   ],
+   "ods": [
+    {
+     "n": 16,
+     "sim": 0.559,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSP-4": {
+   "ppg_codigo": "PPGSP",
+   "titulo": "Gestão estratégica da Segurança Pública",
+   "sims": [
+    0.11,
+    0.087,
+    0.125,
+    0.09,
+    0.065,
+    0.178,
+    0.022,
+    -0.002,
+    0.173,
+    -0.067,
+    0.315,
+    0.25,
+    0.174,
+    0.039,
+    0.049,
+    0.266,
+    0.161
+   ],
+   "ods": [
+    {
+     "n": 11,
+     "sim": 0.315,
+     "peso": 0.542
+    },
+    {
+     "n": 16,
+     "sim": 0.266,
+     "peso": 0.458
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSP-5": {
+   "ppg_codigo": "PPGSP",
+   "titulo": "Ordenamento Jurídico, Segurança e Gestão Pública",
+   "sims": [
+    0.175,
+    0.132,
+    0.19,
+    0.204,
+    0.208,
+    0.252,
+    0.148,
+    0.215,
+    0.245,
+    0.125,
+    0.31,
+    0.158,
+    0.133,
+    0.076,
+    0.138,
+    0.505,
+    0.253
+   ],
+   "ods": [
+    {
+     "n": 16,
+     "sim": 0.505,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PPGSP-6": {
+   "ppg_codigo": "PPGSP",
+   "titulo": "Segurança Pública e Meio Ambiente na Amazônia",
+   "sims": [
+    0.217,
+    0.145,
+    0.294,
+    0.124,
+    0.186,
+    0.265,
+    0.164,
+    0.105,
+    0.229,
+    0.165,
+    0.328,
+    0.322,
+    0.257,
+    0.274,
+    0.476,
+    0.309,
+    0.156
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.476,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFCOMP-1": {
+   "ppg_codigo": "PROFCOMP",
+   "titulo": "Computação",
+   "sims": [
+    0.063,
+    0.097,
+    0.095,
+    0.095,
+    0.133,
+    0.08,
+    0.113,
+    0.152,
+    0.265,
+    0.107,
+    0.024,
+    0.095,
+    0.106,
+    0.075,
+    0.078,
+    0.071,
+    0.189
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.265,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFCOMP-2": {
+   "ppg_codigo": "PROFCOMP",
+   "titulo": "Pensamento computacional",
+   "sims": [
+    0.033,
+    0.057,
+    0.027,
+    0.097,
+    0.09,
+    0.011,
+    0.058,
+    0.075,
+    0.245,
+    0.081,
+    0.021,
+    0.023,
+    0.091,
+    0.023,
+    0.082,
+    0.028,
+    0.163
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.245,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFCOMP-3": {
+   "ppg_codigo": "PROFCOMP",
+   "titulo": "Mundo Digital",
+   "sims": [
+    0.128,
+    0.079,
+    0.072,
+    0.116,
+    0.092,
+    0.056,
+    -0.003,
+    0.087,
+    0.232,
+    0.12,
+    0.075,
+    0.08,
+    0.066,
+    0.059,
+    0.128,
+    0.092,
+    0.223
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.232,
+     "peso": 0.509
+    },
+    {
+     "n": 17,
+     "sim": 0.223,
+     "peso": 0.491
+    }
+   ],
+   "fraca": false
+  },
+  "PROFCOMP-4": {
+   "ppg_codigo": "PROFCOMP",
+   "titulo": "Cultura digital",
+   "sims": [
+    0.12,
+    0.117,
+    0.104,
+    0.232,
+    0.164,
+    0.11,
+    0.03,
+    0.152,
+    0.269,
+    0.193,
+    0.122,
+    0.148,
+    0.066,
+    0.1,
+    0.093,
+    0.132,
+    0.227
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.269,
+     "peso": 0.37
+    },
+    {
+     "n": 4,
+     "sim": 0.232,
+     "peso": 0.319
+    },
+    {
+     "n": 17,
+     "sim": 0.227,
+     "peso": 0.311
+    }
+   ],
+   "fraca": false
+  },
+  "PROFEDUCATEC-1": {
+   "ppg_codigo": "PROFEDUCATEC",
+   "titulo": "Tecnologias Educacionais para a Educação básica",
+   "sims": [
+    0.214,
+    0.225,
+    0.081,
+    0.394,
+    0.058,
+    0.085,
+    0.146,
+    0.093,
+    0.209,
+    0.102,
+    -0.005,
+    0.047,
+    0.073,
+    0.034,
+    0.072,
+    0.039,
+    0.167
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.394,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFEDUCATEC-2": {
+   "ppg_codigo": "PROFEDUCATEC",
+   "titulo": "Desenvolvimento, implementação e avaliação de tecnologias educacionais.",
+   "sims": [
+    0.091,
+    0.118,
+    0.085,
+    0.408,
+    0.041,
+    0.113,
+    0.093,
+    0.068,
+    0.204,
+    0.098,
+    0.083,
+    0.121,
+    0.028,
+    0.04,
+    0.068,
+    0.064,
+    0.201
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.408,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFEDUCATEC-3": {
+   "ppg_codigo": "PROFEDUCATEC",
+   "titulo": "Formação de professores e tecnologias para a Educação Básica.",
+   "sims": [
+    0.194,
+    0.254,
+    0.059,
+    0.413,
+    0.118,
+    0.062,
+    0.084,
+    0.124,
+    0.189,
+    0.117,
+    -0.001,
+    0.059,
+    0.068,
+    0.014,
+    0.079,
+    0.046,
+    0.162
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.413,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFEDUCATEC-4": {
+   "ppg_codigo": "PROFEDUCATEC",
+   "titulo": "Processos Inovadores e Culturas Digitais na Educação Básica.",
+   "sims": [
+    0.173,
+    0.144,
+    0.082,
+    0.379,
+    0.096,
+    0.088,
+    0.063,
+    0.173,
+    0.267,
+    0.139,
+    0.075,
+    0.121,
+    -0.002,
+    0.005,
+    0.051,
+    0.098,
+    0.197
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.379,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFEDUCATEC-5": {
+   "ppg_codigo": "PROFEDUCATEC",
+   "titulo": "Processos inovadores e metodologias ativas",
+   "sims": [
+    0.023,
+    0.064,
+    0.054,
+    0.113,
+    0.04,
+    0.2,
+    0.205,
+    0.151,
+    0.345,
+    -0.054,
+    0.106,
+    0.226,
+    0.124,
+    0.038,
+    0.043,
+    0.089,
+    0.27
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.345,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFEDUCATEC-6": {
+   "ppg_codigo": "PROFEDUCATEC",
+   "titulo": "Culturas digitais e multiletramentos.",
+   "sims": [
+    0.138,
+    0.119,
+    0.105,
+    0.218,
+    0.141,
+    0.115,
+    0.054,
+    0.125,
+    0.321,
+    0.238,
+    0.173,
+    0.173,
+    0.051,
+    0.102,
+    0.139,
+    0.197,
+    0.231
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.321,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFNIT-1": {
+   "ppg_codigo": "PROFNIT",
+   "titulo": "Propriedade Intelectual, Transferência de Tecnologia e Inovação",
+   "sims": [
+    0.021,
+    0.04,
+    0.058,
+    0.117,
+    0.062,
+    0.086,
+    0.091,
+    0.126,
+    0.465,
+    0.007,
+    0.087,
+    0.22,
+    0.058,
+    0.09,
+    0.14,
+    0.217,
+    0.429
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.465,
+     "peso": 0.52
+    },
+    {
+     "n": 17,
+     "sim": 0.429,
+     "peso": 0.48
+    }
+   ],
+   "fraca": false
+  },
+  "PROFNIT-2": {
+   "ppg_codigo": "PROFNIT",
+   "titulo": "Empreendedorismo de Base Tecnológica",
+   "sims": [
+    0.11,
+    0.188,
+    0.009,
+    0.068,
+    0.043,
+    0.139,
+    0.203,
+    0.298,
+    0.403,
+    0.025,
+    0.158,
+    0.255,
+    0.11,
+    0.115,
+    0.137,
+    -0.004,
+    0.362
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.403,
+     "peso": 0.527
+    },
+    {
+     "n": 17,
+     "sim": 0.362,
+     "peso": 0.473
+    }
+   ],
+   "fraca": false
+  },
+  "PROFNIT-3": {
+   "ppg_codigo": "PROFNIT",
+   "titulo": "Políticas Públicas para a Inovação",
+   "sims": [
+    0.101,
+    0.201,
+    0.163,
+    0.091,
+    0.13,
+    0.265,
+    0.291,
+    0.193,
+    0.404,
+    0.019,
+    0.354,
+    0.352,
+    0.246,
+    0.122,
+    0.138,
+    0.328,
+    0.41
+   ],
+   "ods": [
+    {
+     "n": 17,
+     "sim": 0.41,
+     "peso": 0.351
+    },
+    {
+     "n": 9,
+     "sim": 0.404,
+     "peso": 0.346
+    },
+    {
+     "n": 11,
+     "sim": 0.354,
+     "peso": 0.303
+    }
+   ],
+   "fraca": false
+  },
+  "PROFNIT-4": {
+   "ppg_codigo": "PROFNIT",
+   "titulo": "Propriedade Intelectual e Transferência de Tecnologia para Inovação",
+   "sims": [
+    -0.012,
+    0.027,
+    -0.011,
+    0.102,
+    0.003,
+    0.02,
+    0.086,
+    0.169,
+    0.492,
+    -0.018,
+    0.036,
+    0.149,
+    -0.001,
+    0.005,
+    0.046,
+    0.112,
+    0.461
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.492,
+     "peso": 0.516
+    },
+    {
+     "n": 17,
+     "sim": 0.461,
+     "peso": 0.484
+    }
+   ],
+   "fraca": false
+  },
+  "PROFNIT-5": {
+   "ppg_codigo": "PROFNIT",
+   "titulo": "Propriedade Intelectual e Transferência de Tecnologia para Inovação em Núcleos de Inovação Tecnológica (NITS)",
+   "sims": [
+    0.002,
+    0.04,
+    0.017,
+    0.108,
+    0.012,
+    0.046,
+    0.055,
+    0.183,
+    0.464,
+    -0.031,
+    0.087,
+    0.153,
+    0.003,
+    0.013,
+    0.056,
+    0.09,
+    0.457
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.464,
+     "peso": 0.504
+    },
+    {
+     "n": 17,
+     "sim": 0.457,
+     "peso": 0.496
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-1": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Atenção à saúde, acesso e qualidade na atenção básica em saúde",
+   "sims": [
+    0.263,
+    0.093,
+    0.433,
+    0.281,
+    0.078,
+    0.241,
+    0.156,
+    0.167,
+    0.022,
+    0.188,
+    0.144,
+    0.096,
+    0.028,
+    0.153,
+    0.07,
+    0.248,
+    0.144
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.433,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-2": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Atenção integral aos ciclos de vida e grupos vulnerabilizados:",
+   "sims": [
+    0.327,
+    0.218,
+    0.294,
+    0.009,
+    0.148,
+    0.06,
+    0.03,
+    -0.019,
+    0.122,
+    0.136,
+    0.163,
+    0.071,
+    0.213,
+    0.155,
+    0.222,
+    0.133,
+    0.013
+   ],
+   "ods": [
+    {
+     "n": 1,
+     "sim": 0.327,
+     "peso": 0.527
+    },
+    {
+     "n": 3,
+     "sim": 0.294,
+     "peso": 0.473
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-3": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Educação e saúde:",
+   "sims": [
+    0.104,
+    0.216,
+    0.349,
+    0.494,
+    0.096,
+    0.162,
+    0.069,
+    0.105,
+    0.017,
+    0.063,
+    0.114,
+    0.064,
+    0.079,
+    0.068,
+    0.079,
+    0.07,
+    0.14
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.494,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-4": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Saúde da Família",
+   "sims": [
+    0.252,
+    0.219,
+    0.524,
+    0.16,
+    0.143,
+    0.211,
+    0.154,
+    0.136,
+    0.016,
+    0.171,
+    0.116,
+    0.15,
+    0.071,
+    0.154,
+    0.111,
+    0.122,
+    0.093
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.524,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-5": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Atenção integral aos ciclos de vida e grupos vulneráveis",
+   "sims": [
+    0.379,
+    0.244,
+    0.387,
+    0.067,
+    0.201,
+    0.092,
+    0.039,
+    0.051,
+    0.097,
+    0.184,
+    0.213,
+    0.059,
+    0.253,
+    0.16,
+    0.242,
+    0.172,
+    0.045
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.387,
+     "peso": 0.505
+    },
+    {
+     "n": 1,
+     "sim": 0.379,
+     "peso": 0.495
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-6": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Educação e saúde",
+   "sims": [
+    0.292,
+    0.284,
+    0.53,
+    0.448,
+    0.267,
+    0.314,
+    0.249,
+    0.311,
+    0.216,
+    0.277,
+    0.22,
+    0.199,
+    0.14,
+    0.185,
+    0.174,
+    0.265,
+    0.273
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.53,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-7": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Gestão e avaliação de serviços na Estratégia de saúde da família/atenção básica",
+   "sims": [
+    0.188,
+    0.169,
+    0.331,
+    0.104,
+    0.046,
+    0.145,
+    0.082,
+    0.057,
+    -0.072,
+    -0.004,
+    0.022,
+    0.1,
+    -0.01,
+    0.071,
+    0.016,
+    0.061,
+    0.041
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.331,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-8": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Informação e saúde",
+   "sims": [
+    0.203,
+    0.203,
+    0.473,
+    0.239,
+    0.188,
+    0.24,
+    0.152,
+    0.194,
+    0.137,
+    0.183,
+    0.151,
+    0.113,
+    0.087,
+    0.187,
+    0.196,
+    0.214,
+    0.229
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.473,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFSAÚDE-9": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Pesquisa Clínica",
+   "sims": [
+    0.012,
+    -0.029,
+    0.197,
+    0.042,
+    0.064,
+    0.054,
+    -0.016,
+    0.027,
+    0.027,
+    -0.012,
+    0.02,
+    -0.029,
+    -0.026,
+    0.009,
+    -0.041,
+    0.027,
+    0.17
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.197,
+     "peso": 1.0
+    }
+   ],
+   "fraca": true
+  },
+  "PROFSAÚDE-10": {
+   "ppg_codigo": "PROFSAÚDE",
+   "titulo": "Vigilância em Saúde",
+   "sims": [
+    0.117,
+    0.141,
+    0.385,
+    0.017,
+    0.123,
+    0.159,
+    0.1,
+    0.051,
+    0.041,
+    0.033,
+    0.108,
+    0.075,
+    0.103,
+    0.11,
+    0.085,
+    0.148,
+    0.077
+   ],
+   "ods": [
+    {
+     "n": 3,
+     "sim": 0.385,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFÁGUA-1": {
+   "ppg_codigo": "PROFÁGUA",
+   "titulo": "Instrumentos da Política de Recursos Hídricos",
+   "sims": [
+    0.106,
+    0.208,
+    0.048,
+    0.033,
+    0.092,
+    0.494,
+    0.271,
+    0.035,
+    0.214,
+    0.041,
+    0.155,
+    0.248,
+    0.334,
+    0.355,
+    0.182,
+    0.15,
+    0.302
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.494,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFÁGUA-2": {
+   "ppg_codigo": "PROFÁGUA",
+   "titulo": "Regulação e Governança de Recursos Hídricos",
+   "sims": [
+    0.263,
+    0.24,
+    0.155,
+    0.088,
+    0.194,
+    0.578,
+    0.282,
+    0.12,
+    0.284,
+    0.142,
+    0.288,
+    0.327,
+    0.362,
+    0.368,
+    0.221,
+    0.313,
+    0.275
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.578,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFÁGUA-3": {
+   "ppg_codigo": "PROFÁGUA",
+   "titulo": "Instrumentos De Política De Recursos Hídricos",
+   "sims": [
+    0.173,
+    0.232,
+    0.095,
+    0.09,
+    0.112,
+    0.489,
+    0.339,
+    0.091,
+    0.235,
+    0.127,
+    0.201,
+    0.299,
+    0.366,
+    0.396,
+    0.177,
+    0.203,
+    0.307
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.489,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFÁGUA-4": {
+   "ppg_codigo": "PROFÁGUA",
+   "titulo": "Ferramentas Aplicadas aos Instrumentos de Gestão de Recursos Hídricos",
+   "sims": [
+    0.076,
+    0.168,
+    0.002,
+    0.043,
+    0.092,
+    0.44,
+    0.212,
+    0.029,
+    0.163,
+    0.031,
+    0.119,
+    0.263,
+    0.236,
+    0.31,
+    0.123,
+    0.078,
+    0.227
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.44,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFÁGUA-5": {
+   "ppg_codigo": "PROFÁGUA",
+   "titulo": "Metodologias para Implementação dos Instrumentos de Gestão de Recursos Hídricos",
+   "sims": [
+    0.069,
+    0.186,
+    -0.015,
+    0.028,
+    0.064,
+    0.468,
+    0.231,
+    0.006,
+    0.094,
+    -0.02,
+    0.159,
+    0.309,
+    0.273,
+    0.264,
+    0.077,
+    0.091,
+    0.188
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.468,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFÁGUA-6": {
+   "ppg_codigo": "PROFÁGUA",
+   "titulo": "Planejamento e Gestão de Recursos Hídricos",
+   "sims": [
+    0.164,
+    0.243,
+    0.12,
+    0.095,
+    0.157,
+    0.599,
+    0.361,
+    0.186,
+    0.232,
+    0.09,
+    0.367,
+    0.352,
+    0.313,
+    0.422,
+    0.188,
+    0.118,
+    0.277
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.599,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "PROFÁGUA-7": {
+   "ppg_codigo": "PROFÁGUA",
+   "titulo": "Segurança Hídrica e Usos Múltiplos da Água",
+   "sims": [
+    0.147,
+    0.091,
+    0.181,
+    0.045,
+    0.091,
+    0.562,
+    0.225,
+    0.046,
+    0.251,
+    0.035,
+    0.223,
+    0.258,
+    0.213,
+    0.361,
+    0.161,
+    0.097,
+    0.136
+   ],
+   "ods": [
+    {
+     "n": 6,
+     "sim": 0.562,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede BIONORTE-1": {
+   "ppg_codigo": "Rede BIONORTE",
+   "titulo": "Biotecnologia",
+   "sims": [
+    0.114,
+    0.296,
+    0.24,
+    0.146,
+    0.223,
+    0.258,
+    0.246,
+    0.197,
+    0.397,
+    0.033,
+    0.117,
+    0.267,
+    0.155,
+    0.237,
+    0.227,
+    0.105,
+    0.39
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.397,
+     "peso": 0.504
+    },
+    {
+     "n": 17,
+     "sim": 0.39,
+     "peso": 0.496
+    }
+   ],
+   "fraca": false
+  },
+  "Rede BIONORTE-2": {
+   "ppg_codigo": "Rede BIONORTE",
+   "titulo": "Bioprospecção e Desenvolvimento de Bioprocessos e Bioprodutos",
+   "sims": [
+    -0.004,
+    0.133,
+    0.009,
+    -0.066,
+    0.032,
+    0.256,
+    0.235,
+    0.136,
+    0.248,
+    -0.018,
+    0.085,
+    0.318,
+    0.043,
+    0.237,
+    0.167,
+    -0.02,
+    0.115
+   ],
+   "ods": [
+    {
+     "n": 12,
+     "sim": 0.318,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede BIONORTE-3": {
+   "ppg_codigo": "Rede BIONORTE",
+   "titulo": "Biodiversidade e Conservação",
+   "sims": [
+    0.259,
+    0.28,
+    0.286,
+    0.123,
+    0.168,
+    0.324,
+    0.27,
+    0.204,
+    0.252,
+    0.287,
+    0.397,
+    0.355,
+    0.322,
+    0.432,
+    0.572,
+    0.147,
+    0.251
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.572,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede BIONORTE-4": {
+   "ppg_codigo": "Rede BIONORTE",
+   "titulo": "Conhecimento da Biodiversidade",
+   "sims": [
+    0.109,
+    0.183,
+    0.221,
+    0.088,
+    0.078,
+    0.206,
+    0.153,
+    0.122,
+    0.143,
+    0.163,
+    0.222,
+    0.212,
+    0.244,
+    0.409,
+    0.492,
+    0.067,
+    0.226
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.492,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede BIONORTE-5": {
+   "ppg_codigo": "Rede BIONORTE",
+   "titulo": "Conservação e Uso Sustentável da Biodiversidade",
+   "sims": [
+    0.222,
+    0.251,
+    0.246,
+    0.13,
+    0.125,
+    0.303,
+    0.319,
+    0.194,
+    0.228,
+    0.218,
+    0.409,
+    0.446,
+    0.277,
+    0.356,
+    0.517,
+    0.093,
+    0.212
+   ],
+   "ods": [
+    {
+     "n": 15,
+     "sim": 0.517,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-1": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Matemática na Educação Básica e suas Tecnologias",
+   "sims": [
+    0.129,
+    0.094,
+    0.027,
+    0.227,
+    0.019,
+    0.08,
+    -0.0,
+    0.027,
+    0.098,
+    0.043,
+    -0.031,
+    -0.026,
+    0.042,
+    0.057,
+    0.066,
+    0.008,
+    -0.021
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.227,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-2": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Formação de Professores de Matemática da Educação Básica",
+   "sims": [
+    0.088,
+    0.115,
+    0.03,
+    0.284,
+    0.057,
+    0.079,
+    -0.032,
+    0.042,
+    -0.005,
+    0.04,
+    -0.047,
+    -0.018,
+    0.045,
+    0.037,
+    0.029,
+    -0.009,
+    -0.022
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.284,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-3": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Divulgação e Popularização da Matemática da Educação Básica",
+   "sims": [
+    0.029,
+    0.104,
+    0.019,
+    0.222,
+    0.053,
+    0.053,
+    0.026,
+    0.061,
+    0.23,
+    0.042,
+    0.047,
+    0.022,
+    0.046,
+    0.102,
+    0.1,
+    0.026,
+    0.135
+   ],
+   "ods": [
+    {
+     "n": 9,
+     "sim": 0.23,
+     "peso": 0.509
+    },
+    {
+     "n": 4,
+     "sim": 0.222,
+     "peso": 0.491
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-4": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Matemática na Educação Básica",
+   "sims": [
+    0.11,
+    0.141,
+    0.078,
+    0.343,
+    0.178,
+    0.094,
+    0.015,
+    0.115,
+    0.097,
+    0.154,
+    -0.046,
+    -0.024,
+    0.082,
+    0.054,
+    0.076,
+    0.067,
+    0.076
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.343,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-5": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Pesquisa e Inovação da Matemática para a Educação Básica",
+   "sims": [
+    0.125,
+    0.148,
+    0.08,
+    0.305,
+    0.091,
+    0.084,
+    0.049,
+    0.117,
+    0.172,
+    0.045,
+    0.002,
+    -0.028,
+    0.021,
+    0.017,
+    0.047,
+    0.059,
+    0.141
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.305,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-6": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Bases Científicas e Quantitativas da Matemática para a Educação Básica",
+   "sims": [
+    0.042,
+    0.099,
+    0.022,
+    0.279,
+    0.132,
+    0.051,
+    0.049,
+    0.078,
+    0.078,
+    0.106,
+    -0.044,
+    -0.028,
+    0.06,
+    0.077,
+    0.102,
+    -0.001,
+    0.022
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.279,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-7": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Métodos e Ferramentas Computacionais, com aplicações à Matemática para a Educação Básica",
+   "sims": [
+    0.092,
+    0.13,
+    -0.015,
+    0.205,
+    0.076,
+    0.076,
+    0.057,
+    0.077,
+    0.123,
+    0.138,
+    -0.033,
+    -0.008,
+    0.129,
+    0.075,
+    0.116,
+    0.026,
+    0.044
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.205,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede PROFMAT-8": {
+   "ppg_codigo": "Rede PROFMAT",
+   "titulo": "Divulgação e Comunicação Pública da Matemática para a Educação Básica",
+   "sims": [
+    0.108,
+    0.132,
+    0.072,
+    0.275,
+    0.12,
+    0.043,
+    0.011,
+    0.037,
+    0.046,
+    0.097,
+    0.002,
+    0.014,
+    0.047,
+    0.041,
+    0.025,
+    0.122,
+    0.07
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.275,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede REAMEC-1": {
+   "ppg_codigo": "Rede REAMEC",
+   "titulo": "Educação em Ciências e Matemática",
+   "sims": [
+    0.064,
+    0.123,
+    0.124,
+    0.403,
+    0.252,
+    0.154,
+    0.103,
+    0.177,
+    0.261,
+    0.178,
+    0.061,
+    0.078,
+    0.148,
+    0.12,
+    0.141,
+    0.093,
+    0.237
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.403,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede REAMEC-2": {
+   "ppg_codigo": "Rede REAMEC",
+   "titulo": "Formação de Professores para a Educação em Ciências e Matemática.",
+   "sims": [
+    0.008,
+    0.157,
+    0.053,
+    0.402,
+    0.201,
+    0.119,
+    0.069,
+    0.052,
+    0.114,
+    0.098,
+    0.033,
+    0.057,
+    0.165,
+    0.117,
+    0.129,
+    -0.028,
+    0.15
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.402,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  },
+  "Rede REAMEC-3": {
+   "ppg_codigo": "Rede REAMEC",
+   "titulo": "Fundamentos e Metodologias para a Educação em Ciências e Matemática.",
+   "sims": [
+    0.091,
+    0.115,
+    0.064,
+    0.404,
+    0.177,
+    0.121,
+    0.053,
+    0.118,
+    0.18,
+    0.158,
+    0.074,
+    0.106,
+    0.155,
+    0.119,
+    0.133,
+    0.111,
+    0.12
+   ],
+   "ods": [
+    {
+     "n": 4,
+     "sim": 0.404,
+     "peso": 1.0
+    }
+   ],
+   "fraca": false
+  }
+ },
+ "contatos": {
+  "Institute for Biodiversity": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "15": {
+     "pesquisadores": 4,
+     "matches": 8
+    }
+   }
+  },
+  "Leibniz University Hannover": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 6,
+   "ods": {
+    "15": {
+     "pesquisadores": 2,
+     "matches": 3
+    },
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "German Centre for Integrative Biodiversity Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 6,
+   "ods": {
+    "15": {
+     "pesquisadores": 6,
+     "matches": 9
+    }
+   }
+  },
+  "Max Planck Institute for Biogeochemistry": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 12,
+   "ods": {
+    "15": {
+     "pesquisadores": 12,
+     "matches": 12
+    }
+   }
+  },
+  "Helmholtz Centre for Environmental Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "15": {
+     "pesquisadores": 5,
+     "matches": 6
+    }
+   }
+  },
+  "University of Göttingen": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 7,
+   "ods": {
+    "15": {
+     "pesquisadores": 5,
+     "matches": 7
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Leipzig University": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Bayreuth": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 6,
+   "ods": {
+    "15": {
+     "pesquisadores": 5,
+     "matches": 8
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Eberswalde University for Sustainable Development": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Friedrich-Alexander-Universität Erlangen-Nürnberg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Leibniz-Institute for Food Systems Biology at the Technical University of Munich": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "13": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "15": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Deutsches Zentrum für Luft- und Raumfahrt e. V. (DLR)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "13": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "15": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "University of Bremen": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 10,
+   "ods": {
+    "13": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "15": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "3": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Potsdam Institute for Climate Impact Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "13": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "15": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Max Planck Institute for Meteorology": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "13": {
+     "pesquisadores": 4,
+     "matches": 5
+    },
+    "15": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "German Climate Computing Centre": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Alfred-Wegener-Institut Helmholtz-Zentrum für Polar- und Meeresforschung": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "13": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "15": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Deutscher Wetterdienst": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Centre for Applied Psychology, Environmental and Social Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Karlsruhe Institute of Technology": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 8,
+   "ods": {
+    "13": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "15": {
+     "pesquisadores": 8,
+     "matches": 10
+    },
+    "12": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Helmholtz-Zentrum Hereon": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Frankfurt Institute for Advanced Studies": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Max Planck Institute of Psychiatry": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Fraunhofer Institute for Energy Economics and Energy System Technology": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "13": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "15": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "German Institute for Economic Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Forschungszentrum Jülich": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Ludwig-Maximilians-Universität München": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 13,
+   "ods": {
+    "13": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "15": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "4": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Leibniz Association": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 12,
+   "ods": {
+    "13": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "15": {
+     "pesquisadores": 8,
+     "matches": 8
+    }
+   }
+  },
+  "Leibniz Centre for Agricultural Landscape Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "13": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "15": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Universität Hamburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 17,
+   "ods": {
+    "13": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "12": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 6,
+     "matches": 7
+    },
+    "3": {
+     "pesquisadores": 7,
+     "matches": 7
+    },
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Potsdam": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 7,
+   "ods": {
+    "13": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "6": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Universität Greifswald": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "GEOMAR Helmholtz Centre for Ocean Research Kiel": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Koblenz and Landau": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "13": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "German Council on Foreign Relations": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Technical University of Munich": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 22,
+   "ods": {
+    "4": {
+     "pesquisadores": 14,
+     "matches": 14
+    },
+    "3": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Max Delbrück Center": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Helmholtz Munich": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "9": {
+     "pesquisadores": 4,
+     "matches": 4
+    }
+   }
+  },
+  "TUM Klinikum": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "9": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "University of Würzburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Humboldt-Universität zu Berlin": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Institut für Psychiatrische Phänomik und Genomik": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Regensburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "European Molecular Biology Laboratory": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Bielefeld University": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Siegen": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Einstein Center Digital Future": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Charité - Universitätsmedizin Berlin": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 9,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 8,
+     "matches": 8
+    }
+   }
+  },
+  "Berliner Hochschule für Technik": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Universität Trier": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 4,
+     "matches": 4
+    }
+   }
+  },
+  "Essen University Hospital": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Duisburg-Essen": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 9,
+   "ods": {
+    "3": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "6": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "17": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Philipps University of Marburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "LMU Klinikum": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "3": {
+     "pesquisadores": 4,
+     "matches": 4
+    }
+   }
+  },
+  "Max Planck Institute for Medical Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "6": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "DWI – Leibniz Institute for Interactive Materials": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "6": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Heidelberg University": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 12,
+   "ods": {
+    "6": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "3": {
+     "pesquisadores": 9,
+     "matches": 9
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Städtisches Klinikum Dresden": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Robert Koch Institute": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 11,
+   "ods": {
+    "3": {
+     "pesquisadores": 11,
+     "matches": 11
+    }
+   }
+  },
+  "German Primate Center": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 3
+    }
+   }
+  },
+  "Max Planck Institute for Evolutionary Anthropology": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Deutsche Lepra- und Tuberkulosehilfe": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 6,
+   "ods": {
+    "3": {
+     "pesquisadores": 6,
+     "matches": 7
+    }
+   }
+  },
+  "Johannes Gutenberg University Mainz": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "3": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Universitätsklinikum Würzburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Jena University Hospital": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "3": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Bundeswehrkrankenhaus": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "SRH Wald-Klinikum Gera": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Cologne": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 9,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 2,
+     "matches": 6
+    },
+    "4": {
+     "pesquisadores": 6,
+     "matches": 7
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Hochschule Bonn-Rhein-Sieg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Institute for Integrated Management of Material Fluxes and of Resources": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Osnabrück University": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "12": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Kassel": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Deutsche Gesellschaft für Internationale Zusammenarbeit": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Senckenberg Biodiversity and Climate Research Centre": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "15": {
+     "pesquisadores": 3,
+     "matches": 8
+    }
+   }
+  },
+  "Sustainable Europe Research Institute": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Research Institute for Sustainability at GFZ": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "12": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "NewClimate Institute": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "13": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "12": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Climate Analytics": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "13": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "12": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "14": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Freiburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "12": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "University of Vechta": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 4
+    }
+   }
+  },
+  "Leuphana University of Lüneburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "4": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "6": {
+     "pesquisadores": 2,
+     "matches": 4
+    }
+   }
+  },
+  "Catholic University of Eichstätt-Ingolstadt": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "4": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Individual Development and Adaptive Education": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 4
+    }
+   }
+  },
+  "University of Tübingen": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 14,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 11,
+     "matches": 11
+    }
+   }
+  },
+  "Justus-Liebig-Universität Gießen": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Centre for Tactile Internet with Human-in-the-Loop": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Siemens (Germany)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Munich Leukemia Laboratory (Germany)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 8,
+   "ods": {
+    "3": {
+     "pesquisadores": 8,
+     "matches": 8
+    }
+   }
+  },
+  "Universitätsmedizin Göttingen": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Medizinische Hochschule Hannover": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 12,
+   "ods": {
+    "3": {
+     "pesquisadores": 12,
+     "matches": 12
+    }
+   }
+  },
+  "IMMS Institut für Mikroelektronik- und Mechatronik-Systeme gemeinnützige GmbH (IMMS GmbH)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Lübeck": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Fresenius (Germany)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "3": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Goethe University Frankfurt": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Münster": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University Hospital Münster": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "FOM University of Applied Sciences for Economics and Management": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Sana Klinikum Offenbach": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Clausthal University of Technology": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Campus-Institut Data Science (CIDAS)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 3
+    }
+   }
+  },
+  "Berlin Center for Genomics in Biodiversity Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 3
+    }
+   }
+  },
+  "Bayer (Germany)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "3": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "15": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Ruhr University Bochum": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "15": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "3": {
+     "pesquisadores": 5,
+     "matches": 5
+    }
+   }
+  },
+  "Nuremberg Hospital": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "German Cancer Research Center": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "15": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "3": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Medical Mission Institute": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Veterinary Medicine Hannover, Foundation": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "University Hospital Bonn": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "3": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Leibniz Institute of Virology (LIV)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "3": {
+     "pesquisadores": 4,
+     "matches": 4
+    }
+   }
+  },
+  "University of Bonn": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Hochschule für Musik Freiburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Max Planck Institute for Empirical Aesthetics": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "4": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Hanover University of Music Drama and Media": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "HAW Hamburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Education Schwaebisch Gmuend": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Design Schwäbisch Gmünd": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Karlsruhe University of Education": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Christian-Albrechts-Universität zu Kiel": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "9": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "17": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "Hochschule für Technik und Wirtschaft Dresden – University of Applied Sciences": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "European University Viadrina": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Karlshochschule International University": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "IU International University of Applied Sciences": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Ruhr West University of Applied Sciences": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Deutsche Bank (Germany)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "HHL Leipzig Graduate School of Management": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "9": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 4,
+     "matches": 4
+    }
+   }
+  },
+  "Reutlingen University": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Weizenbaum Institute": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 3,
+   "ods": {
+    "9": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "4": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "17": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "HTW Berlin - University of Applied Sciences": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Fraunhofer Institute for Systems and Innovation Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 5,
+   "ods": {
+    "9": {
+     "pesquisadores": 5,
+     "matches": 8
+    },
+    "17": {
+     "pesquisadores": 5,
+     "matches": 8
+    },
+    "11": {
+     "pesquisadores": 5,
+     "matches": 5
+    }
+   }
+  },
+  "WHU – Otto Beisheim School of Management": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Technische Universität Dresden": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Centre for European Economic Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Esslingen University of Applied Sciences": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Technische Universität Berlin": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 4,
+   "ods": {
+    "6": {
+     "pesquisadores": 4,
+     "matches": 7
+    }
+   }
+  },
+  "United Nations University": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Institut für Angewandte Gewässerökologie (Germany)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Kiel Institute for the World Economy": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    }
+   }
+  },
+  "Adelphi Research": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "6": {
+     "pesquisadores": 2,
+     "matches": 4
+    }
+   }
+  },
+  "University of Rostock": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "6": {
+     "pesquisadores": 2,
+     "matches": 4
+    }
+   }
+  },
+  "Johann Heinrich von Thünen-Institut": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Fraunhofer Institute for Solar Energy Systems": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Augsburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Evonik (Germany)": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Max Planck Institute of Molecular Plant Physiology": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Konstanz": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "15": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Leibniz Institute of Freshwater Ecology and Inland Fisheries": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Freie Universität Berlin": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Carl von Ossietzky Universität Oldenburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Max Planck Institute for Astronomy": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 1,
+   "ods": {
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Education Freiburg": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Leibniz Institute for Science and Mathematics Education": {
+   "pais": "Alemanha",
+   "n_pesquisadores": 2,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "University of Ghana": {
+   "pais": "Gana",
+   "n_pesquisadores": 66,
+   "ods": {
+    "15": {
+     "pesquisadores": 11,
+     "matches": 17
+    },
+    "13": {
+     "pesquisadores": 5,
+     "matches": 8
+    },
+    "3": {
+     "pesquisadores": 37,
+     "matches": 38
+    },
+    "12": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "14": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 13,
+     "matches": 14
+    },
+    "9": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "17": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Algiers Benyoucef Benkhedda": {
+   "pais": "Argélia",
+   "n_pesquisadores": 13,
+   "ods": {
+    "3": {
+     "pesquisadores": 7,
+     "matches": 7
+    },
+    "15": {
+     "pesquisadores": 4,
+     "matches": 5
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Eduardo Mondlane University": {
+   "pais": "Moçambique",
+   "n_pesquisadores": 44,
+   "ods": {
+    "13": {
+     "pesquisadores": 14,
+     "matches": 17
+    },
+    "15": {
+     "pesquisadores": 19,
+     "matches": 21
+    },
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 14,
+     "matches": 14
+    },
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "6": {
+     "pesquisadores": 2,
+     "matches": 6
+    }
+   }
+  },
+  "University of Johannesburg": {
+   "pais": "África do Sul",
+   "n_pesquisadores": 67,
+   "ods": {
+    "13": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "15": {
+     "pesquisadores": 12,
+     "matches": 28
+    },
+    "3": {
+     "pesquisadores": 10,
+     "matches": 10
+    },
+    "6": {
+     "pesquisadores": 8,
+     "matches": 10
+    },
+    "12": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "14": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 21,
+     "matches": 25
+    },
+    "9": {
+     "pesquisadores": 19,
+     "matches": 21
+    },
+    "16": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 7,
+     "matches": 7
+    }
+   }
+  },
+  "Stellenbosch University": {
+   "pais": "África do Sul",
+   "n_pesquisadores": 77,
+   "ods": {
+    "15": {
+     "pesquisadores": 27,
+     "matches": 39
+    },
+    "13": {
+     "pesquisadores": 9,
+     "matches": 9
+    },
+    "3": {
+     "pesquisadores": 15,
+     "matches": 15
+    },
+    "6": {
+     "pesquisadores": 9,
+     "matches": 9
+    },
+    "12": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "4": {
+     "pesquisadores": 24,
+     "matches": 24
+    },
+    "9": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "17": {
+     "pesquisadores": 8,
+     "matches": 8
+    }
+   }
+  },
+  "Universidade Katyavala Bwila": {
+   "pais": "Angola",
+   "n_pesquisadores": 4,
+   "ods": {
+    "3": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "4": {
+     "pesquisadores": 2,
+     "matches": 4
+    }
+   }
+  },
+  "University of Birmingham": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 120,
+   "ods": {
+    "15": {
+     "pesquisadores": 40,
+     "matches": 47
+    },
+    "13": {
+     "pesquisadores": 5,
+     "matches": 6
+    },
+    "4": {
+     "pesquisadores": 16,
+     "matches": 16
+    },
+    "14": {
+     "pesquisadores": 14,
+     "matches": 14
+    },
+    "3": {
+     "pesquisadores": 38,
+     "matches": 40
+    },
+    "12": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "10": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 14,
+     "matches": 14
+    },
+    "17": {
+     "pesquisadores": 12,
+     "matches": 12
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "6": {
+     "pesquisadores": 9,
+     "matches": 15
+    }
+   }
+  },
+  "University of Warwick": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 67,
+   "ods": {
+    "13": {
+     "pesquisadores": 9,
+     "matches": 9
+    },
+    "15": {
+     "pesquisadores": 15,
+     "matches": 20
+    },
+    "14": {
+     "pesquisadores": 9,
+     "matches": 9
+    },
+    "3": {
+     "pesquisadores": 20,
+     "matches": 20
+    },
+    "6": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "12": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "4": {
+     "pesquisadores": 15,
+     "matches": 19
+    },
+    "9": {
+     "pesquisadores": 13,
+     "matches": 13
+    },
+    "17": {
+     "pesquisadores": 13,
+     "matches": 13
+    }
+   }
+  },
+  "Coventry University": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 58,
+   "ods": {
+    "15": {
+     "pesquisadores": 14,
+     "matches": 25
+    },
+    "13": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "3": {
+     "pesquisadores": 21,
+     "matches": 21
+    },
+    "6": {
+     "pesquisadores": 8,
+     "matches": 25
+    },
+    "17": {
+     "pesquisadores": 9,
+     "matches": 10
+    },
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 4,
+     "matches": 6
+    },
+    "9": {
+     "pesquisadores": 12,
+     "matches": 13
+    },
+    "12": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "10": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "11": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "16": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Imperial College London": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 209,
+   "ods": {
+    "15": {
+     "pesquisadores": 37,
+     "matches": 56
+    },
+    "13": {
+     "pesquisadores": 14,
+     "matches": 14
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "9": {
+     "pesquisadores": 11,
+     "matches": 11
+    },
+    "3": {
+     "pesquisadores": 141,
+     "matches": 159
+    },
+    "4": {
+     "pesquisadores": 19,
+     "matches": 27
+    },
+    "6": {
+     "pesquisadores": 15,
+     "matches": 28
+    },
+    "5": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "12": {
+     "pesquisadores": 7,
+     "matches": 7
+    },
+    "17": {
+     "pesquisadores": 5,
+     "matches": 5
+    }
+   }
+  },
+  "King's College London": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 135,
+   "ods": {
+    "15": {
+     "pesquisadores": 20,
+     "matches": 37
+    },
+    "13": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "9": {
+     "pesquisadores": 27,
+     "matches": 30
+    },
+    "3": {
+     "pesquisadores": 62,
+     "matches": 78
+    },
+    "4": {
+     "pesquisadores": 27,
+     "matches": 30
+    },
+    "6": {
+     "pesquisadores": 10,
+     "matches": 10
+    },
+    "12": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "17": {
+     "pesquisadores": 12,
+     "matches": 15
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Cambridge": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 200,
+   "ods": {
+    "15": {
+     "pesquisadores": 69,
+     "matches": 168
+    },
+    "13": {
+     "pesquisadores": 17,
+     "matches": 19
+    },
+    "14": {
+     "pesquisadores": 7,
+     "matches": 7
+    },
+    "9": {
+     "pesquisadores": 26,
+     "matches": 31
+    },
+    "6": {
+     "pesquisadores": 10,
+     "matches": 12
+    },
+    "3": {
+     "pesquisadores": 78,
+     "matches": 85
+    },
+    "12": {
+     "pesquisadores": 28,
+     "matches": 28
+    },
+    "4": {
+     "pesquisadores": 23,
+     "matches": 31
+    },
+    "5": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "10": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "16": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "17": {
+     "pesquisadores": 16,
+     "matches": 19
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Queen Mary University of London": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 103,
+   "ods": {
+    "15": {
+     "pesquisadores": 16,
+     "matches": 26
+    },
+    "13": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "4": {
+     "pesquisadores": 12,
+     "matches": 12
+    },
+    "9": {
+     "pesquisadores": 20,
+     "matches": 21
+    },
+    "3": {
+     "pesquisadores": 54,
+     "matches": 56
+    },
+    "6": {
+     "pesquisadores": 4,
+     "matches": 6
+    },
+    "12": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "16": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 3,
+     "matches": 4
+    }
+   }
+  },
+  "University of St Andrews": {
+   "pais": "Reino Unido",
+   "n_pesquisadores": 57,
+   "ods": {
+    "15": {
+     "pesquisadores": 17,
+     "matches": 34
+    },
+    "13": {
+     "pesquisadores": 5,
+     "matches": 6
+    },
+    "3": {
+     "pesquisadores": 25,
+     "matches": 29
+    },
+    "6": {
+     "pesquisadores": 4,
+     "matches": 6
+    },
+    "17": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "4": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "5": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "12": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "16": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 5,
+     "matches": 5
+    }
+   }
+  },
+  "National University of Singapore": {
+   "pais": "Singapura",
+   "n_pesquisadores": 68,
+   "ods": {
+    "15": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "13": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "9": {
+     "pesquisadores": 13,
+     "matches": 13
+    },
+    "3": {
+     "pesquisadores": 27,
+     "matches": 30
+    },
+    "4": {
+     "pesquisadores": 9,
+     "matches": 10
+    },
+    "6": {
+     "pesquisadores": 9,
+     "matches": 9
+    },
+    "12": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Nanyang Technological University": {
+   "pais": "Singapura",
+   "n_pesquisadores": 49,
+   "ods": {
+    "15": {
+     "pesquisadores": 18,
+     "matches": 19
+    },
+    "13": {
+     "pesquisadores": 17,
+     "matches": 18
+    },
+    "14": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 10,
+     "matches": 10
+    },
+    "4": {
+     "pesquisadores": 12,
+     "matches": 14
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "12": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "5": {
+     "pesquisadores": 5,
+     "matches": 5
+    }
+   }
+  },
+  "Singapore Management University": {
+   "pais": "Singapura",
+   "n_pesquisadores": 20,
+   "ods": {
+    "15": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "13": {
+     "pesquisadores": 9,
+     "matches": 9
+    },
+    "4": {
+     "pesquisadores": 7,
+     "matches": 7
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "12": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Singapore University of Technology and Design": {
+   "pais": "Singapura",
+   "n_pesquisadores": 3,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 3
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Singapore Institute of Technology": {
+   "pais": "Singapura",
+   "n_pesquisadores": 10,
+   "ods": {
+    "13": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "15": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "4": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Singapore University of Social Sciences": {
+   "pais": "Singapura",
+   "n_pesquisadores": 12,
+   "ods": {
+    "15": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "3": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 4,
+     "matches": 5
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "LASALLE College of the Arts": {
+   "pais": "Singapura",
+   "n_pesquisadores": 3,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "15": {
+     "pesquisadores": 1,
+     "matches": 2
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "12": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Nanyang Academy of Fine Arts": {
+   "pais": "Singapura",
+   "n_pesquisadores": 1,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "James Cook University Singapore": {
+   "pais": "Singapura",
+   "n_pesquisadores": 1,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  }
+ },
+ "openalex": null
+}
