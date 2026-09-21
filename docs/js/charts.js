@@ -283,9 +283,9 @@ async function renderCountryMap(el, matchSubset) {
     ? { type: "FeatureCollection", features: matchedFeatures }
     : { type: "Sphere" };
   if (matchedFeatures.length) {
-    // país minúsculo (ex.: Singapura ~1° de largura): amplia o enquadramento para mostrar a vizinhança
+    // país minúsculo (ex.: Singapura ~0,35° de largura): amplia o enquadramento para mostrar a vizinhança
     const [[x0, y0], [x1, y1]] = d3.geoBounds(frame);
-    const minSpan = 6;
+    const minSpan = 3;
     if (x1 - x0 < minSpan && y1 - y0 < minSpan) {
       const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, h = minSpan / 2;
       frame = { type: "Polygon", coordinates: [[[cx - h, cy - h], [cx - h, cy + h], [cx + h, cy + h], [cx + h, cy - h], [cx - h, cy - h]]] };  // horário (convenção d3)
