@@ -13,7 +13,7 @@ Fontes (mesmos alvos já usados pelos scripts *_match.py existentes, reaproveita
 os arquivos de cache já populados de cada um — só adiciona chaves novas):
   Alemanha (país inteiro), Gana (University of Ghana), Argélia (Univ. of Algiers),
   Moçambique (Eduardo Mondlane), África do Sul (Johannesburg + Stellenbosch),
-  Angola (Katyavala Bwila), Reino Unido (8 universidades).
+  Angola (Katyavala Bwila), Reino Unido (8 universidades), Singapura (NUS, NTU, SMU, SUTD, SIT, SUSS, LASALLE+NAFA=UAS, JCU, INSEAD, SP Jain).
 
 Uso:
     ./etl_venv_or_system_python3 etl/linha_match.py [--limit N] [--fontes ALE,GHA,...]
@@ -50,6 +50,7 @@ API_KEY = "e20KHEj9oLRTjzBsp4QFI9"
 REQUEST_DELAY_S = 0.12
 RESULTS_PER_KEYWORD = 8
 YEARS_BACK = 5
+OFFLINE = False  # ligado por --offline: não bate no OpenAlex, usa só o cache
 
 TOP_MATCHES_PER_LINHA = MAX_CANDIDATOS_POR_LINHA = 60  # sem corte artificial: todos os candidatos rankeados entram
 MAX_FRASES_POR_LINHA = 5
@@ -99,6 +100,28 @@ FONTES = [
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "REINO UNIDO" / "Queen Mary University of London" / "cache" / "qmul_match_cache.json"},
     {"id": "GBR-STA", "pais": "Reino Unido", "country_code": None, "institution_id": "I16835326",
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "REINO UNIDO" / "University of St Andrews" / "cache" / "standrews_match_cache.json"},
+    {"id": "SGP-NUS", "pais": "Singapura", "country_code": None, "institution_id": "I165932596",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "National University of Singapore" / "cache" / "nus_match_cache.json"},
+    {"id": "SGP-NTU", "pais": "Singapura", "country_code": None, "institution_id": "I172675005",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "Nanyang Technological University" / "cache" / "ntu_match_cache.json"},
+    {"id": "SGP-SMU", "pais": "Singapura", "country_code": None, "institution_id": "I79891267",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "Singapore Management University" / "cache" / "smu_match_cache.json"},
+    {"id": "SGP-SUTD", "pais": "Singapura", "country_code": None, "institution_id": "I152815399",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "Singapore University of Technology and Design" / "cache" / "sutd_match_cache.json"},
+    {"id": "SGP-SIT", "pais": "Singapura", "country_code": None, "institution_id": "I168639165",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "Singapore Institute of Technology" / "cache" / "sit_match_cache.json"},
+    {"id": "SGP-SUSS", "pais": "Singapura", "country_code": None, "institution_id": "I8696757",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "Singapore University of Social Sciences" / "cache" / "suss_match_cache.json"},
+    {"id": "SGP-LASALLE", "pais": "Singapura", "country_code": None, "institution_id": "I4210157043",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "LASALLE College of the Arts (UAS)" / "cache" / "lasalle_match_cache.json"},
+    {"id": "SGP-NAFA", "pais": "Singapura", "country_code": None, "institution_id": "I4210109929",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "Nanyang Academy of Fine Arts (UAS)" / "cache" / "nafa_match_cache.json"},
+    {"id": "SGP-JCU", "pais": "Singapura", "country_code": None, "institution_id": "I4210110442",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "James Cook University Singapore" / "cache" / "jcu_match_cache.json"},
+    {"id": "SGP-INSEAD", "pais": "Singapura", "country_code": None, "institution_id": "I4210152270",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "INSEAD Singapore" / "cache" / "insead_match_cache.json"},
+    {"id": "SGP-SPJAIN", "pais": "Singapura", "country_code": None, "institution_id": "I4403386623",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "SP Jain School of Global Management Singapore" / "cache" / "spjain_match_cache.json"},
 ]
 
 
@@ -125,12 +148,16 @@ class ForeignMatcher:
         cache_key = f"{keyword.lower()}|{chave_filtro}|{from_year}"
         if cache_key in self._cache:
             return self._cache[cache_key]
+        if OFFLINE:  # só usa o que já está em cache (ex.: cota do OpenAlex esgotada)
+            return []
         candidates = self._fetch(keyword, from_year)
+        if candidates is None:  # erro transitório de rede: não grava no cache (senão vira "sem resultado" pra sempre)
+            return []
         self._cache[cache_key] = candidates
         self._save()
         return candidates
 
-    def _fetch(self, keyword: str, from_year: int) -> list[dict]:
+    def _fetch(self, keyword: str, from_year: int) -> list[dict] | None:
         filtro = (
             f"institutions.country_code:{self.country_code}"
             if self.country_code
@@ -148,8 +175,15 @@ class ForeignMatcher:
         try:
             with urllib.request.urlopen(url, timeout=15) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            if e.code == 429:  # cota diária/limite de taxa do OpenAlex: aborta em vez de envenenar o cache
+                raise RuntimeError(
+                    f"OpenAlex 429 (cota esgotada ou limite de taxa; retry-after={e.headers.get('retry-after')}s). "
+                    "Nada foi gravado no cache para essa busca — rode de novo depois."
+                ) from e
+            return None
         except (urllib.error.URLError, TimeoutError, ValueError):
-            return []
+            return None
         time.sleep(REQUEST_DELAY_S)
 
         out = []
@@ -259,9 +293,16 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=None, help="processa só as N primeiras linhas (debug)")
     ap.add_argument("--fontes", type=str, default=None, help="lista de ids de FONTES separada por vírgula (default: todas)")
+    ap.add_argument("--merge", action="store_true",
+                    help="preserva os matches já gravados de OUTROS países (só substitui os do(s) país(es) das --fontes); "
+                         "use ao adicionar um país novo sem reprocessar os demais")
+    ap.add_argument("--offline", action="store_true",
+                    help="não faz buscas novas no OpenAlex: usa só o cache (resultado PARCIAL se o cache estiver incompleto)")
     ap.add_argument("--from-year", type=int, default=date.today().year - YEARS_BACK)
     args = ap.parse_args()
 
+    global OFFLINE
+    OFFLINE = args.offline
     linhas = carregar_linhas()
     if args.limit:
         linhas = linhas[: args.limit]
@@ -305,6 +346,11 @@ def main() -> None:
 
     # 2) aquisição de candidatos por fonte + linha
     todos_matches: list[dict] = []
+    if args.merge and OUTPUT_PATH.exists():
+        paises_alvo = {f["pais"] for f in fontes}
+        existentes = json.loads(OUTPUT_PATH.read_text(encoding="utf-8"))
+        todos_matches = [m for m in existentes if m.get("foreign_country") not in paises_alvo]
+        print(f"[linha_match] --merge: {len(todos_matches)} matches de outros países preservados")
     for fonte in fontes:
         print(f"\n[linha_match] fonte: {fonte['id']} ({fonte['pais']})")
         matcher = ForeignMatcher(fonte["cache"], fonte["country_code"], fonte["institution_id"])

@@ -303,7 +303,7 @@ async function renderCountryMap(el, matchSubset) {
 function normalizeCountry(name) {
   const map = {
     Germany: "Alemanha", Ghana: "Gana", Angola: "Angola", Algeria: "Argélia",
-    Mozambique: "Moçambique", "South Africa": "África do Sul", "United Kingdom": "Reino Unido",
+    Mozambique: "Moçambique", "South Africa": "África do Sul", "United Kingdom": "Reino Unido", Singapore: "Singapura",
   };
   return map[name] || name;
 }

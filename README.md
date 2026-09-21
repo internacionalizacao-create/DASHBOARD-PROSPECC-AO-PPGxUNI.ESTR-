@@ -9,8 +9,9 @@ publicações de pesquisadores estrangeiros indexadas no OpenAlex, não mais com
 o histórico de publicações de um professor isolado. O cruzamento é genérico
 por país/universidade (coluna `foreign_country`), então múltiplas fontes
 convivem na mesma base sem conflito — hoje: Alemanha (país inteiro), Gana,
-Argélia, Moçambique, África do Sul (Johannesburg + Stellenbosch), Angola e 8
-universidades do Reino Unido.
+Argélia, Moçambique, África do Sul (Johannesburg + Stellenbosch), Angola, 8
+universidades do Reino Unido e 11 instituições de Singapura (cobertura parcial —
+enriquecimento OpenAlex em andamento, ver `WEBSCRAPING/SINGAPRA/README.txt`).
 
 **🔗 Site publicado:** https://willpine1992.github.io/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR/
 **🔗 Site publicado (conta de Internacionalização):** https://internacionalizacao-create.github.io/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR-/
