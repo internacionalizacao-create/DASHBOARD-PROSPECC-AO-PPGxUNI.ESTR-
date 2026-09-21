@@ -207,13 +207,13 @@ function renderSankey(el, matchSubset, ppgColorInfo, opts = {}) {
 function truncateLabel(s, n) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
 
 /* ---------------- Mapa: países estrangeiros com match ---------------- */
-let _worldCache = null;
-async function getWorld() {
-  if (!_worldCache) {
-    const topo = await fetch("lib/countries-110m.json").then((r) => r.json());
-    _worldCache = topojson.feature(topo, topo.objects.countries);
+const _worldCache = {};
+async function getWorld(detail = "110m") {
+  if (!_worldCache[detail]) {
+    const topo = await fetch(`lib/countries-${detail}.json`).then((r) => r.json());
+    _worldCache[detail] = topojson.feature(topo, topo.objects.countries);
   }
-  return _worldCache;
+  return _worldCache[detail];
 }
 
 /* ---------------- Mini-mapa: localização de uma instituição ---------------- */
@@ -261,7 +261,7 @@ async function renderCountryMap(el, matchSubset) {
   const width = el.clientWidth, height = el.clientHeight;
   if (width < 10 || height < 10) return;
 
-  const world = await getWorld();
+  let world = await getWorld();
   const counts = countBy(matchSubset, (m) => m.foreign_country);
   const maxV = d3.max([...counts.values()]) || 1;
   const colorScale = d3.scaleQuantize().domain([0, maxV]).range(GREEN_SEQUENTIAL);
@@ -271,10 +271,26 @@ async function renderCountryMap(el, matchSubset) {
 
   const svg = container.append("svg").attr("width", width).attr("height", height);
 
-  const matchedFeatures = world.features.filter((f) => countryNameToCount.has(normalizeCountry(f.properties.name)));
-  const frame = matchedFeatures.length
+  const matchedIn = (w) => w.features.filter((f) => countryNameToCount.has(normalizeCountry(f.properties.name)));
+  let matchedFeatures = matchedIn(world);
+  // o mapa 110m omite países pequenos (ex.: Singapura): se algum país com match não
+  // tem polígono, usa a versão 50m (mais detalhada, carregada só quando necessário)
+  if (matchedFeatures.length < countryNameToCount.size) {
+    world = await getWorld("50m");
+    matchedFeatures = matchedIn(world);
+  }
+  let frame = matchedFeatures.length
     ? { type: "FeatureCollection", features: matchedFeatures }
     : { type: "Sphere" };
+  if (matchedFeatures.length) {
+    // país minúsculo (ex.: Singapura ~1° de largura): amplia o enquadramento para mostrar a vizinhança
+    const [[x0, y0], [x1, y1]] = d3.geoBounds(frame);
+    const minSpan = 6;
+    if (x1 - x0 < minSpan && y1 - y0 < minSpan) {
+      const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, h = minSpan / 2;
+      frame = { type: "Polygon", coordinates: [[[cx - h, cy - h], [cx - h, cy + h], [cx + h, cy + h], [cx + h, cy - h], [cx - h, cy - h]]] };  // horário (convenção d3)
+    }
+  }
   const projection = d3.geoMercator().fitExtent([[10, 10], [width - 10, height - 10]], frame);
   const path = d3.geoPath(projection);
 
