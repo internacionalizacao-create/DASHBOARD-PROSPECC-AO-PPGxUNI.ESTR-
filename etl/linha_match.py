@@ -56,6 +56,15 @@ OFFLINE = False  # ligado por --offline: não bate no OpenAlex, usa só o cache
 TOP_MATCHES_PER_LINHA = MAX_CANDIDATOS_POR_LINHA = 60  # sem corte artificial: todos os candidatos rankeados entram
 MAX_FRASES_POR_LINHA = 5
 
+# Pesquisadores-semente: grupos indicados manualmente que a busca por frase não
+# alcança (só os 8 trabalhos mais relevantes por frase entram). Para cada semente
+# busca os trabalhos recentes dos autores dela e pega os coautores da MESMA
+# instituição-alvo com >= min_coautorias trabalhos juntos (a "equipe"). Esses
+# candidatos entram no rerank de toda linha, mas só ficam onde o score semântico
+# passa de SEMENTE_SCORE_MIN (~mediana dos matches normais) — não são forçados.
+SEMENTE_SCORE_MIN = 0.30
+SEMENTE_MAX_TITULOS_POR_AUTOR = 15
+
 GENERIC_KEYWORDS_STOPLIST = {
     "biology", "chemistry", "physics", "medicine", "geography", "ecology",
     "geology", "mathematics", "engineering", "sociology", "psychology",
@@ -126,7 +135,10 @@ FONTES = [
     {"id": "ITA-SAP", "pais": "Itália", "country_code": None, "institution_id": "I861853513",
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Sapienza Università di Roma" / "cache" / "sapienza_match_cache.json"},
     {"id": "ITA-UNIPI", "pais": "Itália", "country_code": None, "institution_id": "I108290504",
-     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università di Pisa" / "cache" / "unipi_match_cache.json"},
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università di Pisa" / "cache" / "unipi_match_cache.json",
+     # Anna Maria Raspolli Galletti (catálise/conversão de biomassa) e equipe — indicação do usuário
+     "sementes": [{"rotulo": "Raspolli Galletti", "min_coautorias": 4,
+                   "autores": ["A5071984076", "A5110145595", "A5062149879"]}]},
     {"id": "ITA-UDA", "pais": "Itália", "country_code": None, "institution_id": "I39387349",
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università G. d'Annunzio Chieti-Pescara" / "cache" / "unich_match_cache.json"},
     {"id": "ITA-UNIBO", "pais": "Itália", "country_code": None, "institution_id": "I9360294",
@@ -226,6 +238,61 @@ class ForeignMatcher:
                     "sample_doi": doi,
                 })
         return out
+
+
+def candidatos_semente(matcher: ForeignMatcher, semente: dict, from_year: int) -> list[dict]:
+    """Uma entrada por (autor da equipe x trabalho), pra o rerank escolher o
+    título mais próximo de cada linha. Cacheado no mesmo arquivo da fonte."""
+    autores = "|".join(sorted(semente["autores"]))
+    cache_key = f"semente|{autores}|{matcher.institution_id}|{from_year}"
+    works = matcher._cache.get(cache_key)
+    if works is None:
+        if OFFLINE:
+            return []
+        works, cursor = [], "*"
+        while cursor:
+            params = {
+                "filter": f"authorships.author.id:{autores},from_publication_date:{from_year}-01-01",
+                "per-page": "200", "cursor": cursor,
+                "select": "id,doi,title,publication_year,authorships",
+                "mailto": CONTACT_EMAIL, "api_key": API_KEY,
+            }
+            with urllib.request.urlopen(f"{OPENALEX_URL}?{urllib.parse.urlencode(params)}", timeout=30) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+            works.extend(data.get("results", []))
+            cursor = data["meta"].get("next_cursor") if data.get("results") else None
+        matcher._cache[cache_key] = works
+        matcher._save()
+
+    por_autor: dict[str, dict] = {}
+    for w in works:
+        if not w.get("title"):
+            continue
+        doi = (w.get("doi") or "").replace("https://doi.org/", "") or None
+        for a in w.get("authorships", []):
+            alvo = [i for i in a.get("institutions") or []
+                    if i.get("id", "").rsplit("/", 1)[-1] == matcher.institution_id]
+            author = a.get("author") or {}
+            if not alvo or not author.get("id"):
+                continue
+            e = por_autor.setdefault(author["id"], {
+                "openalex_id": author["id"], "nome": author.get("display_name"),
+                "orcid": (author.get("orcid") or "").replace("https://orcid.org/", "") or None,
+                "instituicao": alvo[0]["display_name"], "trabalhos": [],
+            })
+            e["trabalhos"].append((w["title"], doi))
+
+    out = []
+    for e in por_autor.values():
+        if len(e["trabalhos"]) < semente["min_coautorias"] or not e["nome"]:
+            continue
+        for titulo, doi in e["trabalhos"][:SEMENTE_MAX_TITULOS_POR_AUTOR]:
+            out.append({
+                "openalex_id": e["openalex_id"], "nome": e["nome"], "orcid": e["orcid"],
+                "instituicao": e["instituicao"], "sample_title": titulo, "sample_doi": doi,
+                "semente": semente["rotulo"],
+            })
+    return out
 
 
 def carregar_linhas() -> list[dict]:
@@ -365,6 +432,12 @@ def main() -> None:
     for fonte in fontes:
         print(f"\n[linha_match] fonte: {fonte['id']} ({fonte['pais']})")
         matcher = ForeignMatcher(fonte["cache"], fonte["country_code"], fonte["institution_id"])
+        semente_cands = [
+            c for sem in fonte.get("sementes", []) for c in candidatos_semente(matcher, sem, args.from_year)
+        ]
+        if semente_cands:
+            print(f"  sementes: {len({c['openalex_id'] for c in semente_cands})} pesquisadores "
+                  f"({len(semente_cands)} títulos) avaliados em todas as linhas")
 
         fila = []
         for linha in linhas:
@@ -375,7 +448,7 @@ def main() -> None:
                     if not cand.get("openalex_id") or not cand.get("nome"):
                         continue
                     candidatos_por_id.setdefault(cand["openalex_id"], cand)
-            candidatos = list(candidatos_por_id.values())[:MAX_CANDIDATOS_POR_LINHA]
+            candidatos = list(candidatos_por_id.values())[:MAX_CANDIDATOS_POR_LINHA] + semente_cands
             fila.append({
                 "linha_id": linha["linha_id"], "ppg_codigo": linha["ppg_codigo"],
                 "keywords": info["rerank_keywords"], "candidatos": candidatos,
@@ -385,10 +458,17 @@ def main() -> None:
         print(f"[linha_match] rankeando {len(fila)} linhas via Sentence-BERT (MATCHING/rerank.py --batch)...")
         ranqueados = rerank_semantico_em_lote(
             [{"keywords": f["keywords"], "candidatos": f["candidatos"]} for f in fila],
-            TOP_MATCHES_PER_LINHA,
+            TOP_MATCHES_PER_LINHA + len(semente_cands),
         )
 
-        for f, matches in zip(fila, ranqueados):
+        for f, ranqueado in zip(fila, ranqueados):
+            normais = [m for m in ranqueado if not m.get("semente")][:TOP_MATCHES_PER_LINHA]
+            ja = {m["openalex_id"] for m in normais}
+            for m in ranqueado:  # já vem ordenado por score: 1º título de cada autor = o melhor
+                if m.get("semente") and m["openalex_id"] not in ja and m["score"] >= SEMENTE_SCORE_MIN:
+                    normais.append(m)
+                    ja.add(m["openalex_id"])
+            matches = sorted(normais, key=lambda m: m["score"], reverse=True)
             for m in matches:
                 todos_matches.append({
                     "linha_id": f["linha_id"],
@@ -401,6 +481,7 @@ def main() -> None:
                     "score": m.get("score"),
                     "sample_work_title": m.get("sample_title"),
                     "sample_work_doi": m.get("sample_doi"),
+                    **({"semente": m["semente"]} if m.get("semente") else {}),
                 })
 
         # grava progressivamente após cada fonte — uma fonte que falhe no meio
