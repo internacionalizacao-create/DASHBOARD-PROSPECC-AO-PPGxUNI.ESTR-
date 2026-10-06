@@ -151,6 +151,7 @@ COUNTRY_CENTER_FALLBACK: dict[str, tuple[float, float]] = {
     "Moçambique": (-18.6657, 35.5296),
     "Reino Unido": (52.4862, -1.8904),
     "Singapura": (1.3521, 103.8198),
+    "Itália": (41.9028, 12.4964),
 }
 
 GERMAN_CITY_HINTS: dict[str, tuple[float, float]] = {

@@ -13,7 +13,8 @@ Fontes (mesmos alvos já usados pelos scripts *_match.py existentes, reaproveita
 os arquivos de cache já populados de cada um — só adiciona chaves novas):
   Alemanha (país inteiro), Gana (University of Ghana), Argélia (Univ. of Algiers),
   Moçambique (Eduardo Mondlane), África do Sul (Johannesburg + Stellenbosch),
-  Angola (Katyavala Bwila), Reino Unido (8 universidades), Singapura (NUS, NTU, SMU, SUTD, SIT, SUSS, LASALLE+NAFA=UAS, JCU, INSEAD, SP Jain).
+  Angola (Katyavala Bwila), Reino Unido (8 universidades), Singapura (NUS, NTU, SMU, SUTD, SIT, SUSS, LASALLE+NAFA=UAS, JCU, INSEAD, SP Jain),
+  Itália (Sapienza, Pisa, G. d'Annunzio Chieti-Pescara, Bologna, Padova).
 
 Uso:
     ./etl_venv_or_system_python3 etl/linha_match.py [--limit N] [--fontes ALE,GHA,...]
@@ -122,6 +123,16 @@ FONTES = [
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "INSEAD Singapore" / "cache" / "insead_match_cache.json"},
     {"id": "SGP-SPJAIN", "pais": "Singapura", "country_code": None, "institution_id": "I4403386623",
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "SINGAPRA" / "SP Jain School of Global Management Singapore" / "cache" / "spjain_match_cache.json"},
+    {"id": "ITA-SAP", "pais": "Itália", "country_code": None, "institution_id": "I861853513",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Sapienza Università di Roma" / "cache" / "sapienza_match_cache.json"},
+    {"id": "ITA-UNIPI", "pais": "Itália", "country_code": None, "institution_id": "I108290504",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università di Pisa" / "cache" / "unipi_match_cache.json"},
+    {"id": "ITA-UDA", "pais": "Itália", "country_code": None, "institution_id": "I39387349",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università G. d'Annunzio Chieti-Pescara" / "cache" / "unich_match_cache.json"},
+    {"id": "ITA-UNIBO", "pais": "Itália", "country_code": None, "institution_id": "I9360294",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università di Bologna" / "cache" / "unibo_match_cache.json"},
+    {"id": "ITA-UNIPD", "pais": "Itália", "country_code": None, "institution_id": "I138689650",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università di Padova" / "cache" / "unipd_match_cache.json"},
 ]
 
 
