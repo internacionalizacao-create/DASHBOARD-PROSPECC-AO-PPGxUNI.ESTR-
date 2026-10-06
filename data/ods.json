@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-21",
+ "gerado_em": "2026-10-06",
  "metodo": {
   "classificador": "Sentence-BERT all-MiniLM-L6-v2 (cosseno entre linha traduzida p/ EN e descrição do ODS)",
   "min_sim": 0.2,
@@ -8192,11 +8192,11 @@
   },
   "National University of Singapore": {
    "pais": "Singapura",
-   "n_pesquisadores": 68,
+   "n_pesquisadores": 113,
    "ods": {
     "15": {
-     "pesquisadores": 8,
-     "matches": 8
+     "pesquisadores": 19,
+     "matches": 19
     },
     "13": {
      "pesquisadores": 8,
@@ -8207,20 +8207,20 @@
      "matches": 3
     },
     "9": {
-     "pesquisadores": 13,
-     "matches": 13
+     "pesquisadores": 23,
+     "matches": 23
     },
     "3": {
-     "pesquisadores": 27,
-     "matches": 30
+     "pesquisadores": 41,
+     "matches": 47
     },
     "4": {
-     "pesquisadores": 9,
-     "matches": 10
+     "pesquisadores": 19,
+     "matches": 22
     },
     "6": {
-     "pesquisadores": 9,
-     "matches": 9
+     "pesquisadores": 10,
+     "matches": 10
     },
     "12": {
      "pesquisadores": 2,
@@ -8229,16 +8229,24 @@
     "5": {
      "pesquisadores": 1,
      "matches": 1
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
     }
    }
   },
   "Nanyang Technological University": {
    "pais": "Singapura",
-   "n_pesquisadores": 49,
+   "n_pesquisadores": 130,
    "ods": {
     "15": {
-     "pesquisadores": 18,
-     "matches": 19
+     "pesquisadores": 23,
+     "matches": 30
     },
     "13": {
      "pesquisadores": 17,
@@ -8249,20 +8257,20 @@
      "matches": 6
     },
     "9": {
-     "pesquisadores": 1,
-     "matches": 1
+     "pesquisadores": 12,
+     "matches": 12
     },
     "3": {
-     "pesquisadores": 10,
-     "matches": 10
+     "pesquisadores": 57,
+     "matches": 63
     },
     "4": {
-     "pesquisadores": 12,
-     "matches": 14
+     "pesquisadores": 32,
+     "matches": 44
     },
     "6": {
-     "pesquisadores": 1,
-     "matches": 1
+     "pesquisadores": 4,
+     "matches": 4
     },
     "12": {
      "pesquisadores": 3,
@@ -8271,28 +8279,32 @@
     "5": {
      "pesquisadores": 5,
      "matches": 5
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
     }
    }
   },
   "Singapore Management University": {
    "pais": "Singapura",
-   "n_pesquisadores": 20,
+   "n_pesquisadores": 47,
    "ods": {
     "15": {
-     "pesquisadores": 2,
-     "matches": 2
+     "pesquisadores": 4,
+     "matches": 4
     },
     "13": {
      "pesquisadores": 9,
      "matches": 9
     },
     "4": {
-     "pesquisadores": 7,
-     "matches": 7
+     "pesquisadores": 12,
+     "matches": 12
     },
     "6": {
-     "pesquisadores": 1,
-     "matches": 1
+     "pesquisadores": 2,
+     "matches": 5
     },
     "12": {
      "pesquisadores": 3,
@@ -8307,18 +8319,34 @@
      "matches": 1
     },
     "9": {
-     "pesquisadores": 2,
+     "pesquisadores": 8,
+     "matches": 9
+    },
+    "3": {
+     "pesquisadores": 16,
+     "matches": 16
+    },
+    "16": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "11": {
+     "pesquisadores": 1,
      "matches": 2
+    },
+    "17": {
+     "pesquisadores": 6,
+     "matches": 7
     }
    }
   },
   "Singapore University of Technology and Design": {
    "pais": "Singapura",
-   "n_pesquisadores": 3,
+   "n_pesquisadores": 10,
    "ods": {
     "4": {
-     "pesquisadores": 2,
-     "matches": 3
+     "pesquisadores": 4,
+     "matches": 6
     },
     "5": {
      "pesquisadores": 1,
@@ -8327,12 +8355,28 @@
     "15": {
      "pesquisadores": 1,
      "matches": 1
+    },
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "17": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "6": {
+     "pesquisadores": 2,
+     "matches": 2
     }
    }
   },
   "Singapore Institute of Technology": {
    "pais": "Singapura",
-   "n_pesquisadores": 10,
+   "n_pesquisadores": 28,
    "ods": {
     "13": {
      "pesquisadores": 8,
@@ -8343,22 +8387,26 @@
      "matches": 8
     },
     "4": {
-     "pesquisadores": 1,
-     "matches": 1
+     "pesquisadores": 9,
+     "matches": 9
     },
     "5": {
      "pesquisadores": 1,
      "matches": 1
     },
     "9": {
-     "pesquisadores": 1,
-     "matches": 1
+     "pesquisadores": 14,
+     "matches": 14
+    },
+    "17": {
+     "pesquisadores": 5,
+     "matches": 5
     }
    }
   },
   "Singapore University of Social Sciences": {
    "pais": "Singapura",
-   "n_pesquisadores": 12,
+   "n_pesquisadores": 21,
    "ods": {
     "15": {
      "pesquisadores": 4,
@@ -8369,38 +8417,42 @@
      "matches": 1
     },
     "3": {
-     "pesquisadores": 3,
-     "matches": 3
+     "pesquisadores": 4,
+     "matches": 4
     },
     "6": {
      "pesquisadores": 1,
      "matches": 1
     },
     "4": {
-     "pesquisadores": 4,
-     "matches": 5
+     "pesquisadores": 7,
+     "matches": 8
     },
     "5": {
      "pesquisadores": 1,
      "matches": 1
     },
     "9": {
-     "pesquisadores": 1,
-     "matches": 1
+     "pesquisadores": 8,
+     "matches": 9
+    },
+    "17": {
+     "pesquisadores": 6,
+     "matches": 7
     }
    }
   },
   "LASALLE College of the Arts": {
    "pais": "Singapura",
-   "n_pesquisadores": 3,
+   "n_pesquisadores": 7,
    "ods": {
     "4": {
-     "pesquisadores": 2,
-     "matches": 2
+     "pesquisadores": 6,
+     "matches": 7
     },
     "15": {
      "pesquisadores": 1,
-     "matches": 2
+     "matches": 4
     },
     "6": {
      "pesquisadores": 1,
@@ -8409,10 +8461,54 @@
     "12": {
      "pesquisadores": 1,
      "matches": 1
+    },
+    "9": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "17": {
+     "pesquisadores": 1,
+     "matches": 1
     }
    }
   },
   "Nanyang Academy of Fine Arts": {
+   "pais": "Singapura",
+   "n_pesquisadores": 4,
+   "ods": {
+    "3": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "4": {
+     "pesquisadores": 3,
+     "matches": 3
+    }
+   }
+  },
+  "James Cook University Singapore": {
+   "pais": "Singapura",
+   "n_pesquisadores": 5,
+   "ods": {
+    "13": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "9": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "17": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "6": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "INSEAD": {
    "pais": "Singapura",
    "n_pesquisadores": 1,
    "ods": {
@@ -8422,13 +8518,277 @@
     }
    }
   },
-  "James Cook University Singapore": {
-   "pais": "Singapura",
-   "n_pesquisadores": 1,
+  "Sapienza University of Rome": {
+   "pais": "Itália",
+   "n_pesquisadores": 250,
+   "ods": {
+    "15": {
+     "pesquisadores": 37,
+     "matches": 53
+    },
+    "13": {
+     "pesquisadores": 21,
+     "matches": 24
+    },
+    "14": {
+     "pesquisadores": 11,
+     "matches": 11
+    },
+    "9": {
+     "pesquisadores": 22,
+     "matches": 23
+    },
+    "3": {
+     "pesquisadores": 115,
+     "matches": 152
+    },
+    "4": {
+     "pesquisadores": 40,
+     "matches": 51
+    },
+    "6": {
+     "pesquisadores": 28,
+     "matches": 34
+    },
+    "12": {
+     "pesquisadores": 15,
+     "matches": 15
+    },
+    "17": {
+     "pesquisadores": 12,
+     "matches": 13
+    },
+    "8": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "16": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "11": {
+     "pesquisadores": 7,
+     "matches": 7
+    }
+   }
+  },
+  "University of Pisa": {
+   "pais": "Itália",
+   "n_pesquisadores": 161,
    "ods": {
     "13": {
+     "pesquisadores": 12,
+     "matches": 13
+    },
+    "15": {
+     "pesquisadores": 28,
+     "matches": 45
+    },
+    "9": {
+     "pesquisadores": 27,
+     "matches": 27
+    },
+    "3": {
+     "pesquisadores": 101,
+     "matches": 113
+    },
+    "6": {
+     "pesquisadores": 3,
+     "matches": 7
+    },
+    "17": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "14": {
      "pesquisadores": 1,
      "matches": 1
+    },
+    "4": {
+     "pesquisadores": 12,
+     "matches": 25
+    },
+    "12": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "University of Chieti-Pescara": {
+   "pais": "Itália",
+   "n_pesquisadores": 76,
+   "ods": {
+    "13": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "15": {
+     "pesquisadores": 17,
+     "matches": 43
+    },
+    "3": {
+     "pesquisadores": 29,
+     "matches": 34
+    },
+    "4": {
+     "pesquisadores": 15,
+     "matches": 19
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "10": {
+     "pesquisadores": 7,
+     "matches": 7
+    },
+    "14": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "12": {
+     "pesquisadores": 11,
+     "matches": 11
+    },
+    "16": {
+     "pesquisadores": 3,
+     "matches": 5
+    },
+    "11": {
+     "pesquisadores": 3,
+     "matches": 5
+    },
+    "9": {
+     "pesquisadores": 7,
+     "matches": 9
+    },
+    "17": {
+     "pesquisadores": 7,
+     "matches": 9
+    },
+    "6": {
+     "pesquisadores": 6,
+     "matches": 6
+    }
+   }
+  },
+  "University of Bologna": {
+   "pais": "Itália",
+   "n_pesquisadores": 345,
+   "ods": {
+    "13": {
+     "pesquisadores": 15,
+     "matches": 16
+    },
+    "15": {
+     "pesquisadores": 44,
+     "matches": 60
+    },
+    "4": {
+     "pesquisadores": 37,
+     "matches": 41
+    },
+    "14": {
+     "pesquisadores": 26,
+     "matches": 26
+    },
+    "9": {
+     "pesquisadores": 34,
+     "matches": 39
+    },
+    "3": {
+     "pesquisadores": 166,
+     "matches": 221
+    },
+    "6": {
+     "pesquisadores": 51,
+     "matches": 72
+    },
+    "12": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "17": {
+     "pesquisadores": 31,
+     "matches": 36
+    },
+    "5": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "10": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "16": {
+     "pesquisadores": 9,
+     "matches": 12
+    },
+    "8": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "11": {
+     "pesquisadores": 9,
+     "matches": 9
+    }
+   }
+  },
+  "University of Padua": {
+   "pais": "Itália",
+   "n_pesquisadores": 284,
+   "ods": {
+    "15": {
+     "pesquisadores": 53,
+     "matches": 83
+    },
+    "13": {
+     "pesquisadores": 7,
+     "matches": 9
+    },
+    "12": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "9": {
+     "pesquisadores": 40,
+     "matches": 41
+    },
+    "3": {
+     "pesquisadores": 150,
+     "matches": 173
+    },
+    "4": {
+     "pesquisadores": 47,
+     "matches": 60
+    },
+    "17": {
+     "pesquisadores": 26,
+     "matches": 26
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "5": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "10": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "11": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "6": {
+     "pesquisadores": 14,
+     "matches": 17
     }
    }
   }
