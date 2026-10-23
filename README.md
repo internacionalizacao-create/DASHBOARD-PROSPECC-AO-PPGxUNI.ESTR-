@@ -10,9 +10,11 @@ o histórico de publicações de um professor isolado. O cruzamento é genérico
 por país/universidade (coluna `foreign_country`), então múltiplas fontes
 convivem na mesma base sem conflito — hoje: Alemanha (país inteiro), Gana,
 Argélia, Moçambique, África do Sul (Johannesburg + Stellenbosch), Angola, 8
-universidades do Reino Unido, 11 instituições de Singapura e 5 universidades da
+universidades do Reino Unido, 11 instituições de Singapura, 5 universidades da
 Itália (Sapienza, Pisa, G. d'Annunzio Chieti-Pescara, Bologna, Padova — ver
-`WEBSCRAPING/ITALIA/README.txt`).
+`WEBSCRAPING/ITALIA/README.txt`) e Estados Unidos (Harvard, MIT, NYU, Boston
+University, Northeastern; Tufts, Boston College, Lesley, Bunker Hill CC e
+Cambridge College pendentes — ver `WEBSCRAPING/ESTADOS UNIDOS/README.txt`).
 
 **🔗 Site publicado:** https://willpine1992.github.io/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR/
 **🔗 Site publicado (conta de Internacionalização):** https://internacionalizacao-create.github.io/DASHBOARD-PROSPECC-AO-PPGxUNI.ESTR-/

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-06",
+ "gerado_em": "2026-10-23",
  "metodo": {
   "classificador": "Sentence-BERT all-MiniLM-L6-v2 (cosseno entre linha traduzida p/ EN e descrição do ODS)",
   "min_sim": 0.2,
@@ -8789,6 +8789,288 @@
     "6": {
      "pesquisadores": 14,
      "matches": 17
+    }
+   }
+  },
+  "Harvard University": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 473,
+   "ods": {
+    "15": {
+     "pesquisadores": 73,
+     "matches": 106
+    },
+    "13": {
+     "pesquisadores": 27,
+     "matches": 28
+    },
+    "14": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "6": {
+     "pesquisadores": 13,
+     "matches": 14
+    },
+    "4": {
+     "pesquisadores": 54,
+     "matches": 56
+    },
+    "9": {
+     "pesquisadores": 73,
+     "matches": 79
+    },
+    "3": {
+     "pesquisadores": 275,
+     "matches": 290
+    },
+    "12": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "5": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "8": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "10": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "16": {
+     "pesquisadores": 8,
+     "matches": 9
+    },
+    "11": {
+     "pesquisadores": 9,
+     "matches": 10
+    },
+    "17": {
+     "pesquisadores": 34,
+     "matches": 40
+    }
+   }
+  },
+  "Massachusetts Institute of Technology": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 258,
+   "ods": {
+    "13": {
+     "pesquisadores": 25,
+     "matches": 26
+    },
+    "15": {
+     "pesquisadores": 33,
+     "matches": 42
+    },
+    "4": {
+     "pesquisadores": 56,
+     "matches": 79
+    },
+    "14": {
+     "pesquisadores": 16,
+     "matches": 16
+    },
+    "9": {
+     "pesquisadores": 52,
+     "matches": 54
+    },
+    "3": {
+     "pesquisadores": 104,
+     "matches": 122
+    },
+    "6": {
+     "pesquisadores": 13,
+     "matches": 13
+    },
+    "12": {
+     "pesquisadores": 4,
+     "matches": 5
+    },
+    "5": {
+     "pesquisadores": 13,
+     "matches": 13
+    },
+    "17": {
+     "pesquisadores": 25,
+     "matches": 27
+    },
+    "11": {
+     "pesquisadores": 5,
+     "matches": 5
+    }
+   }
+  },
+  "New York University": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 232,
+   "ods": {
+    "15": {
+     "pesquisadores": 23,
+     "matches": 61
+    },
+    "13": {
+     "pesquisadores": 17,
+     "matches": 17
+    },
+    "9": {
+     "pesquisadores": 26,
+     "matches": 28
+    },
+    "3": {
+     "pesquisadores": 140,
+     "matches": 147
+    },
+    "4": {
+     "pesquisadores": 30,
+     "matches": 31
+    },
+    "6": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "12": {
+     "pesquisadores": 10,
+     "matches": 10
+    },
+    "14": {
+     "pesquisadores": 10,
+     "matches": 10
+    },
+    "17": {
+     "pesquisadores": 14,
+     "matches": 16
+    },
+    "5": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "8": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "10": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "16": {
+     "pesquisadores": 3,
+     "matches": 5
+    },
+    "11": {
+     "pesquisadores": 5,
+     "matches": 7
+    }
+   }
+  },
+  "Boston University": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 252,
+   "ods": {
+    "15": {
+     "pesquisadores": 22,
+     "matches": 37
+    },
+    "13": {
+     "pesquisadores": 11,
+     "matches": 11
+    },
+    "14": {
+     "pesquisadores": 16,
+     "matches": 16
+    },
+    "6": {
+     "pesquisadores": 6,
+     "matches": 9
+    },
+    "9": {
+     "pesquisadores": 25,
+     "matches": 29
+    },
+    "3": {
+     "pesquisadores": 153,
+     "matches": 169
+    },
+    "12": {
+     "pesquisadores": 5,
+     "matches": 5
+    },
+    "17": {
+     "pesquisadores": 19,
+     "matches": 23
+    },
+    "4": {
+     "pesquisadores": 39,
+     "matches": 45
+    },
+    "10": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "16": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "11": {
+     "pesquisadores": 5,
+     "matches": 5
+    }
+   }
+  },
+  "Northeastern University": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 167,
+   "ods": {
+    "15": {
+     "pesquisadores": 26,
+     "matches": 38
+    },
+    "13": {
+     "pesquisadores": 11,
+     "matches": 12
+    },
+    "4": {
+     "pesquisadores": 38,
+     "matches": 41
+    },
+    "9": {
+     "pesquisadores": 35,
+     "matches": 41
+    },
+    "3": {
+     "pesquisadores": 68,
+     "matches": 73
+    },
+    "12": {
+     "pesquisadores": 8,
+     "matches": 8
+    },
+    "14": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "5": {
+     "pesquisadores": 1,
+     "matches": 1
+    },
+    "16": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "17": {
+     "pesquisadores": 22,
+     "matches": 28
+    },
+    "6": {
+     "pesquisadores": 6,
+     "matches": 6
     }
    }
   }

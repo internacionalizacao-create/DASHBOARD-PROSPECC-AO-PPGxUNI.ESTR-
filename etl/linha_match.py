@@ -14,7 +14,9 @@ os arquivos de cache já populados de cada um — só adiciona chaves novas):
   Alemanha (país inteiro), Gana (University of Ghana), Argélia (Univ. of Algiers),
   Moçambique (Eduardo Mondlane), África do Sul (Johannesburg + Stellenbosch),
   Angola (Katyavala Bwila), Reino Unido (8 universidades), Singapura (NUS, NTU, SMU, SUTD, SIT, SUSS, LASALLE+NAFA=UAS, JCU, INSEAD, SP Jain),
-  Itália (Sapienza, Pisa, G. d'Annunzio Chieti-Pescara, Bologna, Padova).
+  Itália (Sapienza, Pisa, G. d'Annunzio Chieti-Pescara, Bologna, Padova),
+  Estados Unidos (Harvard, MIT, NYU, Boston University, Northeastern, Tufts, Boston College,
+  Lesley, Bunker Hill CC, Cambridge College).
 
 Uso:
     ./etl_venv_or_system_python3 etl/linha_match.py [--limit N] [--fontes ALE,GHA,...]
@@ -145,6 +147,26 @@ FONTES = [
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università di Bologna" / "cache" / "unibo_match_cache.json"},
     {"id": "ITA-UNIPD", "pais": "Itália", "country_code": None, "institution_id": "I138689650",
      "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ITALIA" / "Università di Padova" / "cache" / "unipd_match_cache.json"},
+    {"id": "USA-HARVARD", "pais": "Estados Unidos", "country_code": None, "institution_id": "I136199984",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Harvard University" / "cache" / "harvard_match_cache.json"},
+    {"id": "USA-MIT", "pais": "Estados Unidos", "country_code": None, "institution_id": "I63966007",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Massachusetts Institute of Technology" / "cache" / "mit_match_cache.json"},
+    {"id": "USA-NYU", "pais": "Estados Unidos", "country_code": None, "institution_id": "I57206974",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "New York University" / "cache" / "nyu_match_cache.json"},
+    {"id": "USA-BU", "pais": "Estados Unidos", "country_code": None, "institution_id": "I111088046",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Boston University" / "cache" / "bu_match_cache.json"},
+    {"id": "USA-NEU", "pais": "Estados Unidos", "country_code": None, "institution_id": "I12912129",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Northeastern University" / "cache" / "neu_match_cache.json"},
+    {"id": "USA-TUFTS", "pais": "Estados Unidos", "country_code": None, "institution_id": "I121934306",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Tufts University" / "cache" / "tufts_match_cache.json"},
+    {"id": "USA-BC", "pais": "Estados Unidos", "country_code": None, "institution_id": "I103531236",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Boston College" / "cache" / "bc_match_cache.json"},
+    {"id": "USA-LESLEY", "pais": "Estados Unidos", "country_code": None, "institution_id": "I60997889",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Lesley University" / "cache" / "lesley_match_cache.json"},
+    {"id": "USA-BHCC", "pais": "Estados Unidos", "country_code": None, "institution_id": "I127763184",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Bunker Hill Community College" / "cache" / "bhcc_match_cache.json"},
+    {"id": "USA-CAMBCOL", "pais": "Estados Unidos", "country_code": None, "institution_id": "I4210137154",
+     "cache": DASHBOARDS_ROOT / "WEBSCRAPING" / "ESTADOS UNIDOS" / "Cambridge College" / "cache" / "cambridgecollege_match_cache.json"},
 ]
 
 

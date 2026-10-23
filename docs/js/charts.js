@@ -320,6 +320,7 @@ function normalizeCountry(name) {
   const map = {
     Germany: "Alemanha", Ghana: "Gana", Angola: "Angola", Algeria: "Argélia",
     Mozambique: "Moçambique", "South Africa": "África do Sul", "United Kingdom": "Reino Unido", Singapore: "Singapura", Italy: "Itália",
+    "United States of America": "Estados Unidos", "United States": "Estados Unidos",
   };
   return map[name] || name;
 }
