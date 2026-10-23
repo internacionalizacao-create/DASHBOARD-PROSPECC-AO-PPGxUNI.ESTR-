@@ -8,6 +8,9 @@
   // geocodificado) quebrariam os arcos/projeção — melhor ficar de fora do
   // globo do que gerar NaN
   const institutions = data.institutions.filter((d) => d.lat != null && d.lon != null);
+  // ordem/limiares de spreadOverlapping (precisam existir antes do 1º build())
+  const CLUSTER_PX = 4, SPIRAL_PX = 14, SPIRAL_MAX = 10;
+  const instsBySize = [...institutions].sort((a, b) => b.n_matches - a.n_matches);
   const world = await getWorld();
 
   d3.select("#topbar-stats").html(`
@@ -171,20 +174,54 @@
     svg.select("path.map-graticule").attr("d", path(d3.geoGraticule10()));
     svg.selectAll("path.map-country").attr("d", path);
 
-    arcs.attr("d", (d) => path({
-      type: "LineString",
-      coordinates: interpolatedLine([manaus.lon, manaus.lat], [d.lon, d.lat]),
-    }));
+    const spread = spreadOverlapping(visibleOrthographic);
+
+    // o arco termina no ponto deslocado (segmento reto curto no fim)
+    arcs.attr("d", (d) => {
+      const line = path({
+        type: "LineString",
+        coordinates: interpolatedLine([manaus.lon, manaus.lat], [d.lon, d.lat]),
+      });
+      const p = spread.get(d);
+      return line && p ? `${line}L${p[0]},${p[1]}` : line;
+    });
 
     dots
-      .style("display", (d) => (visibleOrthographic(d.lon, d.lat) ? null : "none"))
-      .attr("cx", (d) => projection([d.lon, d.lat])[0])
-      .attr("cy", (d) => projection([d.lon, d.lat])[1]);
+      .style("display", (d) => (spread.has(d) ? null : "none"))
+      .attr("cx", (d) => (spread.get(d) || projection([d.lon, d.lat]))[0])
+      .attr("cy", (d) => (spread.get(d) || projection([d.lon, d.lat]))[1]);
 
     const originXY = projection([manaus.lon, manaus.lat]);
     originG.attr("transform", `translate(${originXY[0]},${originXY[1]})`);
     originLabel.attr("x", originXY[0]).attr("y", originXY[1] - 14)
       .style("display", visibleOrthographic(manaus.lon, manaus.lat) ? null : "none");
+  }
+
+  /* destinos a poucos km uns dos outros (ex.: Harvard, MIT, BU e Northeastern
+     em Boston) caem no mesmo pixel do globo: agrupa por distância na tela e
+     abre cada grupo em espiral (filotaxia) em volta do ponto real — a maior
+     instituição fica no centro. Só as SPIRAL_MAX maiores de cada grupo abrem
+     (cidades alemãs com dezenas de institutos virariam uma nuvem); as demais
+     seguem empilhadas no centro. Recalculado a cada giro/zoom. */
+  function spreadOverlapping(isVisible) {
+    const clusters = [];
+    for (const d of instsBySize) {
+      if (!isVisible(d.lon, d.lat)) continue;
+      const xy = projection([d.lon, d.lat]);
+      const c = clusters.find((c) => Math.hypot(c.xy[0] - xy[0], c.xy[1] - xy[1]) < CLUSTER_PX);
+      if (c) c.members.push(d);
+      else clusters.push({ xy, members: [d] });
+    }
+    const out = new Map();
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    for (const { xy, members } of clusters) {
+      members.forEach((d, i) => {
+        const k = i < SPIRAL_MAX ? i : 0;
+        const r = SPIRAL_PX * Math.sqrt(k), a = k * golden - Math.PI / 2;
+        out.set(d, [xy[0] + r * Math.cos(a), xy[1] + r * Math.sin(a)]);
+      });
+    }
+    return out;
   }
 
   function interpolatedLine(a, b) {
