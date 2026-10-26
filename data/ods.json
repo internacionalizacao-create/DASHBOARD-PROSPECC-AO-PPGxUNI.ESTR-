@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-23",
+ "gerado_em": "2026-10-26",
  "metodo": {
   "classificador": "Sentence-BERT all-MiniLM-L6-v2 (cosseno entre linha traduzida p/ EN e descrição do ODS)",
   "min_sim": 0.2,
@@ -9071,6 +9071,130 @@
     "6": {
      "pesquisadores": 6,
      "matches": 6
+    }
+   }
+  },
+  "Tufts University": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 138,
+   "ods": {
+    "15": {
+     "pesquisadores": 18,
+     "matches": 28
+    },
+    "13": {
+     "pesquisadores": 13,
+     "matches": 15
+    },
+    "4": {
+     "pesquisadores": 22,
+     "matches": 24
+    },
+    "14": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "3": {
+     "pesquisadores": 91,
+     "matches": 102
+    },
+    "6": {
+     "pesquisadores": 5,
+     "matches": 11
+    },
+    "12": {
+     "pesquisadores": 4,
+     "matches": 5
+    },
+    "5": {
+     "pesquisadores": 3,
+     "matches": 3
+    },
+    "9": {
+     "pesquisadores": 12,
+     "matches": 12
+    },
+    "17": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "11": {
+     "pesquisadores": 1,
+     "matches": 1
+    }
+   }
+  },
+  "Boston College": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 111,
+   "ods": {
+    "13": {
+     "pesquisadores": 13,
+     "matches": 14
+    },
+    "15": {
+     "pesquisadores": 11,
+     "matches": 23
+    },
+    "4": {
+     "pesquisadores": 28,
+     "matches": 34
+    },
+    "3": {
+     "pesquisadores": 30,
+     "matches": 34
+    },
+    "12": {
+     "pesquisadores": 6,
+     "matches": 6
+    },
+    "14": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "5": {
+     "pesquisadores": 4,
+     "matches": 4
+    },
+    "16": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "9": {
+     "pesquisadores": 33,
+     "matches": 34
+    },
+    "17": {
+     "pesquisadores": 7,
+     "matches": 8
+    },
+    "11": {
+     "pesquisadores": 2,
+     "matches": 2
+    }
+   }
+  },
+  "Lesley University": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 6,
+   "ods": {
+    "4": {
+     "pesquisadores": 6,
+     "matches": 7
+    }
+   }
+  },
+  "Cambridge College": {
+   "pais": "Estados Unidos",
+   "n_pesquisadores": 2,
+   "ods": {
+    "4": {
+     "pesquisadores": 2,
+     "matches": 2
+    },
+    "3": {
+     "pesquisadores": 2,
+     "matches": 2
     }
    }
   }
