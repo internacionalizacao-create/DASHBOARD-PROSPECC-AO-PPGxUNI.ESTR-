@@ -204,6 +204,73 @@ function renderSankey(el, matchSubset, ppgColorInfo, opts = {}) {
     .on("mouseleave", function () { dim(() => false, () => false); hideTooltip(); opts.onLinkHover && opts.onLinkHover(null); });
 }
 
+/* ---------------- Nuvem de palavras: ODS mais recorrentes ----------------
+   items: [{ n, nome, cor, conexoes, pesquisadores }]. Layout em espiral
+   (maior palavra no centro, as demais encaixadas sem sobreposição).
+   opts: height, width (default: largura do el), static, onClick. */
+function renderOdsWordCloud(el, items, opts = {}) {
+  const W = opts.width || el.clientWidth || 400;
+  const H = opts.height || 220;
+  const root = d3.select(el);
+  root.selectAll("*").remove();
+
+  const data = items.filter((d) => d.conexoes > 0).sort((a, b) => b.conexoes - a.conexoes);
+  if (!data.length) { root.html('<div class="empty-hint">Sem ODS para os filtros atuais.</div>'); return; }
+
+  const size = d3.scaleSqrt()
+    .domain(d3.extent(data, (d) => d.conexoes))
+    .range(data.length > 1 ? [12, 34] : [30, 30]);
+
+  const svg = root.append("svg").attr("width", W).attr("height", H).attr("class", "ods-cloud__svg");
+  const placed = [];
+  const PAD = 3;
+  const overlaps = (r) => placed.some((p) =>
+    r.x < p.x + p.w + PAD && r.x + r.w + PAD > p.x && r.y < p.y + p.h + PAD && r.y + r.h + PAD > p.y);
+  const inside = (r) => r.x >= 2 && r.y >= 2 && r.x + r.w <= W - 2 && r.y + r.h <= H - 2;
+
+  for (const d of data) {
+    const text = svg.append("text")
+      .attr("class", "ods-cloud__word")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "central")
+      .style("fill", d.cor)
+      .text(`ODS ${d.n} - ${d.nome}`);
+
+    let fs = size(d.conexoes);
+    let spot = null;
+    while (!spot && fs >= 9) {
+      text.style("font-size", fs + "px");
+      const bb = text.node().getBBox();
+      const w = bb.width, h = bb.height * 0.82;
+      if (w <= W - 8) {
+        // espiral de Arquimedes achatada na proporção do painel
+        for (let t = 0; t < 600; t += 0.15) {
+          const r = 3 * t;
+          const cx = W / 2 + r * Math.cos(t) * (W / H) * 0.6;
+          const cy = H / 2 + r * Math.sin(t) * 0.6;
+          const rect = { x: cx - w / 2, y: cy - h / 2, w, h };
+          if (inside(rect) && !overlaps(rect)) { spot = { cx, cy, rect }; break; }
+        }
+      }
+      if (!spot) fs -= 2;
+    }
+    if (!spot) { text.remove(); continue; }
+    placed.push(spot.rect);
+
+    text.attr("x", spot.cx).attr("y", spot.cy);
+    // static: sem animação nem eventos (cópia serializada para o relatório)
+    if (opts.static) continue;
+    text
+      .style("opacity", 0)
+      .on("mousemove", (ev) => showTooltip(ev.clientX, ev.clientY,
+        `<b>ODS ${d.n} · ${d.nome}</b><br>${fmt(d.conexoes)} conexão(ões)<br>${fmt(d.pesquisadores)} pesquisador(es) estrangeiro(s)`))
+      .on("mouseleave", hideTooltip)
+      .on("click", () => { hideTooltip(); opts.onClick && opts.onClick(d); })
+      .transition().duration(450).delay(placed.length * 25)
+      .style("opacity", 1);
+  }
+}
+
 function truncateLabel(s, n) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
 
 /* ---------------- Mapa: países estrangeiros com match ---------------- */

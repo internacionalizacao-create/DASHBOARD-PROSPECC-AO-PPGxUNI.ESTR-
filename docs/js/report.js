@@ -216,7 +216,7 @@ function buildInstitutionHierarchySection(matches) {
 }
 
 /* ---------- montagem do HTML ---------- */
-function buildReportHTML({ professores, matches, filters, professorById, linhaById, totals, logoDataURI }) {
+function buildReportHTML({ professores, matches, filters, professorById, linhaById, totals, logoDataURI, odsCloudSVG }) {
   const agg = aggregateForReport(matches);
   const genDate = new Date().toLocaleString("pt-BR", { dateStyle: "long", timeStyle: "short" });
   const filterChips = describeReportFilters(filters, professorById, linhaById);
@@ -287,6 +287,10 @@ function buildReportHTML({ professores, matches, filters, professorById, linhaBy
   .stat-card b { display: block; font-size: 19px; color: var(--ink-primary); }
   .stat-card span { font-size: 10.5px; color: var(--ink-muted); }
   .report-section { margin-bottom: 28px; }
+  .ods-cloud { border: 1px solid var(--border); border-radius: 10px; padding: 6px; break-inside: avoid; }
+  .ods-cloud svg { display: block; width: 100%; height: auto; }
+  .ods-cloud__word { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Arial, sans-serif;
+    font-weight: 800; letter-spacing: -0.01em; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .report-note { font-size: 12px; color: var(--ink-muted); margin: 0 0 12px; }
   table.report-table { width: 100%; border-collapse: collapse; font-size: 12px; }
   table.report-table th, table.report-table td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--border); }
@@ -348,6 +352,13 @@ function buildReportHTML({ professores, matches, filters, professorById, linhaBy
   <div class="stat-card"><b>${reportFmt(distinctForeign)}</b><span>Pesquisadores estrangeiros</span></div>
 </div>
 
+${odsCloudSVG ? `
+<section class="report-section">
+  <h2>ODS mais recorrentes</h2>
+  <p class="report-note">ODS da ONU mais recorrentes nas conexões do recorte atual (mesmos filtros do painel). Quanto maior o nome, mais conexões envolvem linhas de pesquisa da UEA classificadas naquele ODS.</p>
+  <div class="ods-cloud">${odsCloudSVG}</div>
+</section>` : ""}
+
 <section class="report-section">
   <h2>Distribuição por país</h2>
   <table class="report-table">
@@ -383,7 +394,7 @@ ${institutionHierarchySection}
    e bloqueia a aba silenciosamente (sem erro no console, sem cair no
    `if (!win)`). Por isso abrimos a aba (em branco, com uma mensagem de
    carregando) ANTES de qualquer await, e só depois preenchemos o conteúdo. */
-function generateProspectingReport({ professores, matches, filters, professorById, linhaById, totals, odsData }) {
+function generateProspectingReport({ professores, matches, filters, professorById, linhaById, totals, odsData, odsCloudSVG }) {
   reportOds = odsData || null;
   const win = window.open("", "_blank");
   if (!win) {
@@ -400,7 +411,7 @@ function generateProspectingReport({ professores, matches, filters, professorByI
 
   fetchLogoDataURI()
     .then((logoDataURI) => {
-      const html = buildReportHTML({ professores, matches, filters, professorById, linhaById, totals, logoDataURI });
+      const html = buildReportHTML({ professores, matches, filters, professorById, linhaById, totals, logoDataURI, odsCloudSVG });
       win.document.open();
       win.document.write(html);
       win.document.close();

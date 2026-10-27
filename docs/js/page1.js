@@ -81,7 +81,8 @@
   d3.select("#filter-situacao").on("change", function () { filters.situacao = this.value; syncURL(); render(); });
   d3.select("#filter-conceito").on("change", function () { filters.conceito = this.value; syncURL(); render(); });
 
-  d3.select("#btn-clear-filters").on("click", () => {
+  d3.select("#btn-clear-filters").on("click", clearAllFilters);
+  function clearAllFilters() {
     filters = {
       ppgs: new Set(), linhaIds: new Set(), pais: "", instituicao: "", professorId: null, q: "",
       nivel: "", modalidade: "", situacao: "", conceito: "",
@@ -94,12 +95,13 @@
     populateSelect("#filter-situacao", capesOpcoes.situacoes, "");
     populateSelect("#filter-conceito", capesOpcoes.conceitos.map(String), "");
     syncURL(); render();
-  });
+  }
   d3.select("#btn-report").on("click", () => {
     generateProspectingReport({
       professores: currentFilteredProfessores,
       matches: currentMatchesForReport,
       filters, professorById, linhaById, odsData,
+      odsCloudSVG: odsCloudSVGForReport(),
       totals: { professores: professores.length, institutions: institutions.length },
     });
   });
@@ -141,6 +143,7 @@
   /* ---- estado corrente derivado, preenchido a cada render() ---- */
   let currentFilteredProfessores = [];
   let currentMatchesForReport = [];
+  let currentOdsCloudItems = [];
 
   function render() {
     currentFilteredProfessores = applyProfessorFilters(professores, filters, capesByCode);
@@ -167,6 +170,8 @@
     updateSbertCard(null);
     renderCountryMap(document.getElementById("map-chart"), matchesForCharts);
     renderOdsPanel(matchesForCharts, linhaIdsAtuais);
+    renderOdsCloud(matchesForCharts);
+    renderActiveFilters();
 
     d3.select("#sankey-hint").text(`${fmt(matchesForCharts.length)} conexões`);
     d3.select("#prof-count-hint").text(`${fmt(currentFilteredProfessores.length)} / ${fmt(professores.length)}`);
@@ -206,6 +211,100 @@
     }).join("") +
       `<div class="ods-logo"><img src="image/ods/ods.png" alt="Objetivos de Desenvolvimento Sustentável" /></div>`;
     document.getElementById("ods-panel-link").href = "ods.html" + (filters.pais ? `?pais=${encodeURIComponent(filters.pais)}` : "");
+  }
+
+  /* ---- nuvem de ODS: conexões por ODS, com todos os filtros (inclusive os da CAPES) ---- */
+  function renderOdsCloud(matchesForCharts) {
+    const card = document.getElementById("ods-cloud-card");
+    if (!odsData) { card.style.display = "none"; return; }
+
+    const { items, subset } = odsCloudItems(matchesForCharts);
+    currentOdsCloudItems = items;
+    const qs = filters.pais ? `&pais=${encodeURIComponent(filters.pais)}` : "";
+    renderOdsWordCloud(document.getElementById("ods-cloud"), items, {
+      onClick: (d) => { location.href = `ods.html?ods=${d.n}${qs}`; },
+    });
+    const nOds = items.filter((d) => d.conexoes > 0).length;
+    d3.select("#ods-cloud-hint").text(nOds ? `${nOds} ODS · ${fmt(subset.length)} conexões` : "");
+  }
+
+  /* mesma nuvem, desenhada fora da tela na largura do relatório e serializada em SVG */
+  function odsCloudSVGForReport() {
+    if (!odsData || !currentOdsCloudItems.some((d) => d.conexoes > 0)) return null;
+    const W = 900, H = 300;
+    const tmp = document.createElement("div");
+    tmp.style.cssText = `position:absolute;left:-9999px;top:0;width:${W}px;`;
+    document.body.appendChild(tmp);
+    try {
+      renderOdsWordCloud(tmp, currentOdsCloudItems, { width: W, height: H, static: true });
+      const svg = tmp.querySelector("svg");
+      if (!svg) return null;
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      svg.removeAttribute("width"); svg.removeAttribute("height");
+      return svg.outerHTML;
+    } finally {
+      tmp.remove();
+    }
+  }
+
+  function odsCloudItems(matchesForCharts) {
+    const capesActive = filters.nivel || filters.modalidade || filters.situacao || filters.conceito;
+    const subset = capesActive
+      ? matchesForCharts.filter((m) => ppgMatchesCapesFilters(m.ppg_codigo, capesByCode, filters))
+      : matchesForCharts;
+
+    const conexoes = new Map(odsData.ods.map((o) => [o.n, 0]));
+    const autores = new Map(odsData.ods.map((o) => [o.n, new Set()]));
+    for (const m of subset) {
+      const c = odsData.linhas[m.linha_id];
+      if (!c) continue;
+      for (const o of c.ods) {
+        conexoes.set(o.n, conexoes.get(o.n) + 1);
+        autores.get(o.n).add(m.foreign_author_openalex_id || m.foreign_author_name);
+      }
+    }
+    const items = odsData.ods.map((o) => ({
+      n: o.n, nome: o.nome, cor: o.cor, conexoes: conexoes.get(o.n), pesquisadores: autores.get(o.n).size,
+    }));
+    return { items, subset };
+  }
+
+  /* ---- barra de filtros selecionados (abaixo dos cards de estatística) ---- */
+  function renderActiveFilters() {
+    const chips = [];
+    const selects = { nivel: "#filter-nivel", modalidade: "#filter-modalidade", situacao: "#filter-situacao", conceito: "#filter-conceito", pais: "#filter-pais" };
+    const clearField = (key) => () => {
+      filters[key] = "";
+      if (selects[key]) d3.select(selects[key]).property("value", "");
+      syncURL(); render();
+    };
+    for (const c of [...filters.ppgs].sort((a, b) => a.localeCompare(b, "pt-BR"))) {
+      chips.push({ tipo: "PPG", valor: c, remove: () => togglePPG(c) });
+    }
+    if (filters.nivel) chips.push({ tipo: "Nível", valor: filters.nivel, remove: clearField("nivel") });
+    if (filters.modalidade) chips.push({ tipo: "Modalidade", valor: filters.modalidade, remove: clearField("modalidade") });
+    if (filters.situacao) chips.push({ tipo: "Situação", valor: filters.situacao, remove: clearField("situacao") });
+    if (filters.conceito) chips.push({ tipo: "Conceito CAPES", valor: filters.conceito, remove: clearField("conceito") });
+    for (const id of filters.linhaIds) {
+      chips.push({ tipo: "Linha", valor: linhaById.get(id)?.titulo || id, remove: () => toggleLinha(id) });
+    }
+    if (filters.pais) chips.push({ tipo: "País", valor: filters.pais, remove: clearField("pais") });
+    if (filters.instituicao) chips.push({ tipo: "Universidade", valor: filters.instituicao, remove: clearField("instituicao") });
+
+    const bar = d3.select("#active-filters").html("");
+    bar.append("span").attr("class", "filterbar__label").text("Filtros selecionados");
+    if (!chips.length) { bar.append("span").attr("class", "filterbar__empty").text("nenhum — mostrando toda a base"); return; }
+
+    for (const c of chips) {
+      const chip = bar.append("span").attr("class", "filter-chip").attr("title", `${c.tipo}: ${c.valor}`);
+      chip.append("small").text(c.tipo);
+      chip.append("span").text(c.valor);
+      chip.append("button").attr("type", "button").attr("aria-label", `Remover filtro ${c.tipo}: ${c.valor}`)
+        .text("×").on("click", c.remove);
+    }
+    if (chips.length > 1) {
+      bar.append("button").attr("type", "button").attr("class", "filterbar__clear").text("Limpar tudo").on("click", clearAllFilters);
+    }
   }
 
   function capesConceitoBadge(codigo) {

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script>(function(){var t=localStorage.getItem('faap-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);})();</script>
 <title>FIND A ACADEMIC PARTNER - FAAP · Painel</title>
-<link rel="stylesheet" href="css/style.css?v=29" />
+<link rel="stylesheet" href="css/style.css?v=33" />
 </head>
 <body>
 
@@ -33,6 +33,7 @@
 </header>
 
 <div class="statbar" id="topbar-stats"></div>
+<div class="filterbar" id="active-filters" aria-live="polite" data-help="Filtros ativos no painel. Clique no × de um filtro para removê-lo, ou em &quot;Limpar tudo&quot; para remover todos."></div>
 
 <main class="layout">
 
@@ -136,6 +137,14 @@
         </p>
       </div>
     </div>
+
+    <div class="panel" id="ods-cloud-card" data-help="Nuvem de palavras com os ODS da ONU mais recorrentes nas conexões encontradas, considerando todos os filtros ativos (PPG, conceito/nível/modalidade/situação CAPES, linha de pesquisa, país e universidade). Quanto maior o nome, mais conexões envolvem linhas de pesquisa da UEA classificadas naquele ODS. Clique num ODS para abrir a página ODS.">
+      <div class="panel__header">
+        <span class="panel__title">ODS mais recorrentes</span>
+        <span class="panel__hint" id="ods-cloud-hint"></span>
+      </div>
+      <div class="ods-cloud" id="ods-cloud"></div>
+    </div>
   </section>
 
   <!-- ===================== Coluna 3 — visão geral ===================== -->
@@ -187,8 +196,8 @@
 <script src="lib/d3-sankey.min.js"></script>
 <script src="lib/topojson-client.min.js"></script>
 <script src="js/common.js?v=28"></script>
-<script src="js/charts.js?v=28"></script>
-<script src="js/report.js?v=30"></script>
-<script src="js/page1.js?v=30"></script>
+<script src="js/charts.js?v=33"></script>
+<script src="js/report.js?v=31"></script>
+<script src="js/page1.js?v=35"></script>
 </body>
 </html>
